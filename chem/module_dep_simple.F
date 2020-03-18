@@ -879,9 +879,19 @@ tile_lon_loop : &
                ddvel(i,j,p_cvbsoa3) = ddvel(i,j,p_hno3)
                ddvel(i,j,p_cvbsoa4) = ddvel(i,j,p_hno3)
                end do
+             end do
+      end if
+!----------------
+! For redhc ...
+!-----------------
+      if ( (config_flags%chem_opt == REDHC_KPP) .or. &
+           (config_flags%chem_opt == REDHC_SORG_KPP)  ) then
+         do j=jts,jte
+            do i=its,ite
+               ddvel(i,j,p_xo2) = 0.
+            end do
          end do
       end if
-
 
 END SUBROUTINE wesely_driver
 
@@ -2027,7 +2037,7 @@ is_cbm4_kpp : &
                 hstar(p_noa)      = 1.0e+03
                 hstar(p_nterpooh) = 1.0e+03
                 hstar(p_terpnit)  = 9.5e+02
-              endif
+              endif ! T1_MOZART_KPP
 
               if( config_flags%chem_opt == MOZART_MOSAIC_4BIN_KPP .or. &
                   config_flags%chem_opt == MOZART_MOSAIC_4BIN_AQ_KPP ) then
@@ -2046,7 +2056,7 @@ is_cbm4_kpp : &
                 endif
               end if
               
-     else if( config_flags%chem_opt == crimech_kpp .or. &
+     else if( config_flags%chem_opt == crimech_kpp .or. & ! chm_is_mozart
           config_flags%chem_opt == cri_mosaic_8bin_aq_kpp .or. &
           config_flags%chem_opt == cri_mosaic_4bin_aq_kpp )   then
               hstar(p_o3)      = 1.15E-2
@@ -2172,7 +2182,7 @@ is_cbm4_kpp : &
                hstar(p_tncarb11)    = 1.14E+1 
                hstar(p_udcarb17)    = 1.14E+1 
         
-           else
+           else ! not mozart or crimech
               hstar(p_o3)   = 1.13E-2
               hstar(p_co)   = 8.20E-3
               hstar(p_h2o2) = 7.45E+4
@@ -2181,6 +2191,7 @@ is_cbm4_kpp : &
               hstar(p_paa)  = 473.
               hstar(p_onit) = 1.13
            end if
+! not cbm4
         hstar(p_no2)  = 6.40E-3
         hstar(p_no)   = 1.90E-3
         hstar(p_aco3) = 1.14E+1

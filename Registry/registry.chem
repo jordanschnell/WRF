@@ -117,6 +117,10 @@ state   real    e_ch3cn         i+jf    emis_ant        1       Z       i5      
 state   real    e_ch3cooh       i+jf    emis_ant        1       Z       i5      "E_CH3COOH" "CH3COOH emissions" "mol km^-2 hr^-1"
 state   real    e_hcn           i+jf    emis_ant        1       Z       i5      "E_HCN"     "HCN emissions" "mol km^-2 hr^-1"
 
+# Additional redhc emission variables...
+state    real  e_ole          i+jf     emis_ant     1         Z      i5h    "E_OLE"        "EMISSIONS OLE"               "mol km^-2 hr^-1"
+state    real  e_par          i+jf     emis_ant     1         Z      i5h    "E_PAR"        "EMISSIONS PAR"               "mol km^-2 hr^-1"
+
 # Additional crimech emission variables...
 state    real  e_c5h8         i+jf     emis_ant     1         Z      i5      "E_C5H8"             "EMISSIONS C5H8"              "mol km^-2 hr^-1"
 state    real  e_tm123b       i+jf     emis_ant     1         Z      i5      "E_TM123B"             "EMISSIONS TM123B"              "mol km^-2 hr^-1"
@@ -404,6 +408,10 @@ state    real  ebu_c2h2     ikjf     ebu           1         Z        -      "eb
 state    real  ebu_hpald    ikjf     ebu           1         Z        -      "ebu_hpald"     "biomass burning emiss"  "mol km^-2 hr^-1"
 state    real  ebu_xylenes  ikjf     ebu           1         Z        -      "ebu_xylenes"   "biomass burning emiss"  "mol km^-2 hr^-1"
 
+# additional arrays for redhc biomass burning
+state    real  ebu_par      ikjf     ebu           1         Z        h      "ebu_par"       "biomass burning emiss"  "mol km^-2 hr^-1"
+state    real  ebu_ole      ikjf     ebu           1         Z        h      "ebu_ole"       "biomass burning emiss"  "mol km^-2 hr^-1"
+
 # CH4 biomass burning emissions
 state    real  ebu_ch4      ikjf     ebu           1         Z        h      "ebu_ch4"       "biomass burning emiss"  "mol km^-2 hr^-1"
 
@@ -478,7 +486,12 @@ state    real  ebu_in_xylenes     i]jf      ebu_in      1         -        i07  
 
 # additional array for ch4 bbm emission
 state    real  ebu_in_ch4         i]jf      ebu_in      1         -        i07        "ebu_in_ch4"        "EMISSIONS"          "mol km^-2 hr^-1"
-#
+
+# additional arrays for redhc biomass burning
+state    real  ebu_in_par         i]jf      ebu_in      1         -        i07       "ebu_in_par"        "EMISSIONS"          "mol km^-2 hr^-1"
+state    real  ebu_in_ole         i]jf      ebu_in      1         -        i07       "ebu_in_ole"        "EMISSIONS"          "mol km^-2 hr^-1"
+
+# eco/fire arrays 
 state    real  mean_fct_agtf      ij      misc      1         -        i07h       "mean_fct_agtf"         "mean fraction of tropical forest"  "?"
 state    real  mean_fct_agef      ij      misc      1         -        i07h       "mean_fct_agef"         "mean fraction of extra tropical forest"  "?"
 state    real  mean_fct_agsv      ij      misc      1         -        i07h       "mean_fct_agsv"         "mean fraction of savanna"  "?"
@@ -3955,6 +3968,7 @@ package   mozcart_kpp       chem_opt==112                  -          chem:o3,o1
 
 # KPP mechanism for t1 mozart + gocart
 package  t1_mozcart_kpp     chem_opt==114                  -          chem:alknit,alkooh,apin,bcary,benzene,benzooh,bepomuc,open,bigald1,bigald2,bigald3,bigald4,bigalk,bigene,bpin,bzald,bzooh,c2h2,c2h4,c2h5oh,etooh,c2h6,c3h6,prooh,c3h8,c6h5ooh,hcho,ald,ch3cn,acet,mgly,ch3cooh,paa,ch3oh,ch3ooh,ch4,co,cres,dms,eooh,glyald,gly,h2,h2o2,hcn,hcooh,hmprop,hmpropo2,hno3,hno4,honitr,hpald,acetol,hydrald,iepox,isopr,isopnita,isopnitb,isopn,isopnooh,isooh,limon,macr,mvkooh,malo2,mbo,mbono3o2,mboo2,mboooh,mek,mekooh,mpan,mvk,myrc,n2o,n2o5,nc4ch2oh,nc4cho,nh3,no,no2,no3,noa,nterpooh,o,o3,onitr,pan,pbznit,pheno,phenol,phenooh,c3h6ooh,acetp,so2,sulf,tepomuc,terp2ooh,terpnit,terpooh,terprod1,terprod2,tolooh,tol,xooh,xylenes,xylenooh,xylol,xylolooh,acbzo2,alko2,benzo2,bzoo,eto2,pro2,c6h5o2,aco3,ch3o2,dicarbo2,eneo2,eo,eo2,ho2,hoch2oo,isopao2,isopbo2,mvko2,mco3,mdialo2,meko2,nterpo2,o1d,ho,pheno2,po2,aceto2,terp2o2,terpo2,to2,xo2,xyleno2,xylolo2,p25,bc1,bc2,oc1,oc2,dust_1,dust_2,dust_3,dust_4,dust_5,seas_1,seas_2,seas_3,seas_4,p10
+
 # KPP mechanism from CBMZ
 package   cbmz_bb_kpp       chem_opt==120                -             chem:so2,sulf,no2,no,o3,hno3,h2o2,ald,hcho,op1,op2,ora1,ora2,nh3,n2o5,no3,pan,eth,co,ol2,olt,oli,tol,xyl,hono,hno4,ket,mgly,onit,csl,iso,ho,ho2,ch4,hcl,ch3o2,ethp,ch3oh,c2h5oh,par,to2,cro,open,op3,c2o3,ro2,ano2,nap,xo2,xpar,isoprd,isopp,isopn,isopo2
 
@@ -3983,8 +3997,14 @@ package saprc99_mosaic_8bin_vbs2_aq_kpp    chem_opt==203   -       chem:o3,h2o2,
 package saprc99_mosaic_8bin_vbs2_kpp    chem_opt==204   -       chem:o3,h2o2,no,no2,no3,n2o5,hono,hno3,hno4,so2,h2so4,co,hcho,ccho,rcho,acet,mek,hcooh,meoh,etoh,cco_oh,rco_oh,gly,mgly,bacl,cres,bald,isoprod,methacro,mvk,prod2,dcb1,dcb2,dcb3,ethene,isoprene,c2h6,c3h8,c2h2,c3h6,alk3,alk4,alk5,aro1,aro2,ole1,ole2,terp,rno3,nphe,phen,pan,pan2,pbzn,ma_pan,co2,cco_ooh,rco_o2,rco_ooh,xn,xc,ho,ho2,c_o2,cooh,rooh,ro2_r,r2o2,ro2_n,cco_o2,bzco_o2,ma_rco3,sesq,pcg1_b_c,pcg2_b_c,pcg1_b_o,pcg2_b_o,opcg1_b_c,opcg1_b_o,pcg1_f_c,pcg2_f_c,pcg1_f_o,pcg2_f_o,opcg1_f_c,opcg1_f_o,psd1,psd2,nh3,hcl,nume,den,ant1_c,biog1_c,ant2_c,biog2_c,biog3_c,biog1_o,biog2_o,ant3_c,ant4_c,bgas,agas,ch4,so4_a01,no3_a01,cl_a01,nh4_a01,na_a01,oin_a01,oc_a01,bc_a01,hysw_a01,water_a01,pcg1_b_c_a01,pcg1_b_o_a01,opcg1_b_c_a01,opcg1_b_o_a01,pcg1_f_c_a01,pcg1_f_o_a01,opcg1_f_c_a01,opcg1_f_o_a01,ant1_c_a01,biog1_c_a01,ant2_c_a01,biog2_c_a01,biog3_c_a01,biog1_o_a01,biog2_o_a01,ant3_c_a01,ant4_c_a01,num_a01,so4_a02,no3_a02,cl_a02,nh4_a02,na_a02,oin_a02,oc_a02,bc_a02,hysw_a02,water_a02,pcg1_b_c_a02,pcg1_b_o_a02,opcg1_b_c_a02,opcg1_b_o_a02,pcg1_f_c_a02,pcg1_f_o_a02,opcg1_f_c_a02,opcg1_f_o_a02,ant1_c_a02,biog1_c_a02,ant2_c_a02,biog2_c_a02,biog3_c_a02,biog1_o_a02,biog2_o_a02,ant3_c_a02,ant4_c_a02,num_a02,so4_a03,no3_a03,cl_a03,nh4_a03,na_a03,oin_a03,oc_a03,bc_a03,hysw_a03,water_a03,pcg1_b_c_a03,pcg1_b_o_a03,opcg1_b_c_a03,opcg1_b_o_a03,pcg1_f_c_a03,pcg1_f_o_a03,opcg1_f_c_a03,opcg1_f_o_a03,ant1_c_a03,biog1_c_a03,ant2_c_a03,biog2_c_a03,biog3_c_a03,biog1_o_a03,biog2_o_a03,ant3_c_a03,ant4_c_a03,num_a03,so4_a04,no3_a04,cl_a04,nh4_a04,na_a04,oin_a04,oc_a04,bc_a04,hysw_a04,water_a04,pcg1_b_c_a04,pcg1_b_o_a04,opcg1_b_c_a04,opcg1_b_o_a04,pcg1_f_c_a04,pcg1_f_o_a04,opcg1_f_c_a04,opcg1_f_o_a04,ant1_c_a04,biog1_c_a04,ant2_c_a04,biog2_c_a04,biog3_c_a04,biog1_o_a04,biog2_o_a04,ant3_c_a04,ant4_c_a04,num_a04,so4_a05,no3_a05,cl_a05,nh4_a05,na_a05,oin_a05,oc_a05,bc_a05,hysw_a05,water_a05,pcg1_b_c_a05,pcg1_b_o_a05,opcg1_b_c_a05,opcg1_b_o_a05,pcg1_f_c_a05,pcg1_f_o_a05,opcg1_f_c_a05,opcg1_f_o_a05,ant1_c_a05,biog1_c_a05,ant2_c_a05,biog2_c_a05,biog3_c_a05,biog1_o_a05,biog2_o_a05,ant3_c_a05,ant4_c_a05,num_a05,so4_a06,no3_a06,cl_a06,nh4_a06,na_a06,oin_a06,oc_a06,bc_a06,hysw_a06,water_a06,pcg1_b_c_a06,pcg1_b_o_a06,opcg1_b_c_a06,opcg1_b_o_a06,pcg1_f_c_a06,pcg1_f_o_a06,opcg1_f_c_a06,opcg1_f_o_a06,ant1_c_a06,biog1_c_a06,ant2_c_a06,biog2_c_a06,biog3_c_a06,biog1_o_a06,biog2_o_a06,ant3_c_a06,ant4_c_a06,num_a06,so4_a07,no3_a07,cl_a07,nh4_a07,na_a07,oin_a07,oc_a07,bc_a07,hysw_a07,water_a07,pcg1_b_c_a07,pcg1_b_o_a07,opcg1_b_c_a07,opcg1_b_o_a07,pcg1_f_c_a07,pcg1_f_o_a07,opcg1_f_c_a07,opcg1_f_o_a07,ant1_c_a07,biog1_c_a07,ant2_c_a07,biog2_c_a07,biog3_c_a07,biog1_o_a07,biog2_o_a07,ant3_c_a07,ant4_c_a07,num_a07,so4_a08,no3_a08,cl_a08,nh4_a08,na_a08,oin_a08,oc_a08,bc_a08,hysw_a08,water_a08,pcg1_b_c_a08,pcg1_b_o_a08,opcg1_b_c_a08,opcg1_b_o_a08,pcg1_f_c_a08,pcg1_f_o_a08,opcg1_f_c_a08,opcg1_f_o_a08,ant1_c_a08,biog1_c_a08,ant2_c_a08,biog2_c_a08,biog3_c_a08,biog1_o_a08,biog2_o_a08,ant3_c_a08,ant4_c_a08,num_a08
 
 
-# KPP mechanism from MATCH-MPI Mainz used for global chemistry
-package   nmhc9_kpp     chem_opt==200                   -             chem:o3,h2o2,ch4,op1,hcho,ch3oh,co,hno3,no3,n2o5,hno4,no,no2,isopr,mvk,iso2,isooh,mvko2,mvkooh,ison,aca,acol,hcooh,mpan,naca,pan,pa,paa,mglo,c2h6,eTooh,ald,c3h8,pRooh,acet,acooh,eTo2,pRo2,aco2,c3h6,c3h6ooh,c2h4,c4h10,buooh,mek,mekooh,mEcoco,c3h6o2,c4h9o2,meko2,onit,pRono2,ch3o2,acetol,acetp,aceto2,ch3cooh,c4h9ooh,mEoh,ho,ho2,mEo2,mEo2no2
+#!! REDHC_SORG_KPP taking place of NMHC99, MATCH-MPI Mainz !!! 
+
+# KPP mechanism for reduced HC - gas only
+package   redhc_kpp chem_opt==200           -          chem:o3,o,o1d_cb4,n2o,no,no2,no3,hno3,hno4,n2o5,ch4,ch3o2,ch3ooh,hcho,co,h2,ho,ho2,h2o2,ald,c2o3,pan,par,ror,ole,c2h4,mgly,isopr,acetp,onit,xo2,xo2n,xpar,c10h16,tol,so2,h2so4,dms,nh3
+
+# KPP mechansim for reduced HC with MADE/SORGAM
+package   redhc_sorg_kpp chem_opt==201           -          chem:o3,o,o1d_cb4,n2o,no,no2,no3,hno3,hno4,n2o5,ch4,ch3o2,ch3ooh,hcho,co,h2,ho,ho2,h2o2,ald,c2o3,pan,par,ror,ole,c2h4,mgly,isopr,acetp,onit,xo2,xo2n,xpar,c10h16,tol,so2,h2so4,dms,nh3,so4aj,so4ai,nh4aj,nh4ai,no3aj,no3ai,naaj,naai,claj,clai,orgaro1j,orgaro1i,orgaro2j,orgaro2i,orgalk1j,orgalk1i,orgole1j,orgole1i,orgba1j,orgba1i,orgba2j,orgba2i,orgba3j,orgba3i,orgba4j,orgba4i,orgpaj,orgpai,ecj,eci,p25j,p25i,antha,seas,soila,nu0,ac0,corn
+
 
 # GOCART Packages (no Ozone chemistry in this choice)
 package   gocart_simple     chem_opt==300                   -             chem:so2,sulf,dms,msa,p25,bc1,bc2,oc1,oc2,dust_1,dust_2,dust_3,dust_4,dust_5,seas_1,seas_2,seas_3,seas_4,p10
@@ -4041,6 +4061,9 @@ package   eco2            emiss_opt==16                  -             emis_ant:
 package   eghg            emiss_opt==17                  -             emis_ant:e_co2,e_co2tst,e_co,e_cotst,e_ch4,e_ch4tst
 package   ecrimech        emiss_opt==19                   -             emis_ant:e_co,e_no,e_no2,e_so2,e_nh3,e_c2h6,e_c3h8,e_c2h4,e_c3h6,e_c5h8,e_tm123b,e_tm124b,e_tm135b,e_oethtol,e_methtol,e_pethtol,e_dime35eb,e_hcho,e_ch3cho,e_c2h5cho,e_ket,e_mek,e_ch3oh,e_c2h5oh,e_c2h2,e_benzene,e_nc4h10,e_toluene,e_oxyl,e_tbut2ene,e_ch3co2h
 package   ecrimechtno     emiss_opt==20                  -             emis_ant:e_co,e_no,e_no2,e_so2,e_nh3,e_c2h6,e_c3h8,e_c2h4,e_c3h6,e_c5h8,e_tm123b,e_tm124b,e_tm135b,e_oethtol,e_methtol,e_pethtol,e_dime35eb,e_hcho,e_ch3cho,e_c2h5cho,e_ket,e_mek,e_ch3oh,e_c2h5oh,e_c2h2,e_benzene,e_nc4h10,e_toluene,e_oxyl,e_tbut2ene,e_ch3co2h,e_bc_1,e_ec_1_25,e_ec_25_10,e_oc_dom,e_oc_tra,e_oc_25_10,e_pm25,e_oin_25,e_oin_10
+
+# For reduced HC mechansim 
+package   redhc_sorg       emiss_opt==21                  -             emis_ant:e_co,e_no,e_no2,e_c2h4,e_ch2o,e_ch3cho,e_so2,e_toluene,e_nh3,e_isop,e_c10h16,e_ole,e_par,e_pm25i,e_pm25j,e_pm_10,e_eci,e_ecj,e_orgi,e_orgj,e_so4i,e_so4j,e_no3i,e_no3j,e_naaj,e_naai,e_orgi_a,e_orgj_a,e_orgi_bb,e_orgj_bb,e_hcl,e_cli,e_clj,e_ch3cl
 #
 package   vash    emiss_opt_vol==1                   -             emis_vol:e_vash1,e_vash2,e_vash3,e_vash4,e_vash5,e_vash6,e_vash7,e_vash8,e_vash9,e_vash10
 package   vashso2 emiss_opt_vol==2                   -             emis_vol:e_vash1,e_vash2,e_vash3,e_vash4,e_vash5,e_vash6,e_vash7,e_vash8,e_vash9,e_vash10,e_vso2
@@ -4081,6 +4104,7 @@ package   biomassb_t1_mozcart   biomass_burn_opt==4          -          state:me
 # GHG biomass burning
 package   biomassb_ghg  biomass_burn_opt==5          -             state::mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_co2,ebu_ch4;ebu_in:ebu_in_co,ebu_in_co2,ebu_in_ch4
 
+package   biomassb_redhc     biomass_burn_opt==6             -          state:mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_no,ebu_c2h4,ebu_ch2o,ebu_ch3cho,ebu_so2,ebu_toluene,ebu_nh3,ebu_no2,ebu_c10h16,ebu_mgly,ebu_isop,ebu_par,ebu_ole;ebu_in:ebu_in_co,ebu_in_no,ebu_in_c2h4,ebu_in_ch2o,ebu_in_ch3cho,ebu_in_so2,ebu_in_toluene,ebu_in_nh3,ebu_in_no2,ebu_in_c10h16,ebu_in_mgly,ebu_in_isop,ebu_in_par,ebu_in_ole
 
 package   opt_out      opt_pars_out==1             -          ext_coef:extcof3,extcof55,extcof106,extcof3_5,extcof8_12;bscat_coef:bscof3,bscof55,bscof106;asym_par:asympar3,asympar55,asympar106
 

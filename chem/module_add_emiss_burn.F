@@ -210,6 +210,41 @@ CONTAINS
         enddo
         enddo
         enddo
+      CASE (REDHC_KPP,REDHC_SORG_KPP)
+        if( biomass_burn_opt == BIOMASSB_REDHC ) then
+          do j=jts,jte
+            do k=kts,kte
+              do i=its,ite
+                conv_rho = r_q*4.828e-4*dtstep/(60.*dz8w(i,k,j)*rho_phy(i,k,j))
+                chem(i,k,j,p_co)     = chem(i,k,j,p_co)     + ebu(i,k,j,p_ebu_co)*conv_rho
+                chem(i,k,j,p_no)     = chem(i,k,j,p_no)     + ebu(i,k,j,p_ebu_no)*conv_rho
+                chem(i,k,j,p_no2)    = chem(i,k,j,p_no2)    + ebu(i,k,j,p_ebu_no2)*conv_rho
+                chem(i,k,j,p_c2h4)   = chem(i,k,j,p_c2h4)   + ebu(i,k,j,p_ebu_c2h4)*conv_rho
+                chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + ebu(i,k,j,p_ebu_ch2o)*conv_rho
+                chem(i,k,j,p_ald)    = chem(i,k,j,p_ald)    + ebu(i,k,j,p_ebu_ch3cho)*conv_rho
+                chem(i,k,j,p_so2)    = chem(i,k,j,p_so2)    + ebu(i,k,j,p_ebu_so2)*conv_rho
+                chem(i,k,j,p_isopr)  = chem(i,k,j,p_isopr)  + ebu(i,k,j,p_ebu_isop)*conv_rho
+                chem(i,k,j,p_tol)    = chem(i,k,j,p_tol)    + ebu(i,k,j,p_ebu_toluene)*conv_rho
+                chem(i,k,j,p_nh3)    = chem(i,k,j,p_nh3)    + ebu(i,k,j,p_ebu_nh3)*conv_rho
+                chem(i,k,j,p_par)    = chem(i,k,j,p_par)    + ebu(i,k,j,p_ebu_par)*conv_rho
+                chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + ebu(i,k,j,p_ebu_ole)*conv_rho
+              enddo
+            enddo
+          enddo
+          ! For now, test for aerosol option so other mechs can be added later
+          if( chem_opt == REDHC_SORG_KPP ) then
+            do j=jts,jte
+              do k=kts,kte
+                do i=its,ite
+                  conv_rho = (r_q*dtstep)/(rho_phy(i,k,j)*dz8w(i,k,j))
+                enddo
+              enddo
+            enddo
+          endif
+        endif
+
+
+
       CASE (GOCART_SIMPLE)
           do j=jts,jte
           do i=its,ite

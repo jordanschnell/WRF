@@ -230,7 +230,8 @@
          RACM_ESRLSORG_KPP, RACMSORG_AQ, RACMSORG_AQCHEM_KPP,          &
          RACM_ESRLSORG_AQCHEM_KPP, RACMSORG_KPP,                       &
          CBMZSORG, CBMZSORG_AQ,                                        &
-         CB05_SORG_AQ_KPP)
+         CB05_SORG_AQ_KPP,                                             &
+         REDHC_SORG_KPP)
      call optical_prep_modal(nbin_o, chem, alt,                        &
 !         h2oai, h2oaj, refindx, radius_wet, number_bin,               &
 !         radius_core, refindx_core, refindx_shell,                    &

@@ -626,6 +626,12 @@
          num_irr_diag = num_irr_diag_t1_mozcart
        ENDIF
 #endif
+     CASE (REDHC_KPP)
+       CALL wrf_debug(15,'calling redhc_kpp driver from chem_driver')
+       haveaer = .false.
+     CASE (REDHC_SORG_KPP)
+       CALL wrf_debug(15,'calling redhc_sorg_kpp driver from chem_driver')
+       haveaer = .true.
      CASE (CB05_SORG_AQ_KPP)
        CALL wrf_debug(15,'calling cb05_sorg_aq_kpp from chem_driver')
        haveaer = .true.
@@ -700,7 +706,7 @@
 !!! TUCCELLA
       case (RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RADM2SORG_KPP, &
             RACM_ESRLSORG_KPP,RACMSORG_AQ,RACMSORG_KPP, RACMSORG_AQCHEM_KPP, RACM_ESRLSORG_AQCHEM_KPP, &
-            RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP)
+            RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP,REDHC_SORG_KPP)
          do j=jps,jpe
             do k=kps,kpe
                do i=ips,ipe

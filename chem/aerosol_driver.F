@@ -216,7 +216,8 @@
          ims,ime, jms,jme, kms,kme,                                        &
          its,ite, jts,jte, kts,kte                                         )
    CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RADM2SORG_KPP,CBMZSORG,CBMZSORG_AQ, &
-          CB05_SORG_AQ_KPP) 
+          CB05_SORG_AQ_KPP,ACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP, &
+          RACMSORG_KPP,RACM_ESRLSORG_KPP, REDHC_SORG_KPP) 
        CALL wrf_debug(15,'aerosols_driver calling sorgam_driver')
        do ii=its,ite
           do kk=kts,kte
@@ -255,28 +256,6 @@
             ids,ide, jds,jde, kds,kde,                               &
             ims,ime, jms,jme, kms,kme,                               &
             its,ite, jts,jte, kts,kte                                )
-
-   CASE (RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RACMSORG_KPP,RACM_ESRLSORG_KPP)
-! ???? are separate cases needed here for radm2sorg and racmsorg packages ????
-       CALL wrf_debug(15,'aerosols_driver calling sorgam_driver')
-       do ii=its,ite
-          do kk=kts,kte
-             do jj=jts,jte
-                if(chem(ii,kk,jj,p_nu0).lt.1.e07)then
-                   chem(ii,kk,jj,p_nu0)=1.e7
-                endif
-             enddo
-          enddo
-       enddo
-       call sorgam_driver (id,ktauc,dtstepc,t_phy,moist,aerwrf,p8w,t8w, &
-               alt,p_phy,chem,rho_phy,dz8w,z,z_at_w,                    &
-               h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3,cvaro1,cvaro2, &
-               cvalk1,cvole1,cvapi1,cvapi2,cvlim1,cvlim2,vcsulf_old,    &
-               vdrog3,                                                  &
-               config_flags%kemit,                                      &
-               ids,ide, jds,jde, kds,kde,                               &
-               ims,ime, jms,jme, kms,kme,                               &
-               its,ite, jts,jte, kts,kte                                )
 
    CASE (CBMZ_MOSAIC_4BIN, CBMZ_MOSAIC_KPP, CBMZ_MOSAIC_8BIN, CBMZ_MOSAIC_4BIN_AQ, &
          CBMZ_MOSAIC_8BIN_AQ, SAPRC99_MOSAIC_4BIN_VBS2_KPP, &
@@ -476,8 +455,10 @@
             ids,ide, jds,jde, kds,kde,                                 &
             ims,ime, jms,jme, kms,kme,                                 &
             its,ite, jts,jte, kts,kte                                  )
-   CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RADM2SORG_KPP, &
-         RACMSORG_KPP,RACM_ESRLSORG_KPP,CBMZSORG,CBMZSORG_AQ,CB05_SORG_AQ_KPP)
+   CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RACMSORG_AQ,RACMSORG_AQCHEM_KPP, &
+         RACM_ESRLSORG_AQCHEM_KPP,RADM2SORG_KPP, &
+         RACMSORG_KPP,RACM_ESRLSORG_KPP,CBMZSORG,CBMZSORG_AQ,CB05_SORG_AQ_KPP, &
+         REDHC_SORG_KPP)
        CALL wrf_debug(15,'sum_pm_driver: calling sum_pm_sorgam')
        CALL sum_pm_sorgam (                                            &
             alt, chem, h2oaj, h2oai,                                   &

@@ -258,6 +258,10 @@ call wrf_message("**************************************************************
      CASE(CB05_SORG_VBS_AQ_KPP)
         numgas_mam = numgas
         CALL wrf_debug(15,'calling CB05_SORG_VBS_AQ_KPP chemistry from chem_driver')
+     CASE (REDHC_KPP)
+        CALL wrf_debug(15,'calling REDHC_KPP chemistry from chem_driver')
+     CASE (REDHC_SORG_KPP)
+        CALL wrf_debug(15,'calling REDHC_SORG_KPP chemistry from chem_driver')
    END SELECT chem_select
 
    if ( config_flags%dust_opt == 1 ) then
@@ -272,11 +276,11 @@ call wrf_message("**************************************************************
        call wrf_message("WARNING: sea salt option 1 currently works only with the GOCART aerosol option.")
    endif
 
-   if ( config_flags%biomass_burn_opt > 0 .or. config_flags%biomass_burn_opt < 4 ) then
+   if ( config_flags%biomass_burn_opt > 0 .or. config_flags%biomass_burn_opt < 5 ) then
        CALL wrf_debug(15,'calling biomass burning')
    endif
 
-   if ( config_flags%biomass_burn_opt == 5 ) then
+   if ( config_flags%biomass_burn_opt == 6 ) then
        CALL wrf_debug(15,'calling biomass burning for GHGs')
    endif
 
@@ -284,7 +288,9 @@ call wrf_message("**************************************************************
                 config_flags%chem_opt == T1_MOZCART_KPP .or. &
                 config_flags%chem_opt == MOZART_KPP .or. &
                 config_flags%chem_opt == MOZART_MOSAIC_4BIN_KPP .or. &
-                config_flags%chem_opt == MOZART_MOSAIC_4BIN_AQ_KPP
+                config_flags%chem_opt == MOZART_MOSAIC_4BIN_AQ_KPP ! .or. &
+!               config_flags%chem_opt == REDHC_KPP .or. &
+!               config_flags%chem_opt == REDHC_SORG_KPP
 
    if( is_moz_chm ) then
        write(message_txt,*) 'chem_init: calling mozcart_lbc_init for domain ',id
@@ -300,7 +306,8 @@ call wrf_message("**************************************************************
      if (config_flags%chem_opt /= mozart_mosaic_4bin_kpp .and. &
          config_flags%chem_opt /= mozart_mosaic_4bin_aq_kpp .and. &
          config_flags%chem_opt /= mozcart_kpp .and. &
-         config_flags%chem_opt /= t1_mozcart_kpp) THEN
+         config_flags%chem_opt /= t1_mozcart_kpp .and. &
+         config_flags%chem_opt /= redhc_kpp ) THEN
        write(message_txt,'(''--- ERROR: chem_opt '',i3,'' not setup for TUV photolysis at this time'')') &
               config_flags%chem_opt
        CALL wrf_error_fatal( trim(message_txt) )
@@ -442,7 +449,8 @@ call wrf_message("**************************************************************
           config_flags%chem_opt == RACM_KPP .or. &
           config_flags%chem_opt == CBM4_KPP .or. &
           config_flags%chem_opt == SAPRC99_KPP  .or. &
-          config_flags%chem_opt == NMHC9_KPP  ) ) then
+          config_flags%chem_opt == NMHC9_KPP  .or. &
+          config_flags%chem_opt == REDHC_KPP) ) then
         call wrf_error_fatal(" ERROR: CHEM_INIT: MUST HAVE AEROSOLS TO INCLUDE AEROSOL RADIATION FEEDBACK. SET AER_RA_FEEDBACK = 0 ")
     ENDIF
 
@@ -1587,6 +1595,29 @@ CASE(GOCARTRACM_KPP,RACM_KPP,RACMPM_KPP,RACMSORG_KPP,RACM_MIM_KPP,RACM_ESRLSORG_
        endif
        !BSINGH - ENDS
 
+       CASE (REDHC_KPP)
+        if(config_flags%chem_in_opt == 0 )then
+          do j=jts,jte
+             do k=kts,kte
+                do i=its,ite
+                   chem(i,k,j,p_ch4)=1.7
+                   !chem...
+                enddo
+             enddo
+          enddo
+        endif
+       CASE (REDHC_SORG_KPP)
+        if(config_flags%chem_in_opt == 0 )then
+          do j=jts,jte
+             do k=kts,kte
+                do i=its,ite
+                   chem(i,k,j,p_ch4)=1.7
+                   !chem...
+                enddo
+             enddo
+          enddo
+        endif
+
    END SELECT kpp_select
    endif
 
@@ -1782,7 +1813,7 @@ ENDIF ghg_block
 
      CASE (RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RACMSORG_AQ, RACMSORG_AQCHEM_KPP, RACM_ESRLSORG_AQCHEM_KPP, RADM2SORG_KPP, &
            RACMSORG_KPP, RACM_ESRLSORG_KPP, CBMZSORG, CBMZSORG_AQ, &
-           CB05_SORG_AQ_KPP)
+           CB05_SORG_AQ_KPP,REDHC_SORG_KPP)
        CALL wrf_debug(15,'call MADE/SORGAM aerosols initialization')
 
        call aerosols_sorgam_init(chem,convfac,z_at_w,                &
@@ -2627,6 +2658,88 @@ subroutine print_chem_species_index( chem_opt )
      print*,p_ch4,"ch4"
   case (CB05_SORG_AQ_KPP, CB05_SORG_VBS_AQ_KPP)
      print*,p_nh3,"nh3"
+  case (REDHC_KPP)
+     print*,p_o3,"o3"
+    !print*,p_o,"o"
+    !print*,p_o1d_cb4,"o1d_cb4
+     print*,p_n2o,"n2o"
+     print*,p_no,"no"
+     print*,p_no2,"no2"
+     print*,p_no3,"no3"
+     print*,p_hno3,"hno3"
+     print*,p_hno4,"hno4"
+     print*,p_n2o5,"n2o5"
+     print*,p_ch4,"ch4"
+     print*,p_ch3o2,"ch3o2"
+     print*,p_ch3ooh,"ch3ooh"
+     print*,p_hcho,"hcho"
+     print*,p_co,"co"
+     print*,p_h2,"h2"
+     print*,p_ho,"ho"
+     print*,p_ho2,"ho2"
+     print*,p_h2o2,"h2o2"
+     print*,ald,"ald"
+     print*,p_c2o3,"c2o3"
+     print*,p_pan,"pan"
+     print*,p_par,"par"
+     print*,p_ror,"ror"
+     print*,p_ole,"ole"
+     print*,p_c2h4,"c2h4"
+     print*,p_mgly,"mgly"
+     print*,p_isopr,"isopr"
+     print*,p_acetp,"acetp"
+     print*,p_onit,"onit"
+     print*,p_xo2,"xo2"
+     print*,p_xo2n,"xo2n"
+     print*,p_xpar,"xpar"
+     print*,p_c10h16,"c10h16"
+     print*,p_tol,"tol"
+     print*,p_so2,"so2"
+     print*,p_h2so4,"h2so4"
+     print*,p_dms,"dms"
+     print*,p_nh3,"nh3"
+  case (REDHC_SORG_KPP) 
+     print*,p_o3,"o3"
+    !print*,p_o,"o"
+    !print*,p_o1d_cb4,"o1d_cb4
+     print*,p_n2o,"n2o"
+     print*,p_no,"no"
+     print*,p_no2,"no2"
+     print*,p_no3,"no3"
+     print*,p_hno3,"hno3"
+     print*,p_hno4,"hno4"
+     print*,p_n2o5,"n2o5"
+     print*,p_ch4,"ch4"
+     print*,p_ch3o2,"ch3o2"
+     print*,p_ch3ooh,"ch3ooh"
+     print*,p_hcho,"hcho"
+     print*,p_co,"co"
+     print*,p_h2,"h2"
+     print*,p_ho,"ho"
+     print*,p_ho2,"ho2"
+     print*,p_h2o2,"h2o2"
+     print*,ald,"ald"
+     print*,p_c2o3,"c2o3"
+     print*,p_pan,"pan"
+     print*,p_par,"par"
+     print*,p_ror,"ror"
+     print*,p_ole,"ole"
+     print*,p_c2h4,"c2h4"
+     print*,p_mgly,"mgly"
+     print*,p_isopr,"isopr"
+     print*,p_acetp,"acetp"
+     print*,p_onit,"onit"
+     print*,p_xo2,"xo2"
+     print*,p_xo2n,"xo2n"
+     print*,p_xpar,"xpar"
+     print*,p_c10h16,"c10h16"
+     print*,p_tol,"tol"
+     print*,p_so2,"so2"
+     print*,p_h2so4,"h2so4"
+     print*,p_dms,"dms"     
+     print*,p_nh3,"nh3"
+     ! ...
+     ! ...
   end select
 !
 ! Aerosol species...
@@ -2634,7 +2747,7 @@ subroutine print_chem_species_index( chem_opt )
   select case (chem_opt)
   case (RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RADM2SORG_KPP, RACMSORG_AQ, RACMSORG_AQCHEM_KPP, &
         RACM_ESRLSORG_AQCHEM_KPP, RACMSORG_KPP, RACM_ESRLSORG_KPP, CBMZSORG, CBMZSORG_AQ,RACMSORG,  &
-        CB05_SORG_AQ_KPP, CB05_SORG_VBS_AQ_KPP)
+        CB05_SORG_AQ_KPP, CB05_SORG_VBS_AQ_KPP, REDHC_SORG_KPP)
      print*,p_so4aj,"so4aj"
      print*,p_so4ai,"so4ai"
      print*,p_nh4aj,"nh4aj"

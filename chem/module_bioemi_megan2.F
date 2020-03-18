@@ -486,6 +486,9 @@ CONTAINS
        ! get p_of_megan2crimech(:), p_of_crimech(:), and crimech_per_megan(:)
        CALL get_megan2crimech_table
 
+    CASE ( REDHC_KPP, REDHC_SORG_KPP )
+       CALL get_megan2redhc_table
+
     CASE DEFAULT
        
        CALL wrf_error_fatal('Species conversion table for MEGAN v2.04 not available. ')
@@ -1621,6 +1624,47 @@ is_mozm_species : &
 
              END DO
             
+          CASE (REDHC_KPP, REDHC_SORG_KPP)
+        
+            DO icount = 1, n_megan2redhc
+
+                IF ( p_of_redhc(icount) .NE. non_react ) THEN
+
+                   ! Get index to chem array for the corresponding
+                   ! RACM-SOA-VBS-KPP
+                   ! species.  
+                   p_in_chem = p_of_redhc(icount)
+
+                   ! Check if the species is actually in the mechanism
+                   IF( p_in_chem >= param_first_scalar ) THEN
+
+                      ! Emission rate of mechanism species in mol km-2 hr-1
+                      gas_emis =  redhc_per_megan(icount) * &
+                                  E_megan2(p_of_megan2redhc(icount))
+
+                      ! Add emissions to diagnostic output variables.
+                      ! ebio_xxx (mol km-2 hr-1) were originally used by the 
+                      ! BEIS3.11 biogenic emissions module. 
+                      ! I have also borrowed variable e_bio (ppm m min-1).
+
+                      IF ( p_in_chem .EQ. p_iso ) THEN
+                         ebio_iso(i,j)        = ebio_iso(i,j)       + gas_emis
+                         e_bio(i,j,p_iso-1)   = e_bio(i,j,p_iso-1)  + gas_emis*convert2
+                      ELSE IF ( p_in_chem == p_c10h16 ) THEN
+                         ebio_c10h16(i,j) = ebio_c10h16(i,j) + gas_emis
+                         e_bio(i,j,p_c10h16-1)   = e_bio(i,j,p_c10h16-1)  + gas_emis*convert2
+                      END IF
+
+ 
+                      END IF
+                   END IF !( p_in_chem > param_first_scalar )
+
+                END IF !( p_of_redhc(icount) .NE. non_react )
+
+            END DO
+
+
+
           CASE (SAPRC99_KPP,SAPRC99_MOSAIC_4BIN_VBS2_KPP, &
                SAPRC99_MOSAIC_8BIN_VBS2_AQ_KPP,SAPRC99_MOSAIC_8BIN_VBS2_KPP)!BSINGH(12/03/2013): Added SAPRC 8 bin and non-aq on (04/07/2014) ! FIX FOR SAPRC99 AND SAPRC07
 

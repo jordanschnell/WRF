@@ -199,6 +199,25 @@ subroutine plumerise_driver (id,ktau,dtstep,                           &
              enddo
            endif
          endif
+       elseif ( config_flags%biomass_burn_opt == BIOMASSB_REDHC ) then
+           do j=jts,jte
+             do i=its,ite
+               ebu(i,kts,j,p_ebu_no)=ebu_in(i,1,j,p_ebu_in_no)
+               ebu(i,kts,j,p_ebu_co)=ebu_in(i,1,j,p_ebu_in_co)
+               ebu(i,kts,j,p_ebu_c2h4) = ebu_in(i,1,j,p_ebu_c2h4)
+               ebu(i,kts,j,p_ebu_ch2o) = ebu_in(i,1,j,p_ebu_in_ch2o)
+               ebu(i,kts,j,p_ebu_ch3cho) = ebu_in(i,1,j,p_ebu_in_ch3cho)
+               ebu(i,kts,j,p_ebu_so2) = ebu_in(i,1,j,p_ebu_in_so2)
+               ebu(i,kts,j,p_ebu_nh3) = ebu_in(i,1,j,p_ebu_in_nh3)
+               ebu(i,kts,j,p_ebu_toluene) = ebu_in(i,1,j,p_ebu_in_toluene)
+               ebu(i,kts,j,p_ebu_no2)=ebu_in(i,1,j,p_ebu_in_no2)
+               ebu(i,kts,j,p_ebu_c10h16) = ebu_in(i,1,j,p_ebu_in_c10h16)
+               ebu(i,kts,j,p_ebu_mgly) = ebu_in(i,1,j,p_ebu_in_mgly)
+               ebu(i,kts,j,p_ebu_isop) = ebu_in(i,1,j,p_ebu_in_isop)
+               ebu(i,kts,j,p_ebu_par) = ebu_in(i,1,j,p_ebu_in_par)
+               ebu(i,kts,j,p_ebu_ole) = ebu_in(i,1,j,p_ebu_in_ole)
+             enddo
+           enddo
        elseif ( config_flags%biomass_burn_opt == BIOMASSB_GHG ) then
          do j=jts,jte
             do i=its,ite
@@ -421,6 +440,39 @@ is_mozcart : &
                    ebu(i,k,j,p_ebu_dms)  = ebu(i,k,j,p_ebu_dms)*ratio
                  end do
               end if is_mozcart
+
+
+!is_redhc :    if ( (config_flags%chem_opt == REDHC_SORG_KPP ) .and. &
+!                   config_flags%biomass_burn_opt == BIOMASSB_REDHC ) then
+!                sum = 0.
+!                do k = kts,kte
+!                  sum = sum + ebu(i,k,j,p_ebu_co)
+!                end do
+!                if( sum > 0. ) then
+!                  ratio = ebu(i,kts,j,p_ebu_co)/sum
+!                else
+!                  ratio = 0.
+!                endif
+!                do k = kts,kte
+!                  ebu(i,k,j,p_ebu_no) = ebu(i,k,j,p_ebu_no)*ratio
+!                  ebu(i,k,j,p_ebu_co) = ebu(i,k,j,p_ebu_co)*ratio
+!                  ebu(i,k,j,p_ebu_c2h4) = ebu(i,k,j,p_ebu_c2h4)*ratio
+!                  ebu(i,k,j,p_ebu_ch2o) = ebu(i,k,j,p_ebu_ch2o)*ratio
+!                  ebu(i,k,j,p_ebu_ch3cho) = ebu(i,k,j,p_ebu_ch3cho)*ratio
+!                  ebu(i,k,j,p_ebu_so2) = ebu(i,k,j,p_ebu_so2)*ratio
+!                  ebu(i,k,j,p_ebu_toluene) = ebu(i,k,j,p_ebu_toluene)*ratio
+!                  ebu(i,k,j,p_ebu_nh3) = ebu(i,k,j,p_ebu_nh3)*ratio
+!                  ebu(i,k,j,p_ebu_no2) = ebu(i,k,j,p_ebu_no2)*ratio
+!                  ebu(i,k,j,p_ebu_c10h16) = ebu(i,k,j,p_ebu_c10h16)*ratio
+!                  ebu(i,k,j,p_ebu_mgly) = ebu(i,k,j,p_ebu_mgly)*ratio
+!                  ebu(i,k,j,p_ebu_isop) = ebu(i,k,j,p_ebu_isop)*ratio
+!                  ebu(i,k,j,p_ebu_ole) = ebu(i,k,j,p_ebu_ole)*ratio
+!                  ebu(i,k,j,p_ebu_par) = ebu(i,k,j,p_ebu_par)*ratio
+!                end do
+!                if( config_flags%chem_opt == REDHC_SORG_KPP )
+!                ! Add aerosols here?
+!                endif
+!              endif is_redhc
             end if has_total_emissions
 
           enddo

@@ -544,7 +544,7 @@ CONTAINS
                                  +.5*emis_vol(i,k,j,p_e_vash8)*conv
                enddo
       CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_KPP,RACMSORG_KPP,RACMSORG_AQ,RACM_ESRLSORG_KPP, &
-            RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP)
+            RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,REDHC_SORG_KPP)
 !       write(0,*)'do later'
                   do k=kts,kte
                     conv = float(ivolcano)*4.828e-4/rho_phy(i,k,j)*dtstep/(dz8w(i,k,j)*60.)
@@ -623,6 +623,7 @@ CONTAINS
            config_flags%biomass_burn_opt == BIOMASSB_T1_MOZCART  .OR. &
            config_flags%biomass_burn_opt == BIOMASSB_MOZ  .OR. &
            config_flags%biomass_burn_opt == BIOMASSB_GHG  .OR. &
+           config_flags%biomass_burn_opt == BIOMASSB_REDHC .OR. $
            config_flags%biomass_burn_opt == BIOMASSB ) then
         IF ( ktau==1 ) then
            do_plumerisefire = .true.
@@ -775,7 +776,8 @@ CONTAINS
 !!! ***********   FIRE AND CHEM ****************************************
 !
     fire_select:  SELECT CASE(config_flags%biomass_burn_opt)
-     CASE (BIOMASSB,BIOMASSB_MOZC,BIOMASSB_MOZ,BIOMASSB_T1_MOZCART,BIOMASSB_GHG)
+     CASE (BIOMASSB,BIOMASSB_MOZC,BIOMASSB_MOZ,BIOMASSB_T1_MOZCART,BIOMASSB_GHG, &
+           BIOMASSB_REDHC)
 !      if( do_plumerisefire )then
 !         CALL wrf_debug(15,'fire emissions: calling biomassb')
 !         write(0,*)ktau,stepfirepl
@@ -821,7 +823,8 @@ CONTAINS
             CASE (RADM2, RADM2_KPP, RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RADM2SORG_KPP, &
                   RACM_KPP, RACMPM_KPP, RACM_MIM_KPP, RACMSORG_AQ,RACMSORG_AQCHEM_KPP,        &
                   RACM_ESRLSORG_AQCHEM_KPP, RACMSORG_KPP,RACM_ESRLSORG_KPP, RACM_SOA_VBS_KPP, &
-                  RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, CBM4_KPP, NMHC9_KPP, GOCARTRACM_KPP,GOCARTRADM2)
+                  RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, CBM4_KPP, NMHC9_KPP,         & 
+                  GOCARTRACM_KPP,GOCARTRADM2)
             CASE DEFAULT 
                CALL wrf_error_fatal( &
                   "emissions_driver: beis3.1.4 biogenic emis. implemented for RADM2 & RACM only")
@@ -894,7 +897,8 @@ CONTAINS
           RACM_KPP, RACMPM_KPP, RACM_MIM_KPP, RACMSORG_AQ, RACMSORG_AQCHEM_KPP, RACM_ESRLSORG_AQCHEM_KPP, RACMSORG_KPP, &
           RACM_SOA_VBS_KPP, RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, RACM_ESRLSORG_KPP, MOZART_KPP, MOZCART_KPP,  &
           T1_MOZCART_KPP, MOZART_MOSAIC_4BIN_KPP, MOZART_MOSAIC_4BIN_AQ_KPP, &
-          CRIMECH_KPP, CRI_MOSAIC_8BIN_AQ_KPP, CRI_MOSAIC_4BIN_AQ_KPP )
+          CRIMECH_KPP, CRI_MOSAIC_8BIN_AQ_KPP, CRI_MOSAIC_4BIN_AQ_KPP, &
+          REDHC_KPP, REDHC_SORG_KPP)
        IF(config_flags%emiss_inpt_opt /= 3 ) then
        IF(config_flags%kemit .GT. kte-ksub) THEN
          k=config_flags%kemit
@@ -919,7 +923,6 @@ CONTAINS
             its,ite, jts,jte, kts,kte                                   )
 
        end if ! emiss_inpt_opt /= 3
-
 
 !For SAPRC99 need to define SAPRC99_addemiss_anthro and SAPRC99_addemiss_bio
 !so did not add saprcnov packages here
@@ -1460,8 +1463,9 @@ CONTAINS
     aer_addemiss_select: SELECT CASE(config_flags%chem_opt)
 
     CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RADM2SORG_KPP, &
-          RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RACMSORG_KPP,RACM_ESRLSORG_KPP,CBMZSORG,CBMZSORG_AQ, &
-          CB05_SORG_AQ_KPP)
+          RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP, &
+          RACMSORG_KPP,RACM_ESRLSORG_KPP,CBMZSORG,CBMZSORG_AQ, &
+          CB05_SORG_AQ_KPP, REDHC_SORG_KPP)
        call wrf_debug(15,'emissions_driver calling sorgam_addemiss')
        call sorgam_addemiss( id, dtstep, u10, v10, alt, dz8w, xland, chem,  &
             ebu,                                                        &

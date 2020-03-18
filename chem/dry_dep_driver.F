@@ -470,7 +470,8 @@ CONTAINS
                 RACM_ESRLSORG_KPP,RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP, &
                 RACM_SOA_VBS_HET_KPP, &
                 CBMZSORG,CBMZSORG_AQ, &
-                CB05_SORG_AQ_KPP,CB05_SORG_VBS_AQ_KPP)
+                CB05_SORG_AQ_KPP,CB05_SORG_VBS_AQ_KPP, &
+                REDHC_SORG_KPP)
              aer_mech_id = 1
           CASE (RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RACMSORG_KPP)
              aer_mech_id = 2
@@ -500,7 +501,10 @@ CONTAINS
        else if (config_flags%aer_drydep_opt <= 99) then
 
    adrydep_select: SELECT CASE(config_flags%chem_opt)
-     CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RADM2SORG_KPP,RACM_ESRLSORG_KPP,CBMZSORG,CBMZSORG_AQ)
+     CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RADM2SORG_KPP, & 
+           RACM_ESRLSORG_KPP, &
+           CBMZSORG,CBMZSORG_AQ, &
+           REDHC_SORG_KPP)
        CALL wrf_debug(15,'DOING DRY DEP VELOCITIES FOR AEROSOLS/RADM')
        call sorgam_depdriver (id,config_flags,ktau,dtstep,              &
                ust,t_phy,moist,p8w,t8w,rmol,znt,pbl,                    &
@@ -514,6 +518,8 @@ CONTAINS
                ims,ime, jms,jme, kms,kme,                               &
                its,ite, jts,jte, kts,kte                                )
      CASE (RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RACMSORG_KPP)
+       !! Why separate calls for RACM/RADM? both are MADE/SORGAM
+       !MADE/SORGAM
        CALL wrf_debug(15,'DOING DRY DEP VELOCITIES FOR AEROSOLS/RACM')
        call sorgam_depdriver (id,config_flags,ktau,dtstep,              &
                ust,t_phy,moist,p8w,t8w,rmol,znt,pbl,                    &
@@ -1373,7 +1379,8 @@ CONTAINS
    settling_select: SELECT CASE(config_flags%chem_opt)
 !!! TUCCELLA
    CASE (DUST,GOCART_SIMPLE,GOCARTRACM_KPP,MOZCART_KPP,T1_MOZCART_KPP,RADM2SORG,RADM2SORG_AQ, &
-         RADM2SORG_AQCHEM,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RACM_SOA_VBS_AQCHEM_KPP)
+         RADM2SORG_AQCHEM,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP,RACM_SOA_VBS_AQCHEM_KPP, &
+         REDHC_SORG_KPP)
        CALL wrf_debug(15,'call gocart settling routine')
          call gocart_settling_driver(dtstep,config_flags,t_phy,moist,  &
          chem,rho_phy,dz8w,p8w,p_phy,         &

@@ -390,7 +390,10 @@ SUBROUTINE setup_gasprofile_maps(chem_opt, numgas)
   case (MOZART_MOSAIC_4BIN_AQ_KPP)
      call wrf_debug("setup_profile_maps: nothing done for mozart_mosaic_4bin_aq_kpp")
 
- case (CO2_TRACER,GHG_TRACER)
+  case (REDHC_KPP, REDHC_SORG_KPP)
+     call wrf_debug("setup_profile_maps: nothing done for redhc, should there be?")
+!     call setup_gasprofile_map_redhc
+  case (CO2_TRACER,GHG_TRACER)
      call wrf_debug("setup_profile_maps: nothing done for the GHG options")
 
   case default
@@ -2413,7 +2416,6 @@ END SUBROUTINE bdy_chem_value_ghg
           SAPRC99_MOSAIC_8BIN_VBS2_AQ_KPP,SAPRC99_MOSAIC_8BIN_VBS2_KPP )!BSINGH(12/13/2013): Added SAPRC 8 bin AQ case and non-aq on 04/03/2014
         get_last_gas = p_ch4
 
-
      case (CBMZ,CBMZ_MOSAIC_DMS_4BIN,CBMZ_MOSAIC_DMS_8BIN,CBMZ_MOSAIC_DMS_4BIN_AQ,CBMZ_MOSAIC_DMS_8BIN_AQ)
         get_last_gas = p_mtf
 
@@ -2466,6 +2468,10 @@ END SUBROUTINE bdy_chem_value_ghg
         get_last_gas = 0
      case ( CBMZ_CAM_MAM3_NOAQ, CBMZ_CAM_MAM3_AQ, CBMZ_CAM_MAM7_NOAQ, CBMZ_CAM_MAM7_AQ )
         get_last_gas = p_soag
+     
+     case (REDHC_KPP, REDHC_SORG_KPP)
+        get_last_gas = p_nh3
+     
      case default
         call wrf_error_fatal("get_last_gas: could not decipher chem_opt value")
 
