@@ -3995,12 +3995,15 @@ package saprc99_mosaic_8bin_vbs2_kpp    chem_opt==204   -       chem:o3,h2o2,no,
 
 
 #!! REDHC_SORG_KPP taking place of NMHC99, MATCH-MPI Mainz !!! 
+# KPP mechanism from MATCH-MPI Mainz used for global chemistry
+package   nmhc9_kpp     chem_opt==200                   -             chem:o3,h2o2,ch4,op1,hcho,ch3oh,co,hno3,no3,n2o5,hno4,no,no2,isopr,mvk,iso2,isooh,mvko2,mvkooh,ison,aca,acol,hcooh,mpan,naca,pan,pa,paa,mglo,c2h6,eTooh,ald,c3h8,pRooh,acet,acooh,eTo2,pRo2,aco2,c3h6,c3h6ooh,c2h4,c4h10,buooh,mek,mekooh,mEcoco,c3h6o2,c4h9o2,meko2,onit,pRono2,ch3o2,acetol,acetp,aceto2,ch3cooh,c4h9ooh,mEoh,ho,ho2,mEo2,mEo2no2
+
 
 # KPP mechanism for reduced HC - gas only
-package   redhc_kpp chem_opt==200           -          chem:o3,o,o1d_cb4,n2o,no,no2,no3,hno3,hno4,n2o5,ch4,ch3o2,ch3ooh,hcho,co,h2,ho,ho2,h2o2,ald,c2o3,pan,par,ror,ole,c2h4,mgly,isopr,acetp,onit,xo2,xo2n,xpar,c10h16,tol,so2,h2so4,dms,nh3
+package   redhc_kpp chem_opt==250           -          chem:o3,o,o1d_cb4,n2o,no,no2,no3,hno3,hno4,n2o5,ch4,ch3o2,ch3ooh,hcho,co,h2,ho,ho2,h2o2,ald,c2o3,pan,par,ror,ole,c2h4,mgly,isopr,acetp,onit,xo2,xo2n,xpar,c10h16,tol,so2,h2so4,dms,nh3
 
 # KPP mechansim for reduced HC with MADE/SORGAM
-package   redhc_sorg_kpp chem_opt==201           -          chem:o3,o,o1d_cb4,n2o,no,no2,no3,hno3,hno4,n2o5,ch4,ch3o2,ch3ooh,hcho,co,h2,ho,ho2,h2o2,ald,c2o3,pan,par,ror,ole,c2h4,mgly,isopr,acetp,onit,xo2,xo2n,xpar,c10h16,tol,so2,h2so4,dms,nh3,so4aj,so4ai,nh4aj,nh4ai,no3aj,no3ai,naaj,naai,claj,clai,orgaro1j,orgaro1i,orgaro2j,orgaro2i,orgalk1j,orgalk1i,orgole1j,orgole1i,orgba1j,orgba1i,orgba2j,orgba2i,orgba3j,orgba3i,orgba4j,orgba4i,orgpaj,orgpai,ecj,eci,p25j,p25i,antha,seas,soila,nu0,ac0,corn
+package   redhc_sorg_kpp chem_opt==251           -          chem:o3,o,o1d_cb4,n2o,no,no2,no3,hno3,hno4,n2o5,ch4,ch3o2,ch3ooh,hcho,co,h2,ho,ho2,h2o2,ald,c2o3,pan,par,ror,ole,c2h4,mgly,isopr,acetp,onit,xo2,xo2n,xpar,c10h16,tol,so2,h2so4,dms,nh3,so4aj,so4ai,nh4aj,nh4ai,no3aj,no3ai,naaj,naai,claj,clai,orgaro1j,orgaro1i,orgaro2j,orgaro2i,orgalk1j,orgalk1i,orgole1j,orgole1i,orgba1j,orgba1i,orgba2j,orgba2i,orgba3j,orgba3i,orgba4j,orgba4i,orgpaj,orgpai,ecj,eci,p25j,p25i,antha,seas,soila,nu0,ac0,corn
 
 
 # GOCART Packages (no Ozone chemistry in this choice)
@@ -4101,10 +4104,11 @@ package   biomassb_mozc      biomass_burn_opt==2             -          state:me
 package   biomassb_moz       biomass_burn_opt==3             -          state:mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_no,ebu_no2,ebu_bigalk,ebu_bigene,ebu_c2h4,ebu_c2h5oh,ebu_c2h6,ebu_c3h6,ebu_c3h8,ebu_ch2o,ebu_ch3cho,ebu_ch3coch3,ebu_ch3oh,ebu_mek,ebu_so2,ebu_toluene,ebu_nh3,ebu_open,ebu_c10h16,ebu_mgly,ebu_ch3cooh,ebu_cres,ebu_glyald,ebu_gly,ebu_acetol,ebu_isop,ebu_macr,ebu_mvk;ebu_in:ebu_in_co,ebu_in_no,ebu_in_bigalk,ebu_in_bigene,ebu_in_c2h4,ebu_in_c2h5oh,ebu_in_c2h6,ebu_in_c3h6,ebu_in_c3h8,ebu_in_ch2o,ebu_in_ch3cho,ebu_in_ch3coch3,ebu_in_ch3oh,ebu_in_mek,ebu_in_so2,ebu_in_toluene,ebu_in_nh3,ebu_in_no2,ebu_in_open,ebu_in_c10h16,ebu_in_mgly,ebu_in_ch3cooh,ebu_in_cres,ebu_in_glyald,ebu_in_gly,ebu_in_acetol,ebu_in_isop,ebu_in_macr,ebu_in_mvk
 package   biomassb_t1_mozcart   biomass_burn_opt==4          -          state:mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_no,ebu_no2,ebu_bigalk,ebu_bigene,ebu_c2h4,ebu_c2h5oh,ebu_c2h6,ebu_c3h6,ebu_c3h8,ebu_ch2o,ebu_ch3cho,ebu_ch3coch3,ebu_ch3oh,ebu_mek,ebu_so2,ebu_toluene,ebu_nh3,ebu_oc,ebu_bc,ebu_pm25,ebu_pm10,ebu_mgly,ebu_ch3cooh,ebu_cres,ebu_glyald,ebu_acetol,ebu_isop,ebu_macr,ebu_mvk,ebu_apin,ebu_benzene,ebu_ch3cn,ebu_hcn,ebu_hcooh,ebu_c2h2,ebu_dms,ebu_hpald,ebu_xylenes;ebu_in:ebu_in_co,ebu_in_no,ebu_in_bigalk,ebu_in_bigene,ebu_in_c2h4,ebu_in_c2h5oh,ebu_in_c2h6,ebu_in_c3h6,ebu_in_c3h8,ebu_in_ch2o,ebu_in_ch3cho,ebu_in_ch3coch3,ebu_in_ch3oh,ebu_in_mek,ebu_in_so2,ebu_in_toluene,ebu_in_nh3,ebu_in_no2,ebu_in_mgly,ebu_in_ch3cooh,ebu_in_cres,ebu_in_glyald,ebu_in_acetol,ebu_in_isop,ebu_in_macr,ebu_in_mvk,ebu_in_pm25,ebu_in_pm10,ebu_in_oc,ebu_in_bc,ebu_in_apin,ebu_in_benzene,ebu_in_ch3cn,ebu_in_hcn,ebu_in_hcooh,ebu_in_c2h2,ebu_in_dms,ebu_in_hpald,ebu_in_xylenes
 
-# GHG biomass burning
-package   biomassb_ghg  biomass_burn_opt==5          -             state::mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_co2,ebu_ch4;ebu_in:ebu_in_co,ebu_in_co2,ebu_in_ch4
+package   biomassb_redhc     biomass_burn_opt==5             -          state:mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_no,ebu_c2h4,ebu_ch2o,ebu_ch3cho,ebu_so2,ebu_toluene,ebu_nh3,ebu_no2,ebu_c10h16,ebu_mgly,ebu_isop,ebu_par,ebu_ole;ebu_in:ebu_in_co,ebu_in_no,ebu_in_c2h4,ebu_in_ch2o,ebu_in_ch3cho,ebu_in_so2,ebu_in_toluene,ebu_in_nh3,ebu_in_no2,ebu_in_c10h16,ebu_in_mgly,ebu_in_isop,ebu_in_par,ebu_in_ole
 
-package   biomassb_redhc     biomass_burn_opt==6             -          state:mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_no,ebu_c2h4,ebu_ch2o,ebu_ch3cho,ebu_so2,ebu_toluene,ebu_nh3,ebu_no2,ebu_c10h16,ebu_mgly,ebu_isop,ebu_par,ebu_ole;ebu_in:ebu_in_co,ebu_in_no,ebu_in_c2h4,ebu_in_ch2o,ebu_in_ch3cho,ebu_in_so2,ebu_in_toluene,ebu_in_nh3,ebu_in_no2,ebu_in_c10h16,ebu_in_mgly,ebu_in_isop,ebu_in_par,ebu_in_ole
+# GHG biomass burning
+package   biomassb_ghg  biomass_burn_opt==6          -             state::mean_fct_agtf,mean_fct_agef,mean_fct_agsv,mean_fct_aggr,firesize_agtf,firesize_agef,firesize_agsv,firesize_aggr;ebu:ebu_co,ebu_co2,ebu_ch4;ebu_in:ebu_in_co,ebu_in_co2,ebu_in_ch4
+
 
 package   opt_out      opt_pars_out==1             -          ext_coef:extcof3,extcof55,extcof106,extcof3_5,extcof8_12;bscat_coef:bscof3,bscof55,bscof106;asym_par:asympar3,asympar55,asympar106
 

@@ -216,7 +216,7 @@
          ims,ime, jms,jme, kms,kme,                                        &
          its,ite, jts,jte, kts,kte                                         )
    CASE (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RADM2SORG_KPP,CBMZSORG,CBMZSORG_AQ, &
-          CB05_SORG_AQ_KPP,ACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP, &
+          CB05_SORG_AQ_KPP,RACMSORG_AQ,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP, &
           RACMSORG_KPP,RACM_ESRLSORG_KPP, REDHC_SORG_KPP) 
        CALL wrf_debug(15,'aerosols_driver calling sorgam_driver')
        do ii=its,ite

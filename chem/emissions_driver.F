@@ -623,7 +623,7 @@ CONTAINS
            config_flags%biomass_burn_opt == BIOMASSB_T1_MOZCART  .OR. &
            config_flags%biomass_burn_opt == BIOMASSB_MOZ  .OR. &
            config_flags%biomass_burn_opt == BIOMASSB_GHG  .OR. &
-           config_flags%biomass_burn_opt == BIOMASSB_REDHC .OR. $
+           config_flags%biomass_burn_opt == BIOMASSB_REDHC .OR. &
            config_flags%biomass_burn_opt == BIOMASSB ) then
         IF ( ktau==1 ) then
            do_plumerisefire = .true.
