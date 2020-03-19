@@ -1,6 +1,6 @@
 #include atoms_red
-#include ./redhc_sorg.spc
-#include ./redhc_sorg.eqn
+#include ./redhc.spc
+#include ./redhc.eqn
 
 
 

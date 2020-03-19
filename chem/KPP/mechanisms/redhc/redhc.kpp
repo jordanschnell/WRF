@@ -1,4 +1,4 @@
-#MODEL redhc_sorg
+#MODEL redhc
 #LANGUAGE Fortran90
 #DOUBLE ON
 #INTEGRATOR WRF_conform/rosenbrock

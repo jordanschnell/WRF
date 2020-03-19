@@ -1,4 +1,4 @@
-#EQUATIONS {redhc_sorg}
+#EQUATIONS {redhc}
 // photorates
  {001:J01} M{=O2}+hv=2 O  		: .20946_dp*j(Pj_o2)  ;
  {002:J02} O3+hv=O1D_CB4{+O2}  		: j(Pj_o31d) ;
