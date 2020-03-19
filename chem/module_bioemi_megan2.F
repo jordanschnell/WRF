@@ -1655,8 +1655,6 @@ is_mozm_species : &
                          e_bio(i,j,p_c10h16-1)   = e_bio(i,j,p_c10h16-1)  + gas_emis*convert2
                       END IF
 
- 
-                      END IF
                    END IF !( p_in_chem > param_first_scalar )
 
                 END IF !( p_of_redhc(icount) .NE. non_react )
