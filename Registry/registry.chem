@@ -117,10 +117,6 @@ state   real    e_ch3cn         i+jf    emis_ant        1       Z       i5      
 state   real    e_ch3cooh       i+jf    emis_ant        1       Z       i5      "E_CH3COOH" "CH3COOH emissions" "mol km^-2 hr^-1"
 state   real    e_hcn           i+jf    emis_ant        1       Z       i5      "E_HCN"     "HCN emissions" "mol km^-2 hr^-1"
 
-# Additional redhc emission variables...
-state    real  e_ole          i+jf     emis_ant     1         Z      i5h    "E_OLE"        "EMISSIONS OLE"               "mol km^-2 hr^-1"
-state    real  e_par          i+jf     emis_ant     1         Z      i5h    "E_PAR"        "EMISSIONS PAR"               "mol km^-2 hr^-1"
-
 # Additional crimech emission variables...
 state    real  e_c5h8         i+jf     emis_ant     1         Z      i5      "E_C5H8"             "EMISSIONS C5H8"              "mol km^-2 hr^-1"
 state    real  e_tm123b       i+jf     emis_ant     1         Z      i5      "E_TM123B"             "EMISSIONS TM123B"              "mol km^-2 hr^-1"
@@ -283,6 +279,7 @@ state    real  e_hcl          i+jf     emis_ant     1         Z      i5     "E_H
 state    real  e_aldx         i+jf     emis_ant     1         Z      i5      "E_ALDX"               "EMISSIONS ALDX"                "mol km^-2 hr^-1"
 state    real  e_par          i+jf     emis_ant     1         Z      i5      "E_PAR"                "EMISSIONS PAR"                 "mol km^-2 hr^-1"
 state    real  e_ole          i+jf     emis_ant     1         Z      i5      "E_OLE"                "EMISSIONS OLE"                 "mol km^-2 hr^-1"
+
 state    real  e_iole         i+jf     emis_ant     1         Z      i5      "E_IOLE"               "EMISSIONS IOLE"                "mol km^-2 hr^-1"
 state    real  e_form         i+jf     emis_ant     1         Z      i5      "E_FORM"               "EMISSIONS FORM"                "mol km^-2 hr^-1"
 state    real  e_etha         i+jf     emis_ant     1         Z      i5      "E_ETHA"               "EMISSIONS ETHA"                "mol km^-2 hr^-1"
@@ -4063,7 +4060,10 @@ package   ecrimech        emiss_opt==19                   -             emis_ant
 package   ecrimechtno     emiss_opt==20                  -             emis_ant:e_co,e_no,e_no2,e_so2,e_nh3,e_c2h6,e_c3h8,e_c2h4,e_c3h6,e_c5h8,e_tm123b,e_tm124b,e_tm135b,e_oethtol,e_methtol,e_pethtol,e_dime35eb,e_hcho,e_ch3cho,e_c2h5cho,e_ket,e_mek,e_ch3oh,e_c2h5oh,e_c2h2,e_benzene,e_nc4h10,e_toluene,e_oxyl,e_tbut2ene,e_ch3co2h,e_bc_1,e_ec_1_25,e_ec_25_10,e_oc_dom,e_oc_tra,e_oc_25_10,e_pm25,e_oin_25,e_oin_10
 
 # For reduced HC mechansim 
-package   redhc_sorg       emiss_opt==21                  -             emis_ant:e_co,e_no,e_no2,e_c2h4,e_ch2o,e_ch3cho,e_so2,e_toluene,e_nh3,e_isop,e_c10h16,e_ole,e_par,e_pm25i,e_pm25j,e_pm_10,e_eci,e_ecj,e_orgi,e_orgj,e_so4i,e_so4j,e_no3i,e_no3j,e_naaj,e_naai,e_orgi_a,e_orgj_a,e_orgi_bb,e_orgj_bb,e_hcl,e_cli,e_clj,e_ch3cl
+package   eredhc       emiss_opt==21                  -             emis_ant:e_co,e_no,e_no2,e_c2h4,e_ch2o,e_ch3cho,e_so2,e_toluene,e_nh3,e_isop,e_c10h16,e_ole,e_par
+# For reduced HC mechanism w/ MADE/SORGAM aerosols
+package   eredhc_sorg       emiss_opt==22                  -             emis_ant:e_co,e_no,e_no2,e_c2h4,e_ch2o,e_ch3cho,e_so2,e_toluene,e_nh3,e_isop,e_c10h16,e_ole,e_par,e_pm25i,e_pm25j,e_pm_10,e_eci,e_ecj,e_orgi,e_orgj,e_so4i,e_so4j,e_no3i,e_no3j,e_naaj,e_naai,e_orgi_a,e_orgj_a,e_orgi_bb,e_orgj_bb,e_hcl,e_cli,e_clj,e_ch3cl
+
 #
 package   vash    emiss_opt_vol==1                   -             emis_vol:e_vash1,e_vash2,e_vash3,e_vash4,e_vash5,e_vash6,e_vash7,e_vash8,e_vash9,e_vash10
 package   vashso2 emiss_opt_vol==2                   -             emis_vol:e_vash1,e_vash2,e_vash3,e_vash4,e_vash5,e_vash6,e_vash7,e_vash8,e_vash9,e_vash10,e_vso2
