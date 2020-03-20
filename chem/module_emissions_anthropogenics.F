@@ -204,6 +204,7 @@ is_mozart:if( is_moz_chm ) then
           elseif( config_flags%chem_opt == REDHC_KPP .or. &
                   config_flags%chem_opt == REDHC_SORG_KPP ) then
             do i=its,ite
+              write(*,*) 'Adding emissions in REDHC'
               chem(i,k,j,p_c2h4)   = chem(i,k,j,p_c2h4)   + emis_ant(i,k,j,p_e_c2h4)*conv_rho(i)
               chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + emis_ant(i,k,j,p_e_hcho)*conv_rho(i)
               chem(i,k,j,p_ald)    = chem(i,k,j,p_ald)    + emis_ant(i,k,j,p_e_ch3cho)*conv_rho(i)

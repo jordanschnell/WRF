@@ -1647,9 +1647,9 @@ is_mozm_species : &
                       ! BEIS3.11 biogenic emissions module. 
                       ! I have also borrowed variable e_bio (ppm m min-1).
 
-                      IF ( p_in_chem .EQ. p_iso ) THEN
-                         ebio_iso(i,j)        = ebio_iso(i,j)       + gas_emis
-                         e_bio(i,j,p_iso-1)   = e_bio(i,j,p_iso-1)  + gas_emis*convert2
+                      IF ( p_in_chem == p_isopr ) THEN
+                         ebio_iso(i,j) = ebio_iso(i,j) + gas_emis
+                         e_bio(i,j,p_isopr-1)   = e_bio(i,j,p_isopr-1)  + gas_emis*convert2
                       ELSE IF ( p_in_chem == p_c10h16 ) THEN
                          ebio_c10h16(i,j) = ebio_c10h16(i,j) + gas_emis
                          e_bio(i,j,p_c10h16-1)   = e_bio(i,j,p_c10h16-1)  + gas_emis*convert2
