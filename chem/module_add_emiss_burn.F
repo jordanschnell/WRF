@@ -220,11 +220,11 @@ CONTAINS
                 chem(i,k,j,p_no)     = chem(i,k,j,p_no)     + ebu(i,k,j,p_ebu_no)*conv_rho
                 chem(i,k,j,p_no2)    = chem(i,k,j,p_no2)    + ebu(i,k,j,p_ebu_no2)*conv_rho
                 chem(i,k,j,p_c2h4)   = chem(i,k,j,p_c2h4)   + ebu(i,k,j,p_ebu_c2h4)*conv_rho
-                chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + ebu(i,k,j,p_ebu_ch2o)*conv_rho
+                chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + ebu(i,k,j,p_ebu_hcho)*conv_rho
                 chem(i,k,j,p_ald)    = chem(i,k,j,p_ald)    + ebu(i,k,j,p_ebu_ch3cho)*conv_rho
                 chem(i,k,j,p_so2)    = chem(i,k,j,p_so2)    + ebu(i,k,j,p_ebu_so2)*conv_rho
                 chem(i,k,j,p_isopr)  = chem(i,k,j,p_isopr)  + ebu(i,k,j,p_ebu_isop)*conv_rho
-                chem(i,k,j,p_tol)    = chem(i,k,j,p_tol)    + ebu(i,k,j,p_ebu_toluene)*conv_rho
+                chem(i,k,j,p_tol)    = chem(i,k,j,p_tol)    + ebu(i,k,j,p_ebu_tol)*conv_rho
                 chem(i,k,j,p_nh3)    = chem(i,k,j,p_nh3)    + ebu(i,k,j,p_ebu_nh3)*conv_rho
                 chem(i,k,j,p_par)    = chem(i,k,j,p_par)    + ebu(i,k,j,p_ebu_par)*conv_rho
                 chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + ebu(i,k,j,p_ebu_ole)*conv_rho

@@ -205,9 +205,9 @@ is_mozart:if( is_moz_chm ) then
                   config_flags%chem_opt == REDHC_SORG_KPP ) then
             do i=its,ite
               chem(i,k,j,p_c2h4)   = chem(i,k,j,p_c2h4)   + emis_ant(i,k,j,p_e_c2h4)*conv_rho(i)
-              chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + emis_ant(i,k,j,p_e_ch2o)*conv_rho(i)
+              chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + emis_ant(i,k,j,p_e_hcho)*conv_rho(i)
               chem(i,k,j,p_ald)    = chem(i,k,j,p_ald)    + emis_ant(i,k,j,p_e_ch3cho)*conv_rho(i)
-              chem(i,k,j,p_tol)    = chem(i,k,j,p_tol)    + emis_ant(i,k,j,p_e_toluene)*conv_rho(i)
+              chem(i,k,j,p_tol)    = chem(i,k,j,p_tol)    + emis_ant(i,k,j,p_e_tol)*conv_rho(i)
               chem(i,k,j,p_isopr)  = chem(i,k,j,p_isopr)  + emis_ant(i,k,j,p_e_isop)*conv_rho(i)
               chem(i,k,j,p_c10h16) = chem(i,k,j,p_c10h16) + emis_ant(i,k,j,p_e_c10h16)*conv_rho(i)
               chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + emis_ant(i,k,j,p_e_ole)*conv_rho(i)

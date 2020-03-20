@@ -7,10 +7,8 @@
 ! name in WRF     name in KPP
 HO                OH
 HNO4              HO2NO2
-HCHO              CH2O
 ACETP             ROOH
 MGLY              CH3COCHO
 ALD               CH3CHO
 ISOPR             ISOP
-TOL               TOLUENE
 XPAR              RXPAR
