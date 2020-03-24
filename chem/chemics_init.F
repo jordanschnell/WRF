@@ -288,9 +288,7 @@ call wrf_message("**************************************************************
                 config_flags%chem_opt == T1_MOZCART_KPP .or. &
                 config_flags%chem_opt == MOZART_KPP .or. &
                 config_flags%chem_opt == MOZART_MOSAIC_4BIN_KPP .or. &
-                config_flags%chem_opt == MOZART_MOSAIC_4BIN_AQ_KPP ! .or. &
-!               config_flags%chem_opt == REDHC_KPP .or. &
-!               config_flags%chem_opt == REDHC_SORG_KPP
+                config_flags%chem_opt == MOZART_MOSAIC_4BIN_AQ_KPP
 
    if( is_moz_chm ) then
        write(message_txt,*) 'chem_init: calling mozcart_lbc_init for domain ',id
@@ -307,7 +305,8 @@ call wrf_message("**************************************************************
          config_flags%chem_opt /= mozart_mosaic_4bin_aq_kpp .and. &
          config_flags%chem_opt /= mozcart_kpp .and. &
          config_flags%chem_opt /= t1_mozcart_kpp .and. &
-         config_flags%chem_opt /= redhc_kpp ) THEN
+         config_flags%chem_opt /= redhc_kpp .and. & 
+         config_flags%chem_opt /= redhc_sorg_kpp) THEN
        write(message_txt,'(''--- ERROR: chem_opt '',i3,'' not setup for TUV photolysis at this time'')') &
               config_flags%chem_opt
        CALL wrf_error_fatal( trim(message_txt) )
