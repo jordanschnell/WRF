@@ -888,7 +888,21 @@ tile_lon_loop : &
            (config_flags%chem_opt == REDHC_SORG_KPP)  ) then
          do j=jts,jte
             do i=its,ite
-               ddvel(i,j,p_xo2) = 0.
+               ddvel(i,j,p_o)         = 0.  
+               ddvel(i,j,p_o1d_cb4)   = 0.
+               ddvel(i,j,p_n2o)       = 0.
+               ddvel(i,j,p_ch3o2)     = 0.
+               ddvel(i,j,p_h2)        = 0. 
+               ddvel(i,j,p_ho)        = 0.
+               ddvel(i,j,p_ho2)       = 0.
+               ddvel(i,j,p_c2o3)      = 0.
+               ddvel(i,j,p_ror)       = 0.
+               ddvel(i,j,p_c2h4)      = 0. 
+               ddvel(i,j,p_xo2)       = 0. 
+               ddvel(i,j,p_xo2n)      = 0.
+               ddvel(i,j,p_xpar)      = 0.
+               ddvel(i,j,p_c10h16)    = 0.
+               ddvel(i,j,p_dms)       = 0. 
             end do
          end do
       end if
@@ -2053,12 +2067,12 @@ is_cbm4_kpp : &
                   hstar(p_cvbsoa2) = 7.00E+08
                   hstar(p_cvbsoa3) = 9.33E+07
                   hstar(p_cvbsoa4) = 1.24E+07
-                endif
+                endif 
               end if
               
-     else if( config_flags%chem_opt == crimech_kpp .or. & ! chm_is_mozart
-          config_flags%chem_opt == cri_mosaic_8bin_aq_kpp .or. &
-          config_flags%chem_opt == cri_mosaic_4bin_aq_kpp )   then
+           else if( config_flags%chem_opt == crimech_kpp .or. & ! chm_is_mozart
+                    config_flags%chem_opt == cri_mosaic_8bin_aq_kpp .or. &
+                    config_flags%chem_opt == cri_mosaic_4bin_aq_kpp )   then
               hstar(p_o3)      = 1.15E-2
               hstar(p_co)      = 1.e-3
               hstar(p_h2o2)    = 8.33E+4
@@ -2222,6 +2236,7 @@ is_cbm4_kpp : &
         hstar(p_ora2) = 9.63E+5
         hstar(p_nh3)  = 1.04E+4
         hstar(p_n2o5) = 1.00E+10
+! ^ included in all .not. cb4
         if(p_ol2 >= param_first_scalar) hstar(p_ol2) = 4.67E-3
         if(p_par >= param_first_scalar) hstar(p_par) = 1.13E-3  !wig, 1-May-2007: for CBMZ
         if(p_ch4 >= param_first_scalar) then 
@@ -2269,6 +2284,37 @@ is_cbm4_kpp : &
            DVJ(p_UDD )=0.092
            DVJ(p_HKET)=0.116
         endif
+!-------------------------------------------
+!         ... for redhc
+!------------------------------------------------
+        if (config_flags%chem_opt == redhc_kpp .or. &
+                   config_flags%chem_opt == redhc_sorg_kpp ) then
+        CALL wrf_debug(150, 'Setting up hstar, dhr, F0, Dvj for REDHC')           
+! HSTAR
+               hstar(p_ch3ooh) = 311.
+               hstar(p_ole)    = 4.76E-3
+               hstar(p_isopr)  = 4.76E-3
+               hstar(p_acetp)  = 336.
+               hstar(p_h2so4)  = 2.600E+06
+! DHR
+               dhr(p_ch3ooh)   = 5241.
+               dhr(p_ole)      = 0.0
+               dhr(p_isopr)    = 0.0
+               dhr(p_acetp)    = 5995.
+               dhr(p_h2so4)    = 0.0
+! f0
+               f0(p_ch3ooh)    = 0.1
+               f0(p_ole)       = 0.0
+               f0(p_isopr)     = 0.0
+               f0(p_acetp)     = 0.1
+               f0(p_h2so4)     = 0.0
+! dvj 
+               dvj(p_ch3ooh)   = 0.144
+               dvj(p_ole)      = 0.154
+               dvj(p_isopr)    = 0.121
+               dvj(p_acetp)    = 0.1054
+               dvj(p_h2so4)    = 0.0
+        end if
 !--------------------------------------------------
 !     -DH/R (for temperature correction)
 !     [-DH/R]=K
