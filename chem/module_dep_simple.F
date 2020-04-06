@@ -890,9 +890,7 @@ tile_lon_loop : &
             do i=its,ite
                ddvel(i,j,p_o)         = 0.  
                ddvel(i,j,p_o1d_cb4)   = 0.
-               ddvel(i,j,p_n2o)       = 0.
                ddvel(i,j,p_ch3o2)     = 0.
-               ddvel(i,j,p_h2)        = 0. 
                ddvel(i,j,p_ho)        = 0.
                ddvel(i,j,p_ho2)       = 0.
                ddvel(i,j,p_c2o3)      = 0.
@@ -902,7 +900,6 @@ tile_lon_loop : &
                ddvel(i,j,p_xo2n)      = 0.
                ddvel(i,j,p_xpar)      = 0.
                ddvel(i,j,p_c10h16)    = 0.
-               ddvel(i,j,p_dms)       = 0. 
             end do
          end do
       end if
@@ -2295,25 +2292,25 @@ is_cbm4_kpp : &
                hstar(p_ole)    = 4.76E-3
                hstar(p_isopr)  = 4.76E-3
                hstar(p_acetp)  = 336.
-               hstar(p_h2so4)  = 2.600E+06
+               hstar(p_sulf)  = 2.600E+06
 ! DHR
                dhr(p_ch3ooh)   = 5241.
                dhr(p_ole)      = 0.0
                dhr(p_isopr)    = 0.0
                dhr(p_acetp)    = 5995.
-               dhr(p_h2so4)    = 0.0
+               dhr(p_sulf)    = 0.0
 ! f0
                f0(p_ch3ooh)    = 0.1
                f0(p_ole)       = 0.0
                f0(p_isopr)     = 0.0
                f0(p_acetp)     = 0.1
-               f0(p_h2so4)     = 0.0
+               f0(p_sulf)     = 0.0
 ! dvj 
                dvj(p_ch3ooh)   = 0.144
                dvj(p_ole)      = 0.154
                dvj(p_isopr)    = 0.121
                dvj(p_acetp)    = 0.1054
-               dvj(p_h2so4)    = 0.0
+               dvj(p_sulf)    = 0.0
         end if
 !--------------------------------------------------
 !     -DH/R (for temperature correction)

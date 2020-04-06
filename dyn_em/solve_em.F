@@ -370,7 +370,6 @@ SUBROUTINE solve_em ( grid , config_flags  &
 #endif
 
    rk_order = config_flags%rk_ord
-
    IF ( grid%time_step_sound == 0 ) THEN
 ! This function will give 4 for 6*dx and 6 for 10*dx and returns even numbers only
      spacing = min(grid%dx, grid%dy)
@@ -389,7 +388,6 @@ SUBROUTINE solve_em ( grid , config_flags  &
    ELSE
      num_sound_steps = grid%time_step_sound
    ENDIF
-
    dts = grid%dt/float(num_sound_steps)
 
    IF (config_flags%use_adaptive_time_step) THEN
@@ -410,7 +408,6 @@ SUBROUTINE solve_em ( grid , config_flags  &
    ENDIF
 
 ! setting bdy tendencies to zero for DFI if constant_bc = true
-
      !$OMP PARALLEL DO   &
      !$OMP PRIVATE ( ij )
      DO ij = 1 , grid%num_tiles
@@ -418,7 +415,6 @@ SUBROUTINE solve_em ( grid , config_flags  &
 !      IF( config_flags%specified .AND. grid%dfi_opt .NE. DFI_NODFI   &
 !          .AND. config_flags%constant_bc .AND. (grid%dfi_stage .EQ. DFI_BCK .OR. grid%dfi_stage .EQ. DFI_FWD) ) THEN
        IF( config_flags%specified .AND. config_flags%constant_bc ) THEN
-
        CALL zero_bdytend (grid%u_btxs,grid%u_btxe,grid%u_btys,grid%u_btye,     &
                           grid%v_btxs,grid%v_btxe,grid%v_btys,grid%v_btye,     &
                           grid%ph_btxs,grid%ph_btxe,grid%ph_btys,grid%ph_btye, &
@@ -444,7 +440,6 @@ SUBROUTINE solve_em ( grid , config_flags  &
        !  value of Qv.  The moist_old variable does not exist until after the advection
        !  towards the end of the RK loop.  For the first time in the RK loop, we need
        !  a reasonable value for moist_old.
-
        CALL initialize_moist_old ( moist_old(:,:,:,P_Qv),              &
                           moist(:,:,:,P_Qv) ,                          &
                           ids,ide, jds,jde, kds,kde,                   &
@@ -502,7 +497,6 @@ SUBROUTINE solve_em ( grid , config_flags  &
 !</pre>
 !</DESCRIPTION>
 !**********************************************************************
-
    Runge_Kutta_loop:  DO rk_step = 1, rk_order
 
    !  Set the step size and number of small timesteps for
@@ -4661,7 +4655,6 @@ BENCH_END(bc_2d_tim)
 #endif
 
 !  Max values of CFL for adaptive time step scheme
-
    DEALLOCATE(max_vert_cfl_tmp)
    DEALLOCATE(max_horiz_cfl_tmp)
 

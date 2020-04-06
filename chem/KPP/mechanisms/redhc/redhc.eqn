@@ -89,7 +89,7 @@
  { 88:070 } XO2+HO2=ROOH                   : ARR2(3.5e-13_dp, -1000._dp, TEMP);
  { 89:071 } XO2N+HO2=ROOH                  : usr_xo2n_ho2( TEMP ) ;
  { 90:072 } RXPAR+PAR=M                    : 8.e-11_dp ;
- { 91:073 } SO2+OH=H2SO4                   : usr23( TEMP, C_M ) ;
+ { 91:073 } SO2+OH=SULF                    : usr23( TEMP, C_M ) ;
  { 92:074 } DMS+OH=SO2                     : ARR2(9.6e-12_dp, 234._dp, TEMP) ;
  { 93:075 } DMS+OH=.5 SO2+.5 HO2           : usr24( temp, c_m ) ;
  { 94:076 } DMS+NO3=SO2+HNO3               : ARR2(1.9e-13_dp, -520._dp, TEMP) ;

@@ -1595,29 +1595,31 @@ CASE(GOCARTRACM_KPP,RACM_KPP,RACMPM_KPP,RACMSORG_KPP,RACM_MIM_KPP,RACM_ESRLSORG_
        !BSINGH - ENDS
 
    CASE (REDHC_KPP)
-        if(config_flags%chem_in_opt == 0 )then
+        !if(config_flags%chem_in_opt == 0 )then
           do j=jts,jte
              do k=kts,kte
                 do i=its,ite
                    chem(i,k,j,p_co2)=400.
                    chem(i,k,j,p_ch4)=1.7
-                   !chem...
                 enddo
              enddo
           enddo
-        endif
+        !endif
    CASE (REDHC_SORG_KPP)
-        if(config_flags%chem_in_opt == 0 )then
+        
+       !if(config_flags%chem_in_opt == 0 )then
           do j=jts,jte
              do k=kts,kte
                 do i=its,ite
                    chem(i,k,j,p_co2)=400.
                    chem(i,k,j,p_ch4)=1.7
-                   !chem...
+                   ! Add in chem species not handled
+                   ! by module_input_chem_data NALROM species
+                   ! chem(i,k,j,p_c10h16) = chem(i,k,j,p_ole)
                 enddo
              enddo
           enddo
-        endif
+        !endif
 
    END SELECT kpp_select
    endif
@@ -2661,25 +2663,22 @@ subroutine print_chem_species_index( chem_opt )
      print*,p_nh3,"nh3"
   case (REDHC_KPP,REDHC_SORG_KPP)
      print*,p_o3,"o3"
-    !print*,p_o,"o"
-    !print*,p_o1d_cb4,"o1d_cb4
-     print*,p_n2o,"n2o"
+     print*,p_o,"o"
+     print*,p_o1d_cb4,"o1d_cb4"
      print*,p_no,"no"
      print*,p_no2,"no2"
      print*,p_no3,"no3"
      print*,p_hno3,"hno3"
      print*,p_hno4,"hno4"
      print*,p_n2o5,"n2o5"
-     print*,p_ch4,"ch4"
      print*,p_ch3o2,"ch3o2"
      print*,p_ch3ooh,"ch3ooh"
      print*,p_hcho,"hcho"
      print*,p_co,"co"
-     print*,p_h2,"h2"
      print*,p_ho,"ho"
      print*,p_ho2,"ho2"
      print*,p_h2o2,"h2o2"
-     print*,ald,"ald"
+     print*,p_ald,"ald"
      print*,p_c2o3,"c2o3"
      print*,p_pan,"pan"
      print*,p_par,"par"
@@ -2696,8 +2695,7 @@ subroutine print_chem_species_index( chem_opt )
      print*,p_c10h16,"c10h16"
      print*,p_tol,"tol"
      print*,p_so2,"so2"
-     print*,p_h2so4,"h2so4"
-     print*,p_dms,"dms"
+     print*,p_sulf,"sulf"
      print*,p_nh3,"nh3"
   end select
 !

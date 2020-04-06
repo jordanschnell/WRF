@@ -1642,7 +1642,7 @@ END SUBROUTINE bdy_chem_value_ghg
             config_flags%chem_opt == RACMSORG_AQCHEM_KPP .or.      & 
             config_flags%chem_opt == RACM_ESRLSORG_AQCHEM_KPP .or. &
             config_flags%chem_opt == RACM_SOA_VBS_AQCHEM_KPP  .or. &
-            config_flags%chem_opt == RACM_SOA_VBS_HET_KPP ) then
+            config_flags%chem_opt == RACM_SOA_VBS_HET_KPP) then 
           i_bdy_method = 9
         end if
         if (config_flags%chem_opt == RACMPM_KPP ) then

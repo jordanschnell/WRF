@@ -1778,7 +1778,7 @@ endif
                 ims,ime, jms,jme, kms,kme,                                  &
                 its,ite, jts,jte, kts,kte-1                                 )
         case (RADM2SORG,RADM2SORG_AQ,RADM2SORG_AQCHEM,RADM2SORG_KPP,RACMSORG_AQ,RACMSORG_AQCHEM_KPP, &
-              RACM_ESRLSORG_AQCHEM_KPP,RACMSORG_KPP)
+              RACM_ESRLSORG_AQCHEM_KPP,RACMSORG_KPP,REDHC_SORG_KPP)
            call sum_pm_sorgam (                                             &
                 grid%alt, chem, grid%h2oaj, grid%h2oai,                                    &
                 grid%pm2_5_dry, grid%pm2_5_water, grid%pm2_5_dry_ec, grid%pm10,                 &
