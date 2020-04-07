@@ -391,8 +391,42 @@ SUBROUTINE setup_gasprofile_maps(chem_opt, numgas)
      call wrf_debug("setup_profile_maps: nothing done for mozart_mosaic_4bin_aq_kpp")
 
   case (REDHC_KPP, REDHC_SORG_KPP)
-     call wrf_debug("setup_profile_maps: nothing done for redhc, should there be?")
-!     call setup_gasprofile_map_redhc
+          print*,p_o3,"o3"
+     print*,p_o,"o"
+     print*,p_o1d_cb4,"o1d_cb4"
+     print*,p_no,"no"
+     print*,p_no2,"no2"
+     print*,p_no3,"no3"
+     print*,p_hno3,"hno3"
+     print*,p_hno4,"hno4"
+     print*,p_n2o5,"n2o5"
+     print*,p_ch3o2,"ch3o2"
+     print*,p_ch3ooh,"ch3ooh"
+     print*,p_hcho,"hcho"
+     print*,p_co,"co"
+     print*,p_ho,"ho"
+     print*,p_ho2,"ho2"
+     print*,p_h2o2,"h2o2"
+     print*,p_ald,"ald"
+     print*,p_c2o3,"c2o3"
+     print*,p_pan,"pan"
+     print*,p_par,"par"
+     print*,p_ror,"ror"
+     print*,p_ole,"ole"
+     print*,p_c2h4,"c2h4"
+     print*,p_mgly,"mgly"
+     print*,p_isopr,"isopr"
+     print*,p_acetp,"acetp"
+     print*,p_onit,"onit"
+     print*,p_xo2,"xo2"
+     print*,p_xo2n,"xo2n"
+     print*,p_xpar,"xpar"
+     print*,p_c10h16,"c10h16"
+     print*,p_tol,"tol"
+     print*,p_so2,"so2"
+     print*,p_sulf,"sulf"
+     print*,p_nh3,"nh3"
+     call setup_gasprofile_map_redhc(numgas)
   case (CO2_TRACER,GHG_TRACER)
      call wrf_debug("setup_profile_maps: nothing done for the GHG options")
 
@@ -564,6 +598,43 @@ SUBROUTINE setup_gasprofile_map_cbm4(numgas)
   ggnam(numgas+1:numgas+7)   = (/'HC3 ','HC5 ','HC8 ','KET ','OLI ','OLT ','ORA2'/)
   
 END SUBROUTINE setup_gasprofile_map_cbm4
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SUBROUTINE setup_gasprofile_map_redhc(numgas)
+
+  integer, intent(in) :: numgas
+  integer, parameter  :: listlast = 23
+ 
+  iref(:)             = 7
+  iref(1:listlast)    = (/ 1     , 2     , 2       , 30       , 3     , &
+                           31    , 30    , 5       , 8        , 6     , &
+                           28    , 29    , 4       , 9        , 10    , &
+                           14    , 23    , 7       , 23       , 23    , &
+                           12    , 19    , 6/)
+
+  fracref(:)          = 1.
+  fracref(1:listlast) = (/ 1.    , 0.25  , 0.75    , 0.9      , 1.    , &
+                           1.    , 0.1   , 1.      , 1.       , 1.    , &
+                           1.    , 1.    , 1.      , 1.       , 1.    , &
+                           1.    , 1.    , 1.      , 1.       , 1.    , &
+                           1.    , 1.    , 6.25E-5/) 
+ 
+  ggnam(:)            = 'JUNK'
+  ggnam(1:listlast)   = (/ 'O3'  , 'NO'  , 'NO2'   , 'NO3'    , 'HNO3', &
+                           'HNO4', 'N2O5', 'CH3OOH', 'HCHO'   , 'CO'  , &
+                           'HO'  , 'HO2' , 'H2O2'  , 'ALD'    , 'PAN' , &
+                           'C2H4', 'MGLY', 'ISOPR' , 'ONIT'  , 'TOLUENE', & 
+                           'SO2' , 'SULF', 'NH3' /)
+
+  if( numgas < listlast ) &
+       call wrf_error_fatal("numgas < listlast in setup_gasprofile_map_redhc")
+  iref(numgas+1:numgas+5)    = (/    26,     13,    11,    15,   15/)
+  fracref(numgas+1:numgas+5) = (/    1.,     1.,    1.,    .5,   1./)
+  ggnam(numgas+1:numgas+5)   = (/'HC3 ', 'HC5 ','HC8 ','OLI ','OLT'/)
+
+END SUBROUTINE setup_gasprofile_map_redhc
+
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   SUBROUTINE vinterp_chem(nx1, nx2, ny1, ny2, nz1, nz_in, nz_out, nch, z_in, z_out, &
@@ -895,6 +966,24 @@ SUBROUTINE input_chem_profile (si_grid)
                      +1.0*fracref(numgas+7)*stor(i,k,j,iref(numgas+7)) &
                     )*1.E6
             chem(i,k,j,p_par) =  0.4*chem(i,k,j,p_ald2) + hc358  + olit
+         end do
+         end do
+         end do
+
+      CASE (REDHC_KPP, REDHC_SORG_KPP)
+         do j = ny1,ny2
+         do k = nz1,nz2
+         do i = nx1,nx2
+            !Construct the sum of the profiles for hc3, hc5, & hc8
+            hc358 = ( 2.9*fracref(numgas+1)*stor(i,k,j,iref(numgas+1)) &
+                     +4.8*fracref(numgas+2)*stor(i,k,j,iref(numgas+2)) &
+                     +7.9*fracref(numgas+3)*stor(i,k,j,iref(numgas+3)) &
+                    )*1.E6
+            olit = (  2.8*fracref(numgas+5)*stor(i,k,j,iref(numgas+4)) &
+                     +1.8*fracref(numgas+6)*stor(i,k,j,iref(numgas+5)) &
+                   )*1.E6
+            chem(i,k,j,p_par) = hc358
+            chem(i,k,j,p_ole) = olit
          end do
          end do
          end do
@@ -1686,6 +1775,13 @@ END SUBROUTINE bdy_chem_value_ghg
           if (ic .le. numgas) then
           i_bdy_method = 17
           end if
+      else if (config_flags%chem_opt == REDHC_KPP .or. &
+               config_flags%chem_Opt == REDHC_SORG_KPP ) then     
+               if ((ic .ge. p_so4aj) .and. (ic .le. p_corn)) then
+                   i_bdy_method = 2
+               else
+                   i_bdy_method = 1
+               endif
       else if (config_flags%chem_opt == DUST) then
           i_bdy_method = 7
       else if (config_flags%chem_opt == CHEM_VASH) then
@@ -1710,7 +1806,6 @@ END SUBROUTINE bdy_chem_value_ghg
       end if
       if (have_bcs_chem) i_bdy_method =6
       if (ic .lt. param_first_scalar) i_bdy_method = 0
-
 !----------------------------------------------------------------------
 !      if (i_bdy_method .eq. 1) then
 !          print 90010, '_bdy_radm2  for ic=', ic, i_bdy_method
@@ -2470,7 +2565,7 @@ END SUBROUTINE bdy_chem_value_ghg
         get_last_gas = p_soag
      
      case (REDHC_KPP, REDHC_SORG_KPP)
-        get_last_gas = p_nh3
+        get_last_gas = p_acetp
      
      case default
         call wrf_error_fatal("get_last_gas: could not decipher chem_opt value")
