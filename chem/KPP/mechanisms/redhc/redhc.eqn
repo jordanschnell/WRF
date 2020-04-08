@@ -1,22 +1,21 @@
 #EQUATIONS {redhc}
 // photorates
- {001:J01} M{=O2}+hv=2 O  		: .20946_dp*j(Pj_o2)  ;
- {002:J02} O3+hv=O1D_CB4{+O2}  		: j(Pj_o31d) ;
- {003:J03} O3+hv=O{+O2}  		: j(Pj_o33p) ;
- {005:J05} NO2+hv=O+NO  		: j(Pj_no2)  ;
- {006:J06} N2O5+hv=NO2+NO3	        : j(Pj_n2o5) ;
- {007:J07} HNO3+hv=OH+NO2 		: j(Pj_hno3) ;
- {008:J08} NO3+hv=.89 NO2+ .11 NO + .89 O3: j(Pj_no3o) ; 
- {009:J09} HO2NO2+hv=0.66 HO2+0.66 NO2+0.33 OH+0.33 NO3 : j(Pj_hno4) ;
- {010:J10} CH3OOH+hv=CH2O+HO2+OH        : j(Pj_ch3o2h) ;
- {011:J11} CH2O+hv=2 HO2+CO 		: j(Pj_ch2or) ;
- {012:J12} CH2O+hv=CO{+H2} 		: j(Pj_ch2om) ;
- {013:J13} H2O2+hv=OH+OH 		: j(Pj_h2o2) ;
- {014:J14} CH3CHO+hv=CH2O+XO2+CO+2 HO2  : j(Pj_ch3cho) ;
- {015:J15} CH3COCHO+hv=C2O3+CO+HO2      : j(Pj_ch3cocho) ;
- {016:J16} PAN+hv=C2O3+NO2              : j(Pj_pan) ;
- {017:J17} ROOH+hv=OH                   : j(Pj_ch3o2h) ;
- {018:J18} ONIT+hv=HO2+NO2              : j(Pj_ch3o2h) ;
+ {001:J01} O3+hv=O1D_CB4{+O2}  		: j(Pj_o31d) ;
+ {002:J02} O3+hv=O{+O2}  		: j(Pj_o33p) ;
+ {003:J03} NO2+hv=O+NO  		: j(Pj_no2)  ;
+ {004:J04} N2O5+hv=NO2+NO3	        : j(Pj_n2o5) ;
+ {005:J05} HNO3+hv=OH+NO2 		: j(Pj_hno3) ;
+ {006:J06} NO3+hv=.89 NO2+ .11 NO + .89 O3: j(Pj_no3o) ; 
+ {007:J07} HO2NO2+hv=0.66 HO2+0.66 NO2+0.33 OH+0.33 NO3 : j(Pj_hno4) ;
+ {008:J08} CH3OOH+hv=CH2O+HO2+OH        : j(Pj_ch3o2h) ;
+ {009:J09} CH2O+hv=2 HO2+CO 		: j(Pj_ch2or) ;
+ {010:J10} CH2O+hv=CO{+H2} 		: j(Pj_ch2om) ;
+ {011:J11} H2O2+hv=OH+OH 		: j(Pj_h2o2) ;
+ {012:J12} CH3CHO+hv=CH2O+XO2+CO+2 HO2  : j(Pj_ch3cho) ;
+ {013:J13} CH3COCHO+hv=C2O3+CO+HO2      : j(Pj_ch3cocho) ;
+ {014:J14} PAN+hv=C2O3+NO2              : j(Pj_pan) ;
+ {015:J15} ROOH+hv=OH                   : j(Pj_ch3o2h) ;
+ {016:J16} ONIT+hv=HO2+NO2              : j(Pj_ch3o2h) ;
 // gas phase reactions
  { 19:001 } O+M{=O2}=O3                    : .20946_dp*(C_M *6.00e-34_dp*(TEMP/300._dp)**(-2.3_dp));
  { 20:002 } O+O3=M{=O2+O2}                 : ARR2(8.0e-12_dp, 2060.0_dp, TEMP);
@@ -83,9 +82,8 @@
  { 81:063 } XO2N+HO2=ROOH                  : usr_xo2n_ho2( TEMP ) ;
  { 82:064 } RXPAR+PAR=M                    : 8.e-11_dp ;
  { 83:065 } SO2+OH=SULF                   : usr23( TEMP, C_M ) ;
- { 84:066 } NH3+OH=M                       : ARR2(1.7e-12_dp, 710._dp, TEMP) ;
- { 85:067 } HO2=.5 H2O2                    : usr26( rh, temp ) ;
- { 86:068 } C10H16+O3=6 PAR+1.44 CH3CHO+.64 CH2O+.25 HO2+.29 XO2+.4 OH+.9 RXPAR : 1.e-16_dp ;
- { 87:069 } C10H16+OH=6 PAR+CH2O+CH3CHO+XO2+HO2+RXPAR+C2O3 : 6.e-11_dp ;
- { 88:070 } C10H16+NO3=6 PAR+C2O3+HNO3+.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 4.e-12_dp ;
- { 89:071 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ; ;
+ { 84:066 } HO2=.5 H2O2                    : usr26( rh, temp ) ;
+ { 85:067 } C10H16+O3=6 PAR+1.44 CH3CHO+.64 CH2O+.25 HO2+.29 XO2+.4 OH+.9 RXPAR : 1.e-16_dp ;
+ { 86:068 } C10H16+OH=6 PAR+CH2O+CH3CHO+XO2+HO2+RXPAR+C2O3 : 6.e-11_dp ;
+ { 87:069 } C10H16+NO3=6 PAR+C2O3+HNO3+.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 4.e-12_dp ;
+ { 88:070 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ; ;

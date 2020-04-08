@@ -33,7 +33,6 @@
  TOLUENE =IGNORE ;
  SO2 =IGNORE ;
  SULF =IGNORE ;
- NH3 =IGNORE ;
 #DEFFIX
  H2O = IGNORE ;   {water}
  M  = IGNORE ;
