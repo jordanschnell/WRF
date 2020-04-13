@@ -569,28 +569,28 @@ END SUBROUTINE setup_gasprofile_map_cbm4
 SUBROUTINE setup_gasprofile_map_redhc(numgas)
 
   integer, intent(in) :: numgas
-  integer, parameter  :: listlast = 23
+  integer, parameter  :: listlast = 24
  
   iref(:)             = 7
   iref(1:listlast)    = (/ 1     , 2     , 2       , 30       , 3     , &
                            31    , 30    , 5       , 8        , 6     , &
                            28    , 29    , 4       , 9        , 10    , &
                            14    , 23    , 7       , 23       , 23    , &
-                           12    , 19    , 6/)
+                           12    , 19    , 6       , 23/)
 
   fracref(:)          = 1.
   fracref(1:listlast) = (/ 1.    , 0.25  , 0.75    , 0.9      , 1.    , &
                            1.    , 0.1   , 1.      , 1.       , 1.    , &
                            1.    , 1.    , 1.      , 1.       , 1.    , &
                            1.    , 1.    , 1.      , 1.       , 1.    , &
-                           1.    , 1.    , 6.25E-5/) 
+                           1.    , 1.    , 6.25E-5 , 1./) 
  
   ggnam(:)            = 'JUNK'
   ggnam(1:listlast)   = (/ 'O3'  , 'NO'  , 'NO2'   , 'NO3'    , 'HNO3', &
                            'HNO4', 'N2O5', 'CH3OOH', 'HCHO'   , 'CO'  , &
                            'HO'  , 'HO2' , 'H2O2'  , 'ALD'    , 'PAN' , &
                            'C2H4', 'MGLY', 'ISOPR' , 'ONIT'  , 'TOLUENE', & 
-                           'SO2' , 'SULF', 'NH3' /)
+                           'SO2' , 'SULF', 'NH3'   , 'HONO' /)
 
   if( numgas < listlast ) &
        call wrf_error_fatal("numgas < listlast in setup_gasprofile_map_redhc")

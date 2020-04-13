@@ -16,6 +16,7 @@
  {014:J14} PAN+hv=C2O3+NO2              : j(Pj_pan) ;
  {015:J15} ROOH+hv=OH                   : j(Pj_ch3o2h) ;
  {016:J16} ONIT+hv=HO2+NO2              : j(Pj_ch3o2h) ;
+ {017:J17} HONO+hv=OH+NO                : j(Pj_hno2) ;
 // gas phase reactions
  { 19:001 } O+M{=O2}=O3                    : .20946_dp*(C_M *6.00e-34_dp*(TEMP/300._dp)**(-2.3_dp));
  { 20:002 } O+O3=M{=O2+O2}                 : ARR2(8.0e-12_dp, 2060.0_dp, TEMP);
@@ -86,4 +87,9 @@
  { 85:067 } C10H16+O3=6 PAR+1.44 CH3CHO+.64 CH2O+.25 HO2+.29 XO2+.4 OH+.9 RXPAR : 1.e-16_dp ;
  { 86:068 } C10H16+OH=6 PAR+CH2O+CH3CHO+XO2+HO2+RXPAR+C2O3 : 6.e-11_dp ;
  { 87:069 } C10H16+NO3=6 PAR+C2O3+HNO3+.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 4.e-12_dp ;
- { 88:070 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ; ;
+ { 88:070 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ;
+ { 89:071 } NO+NO2+H2O=2 HONO                     :  4.4D-40 ;
+ { 90:072 } OH+NO=HONO                            :  ARR2(4.5D-13, 806.0_dp,TEMP) ;
+ { 91:073 } OH+HONO=NO2                           :  6.6D-12 ;
+ { 92:074 } 2 HONO=NO+NO2                         :  1.0D-20 ;
+
