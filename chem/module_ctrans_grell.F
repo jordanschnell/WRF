@@ -1690,7 +1690,8 @@ END subroutine cup_env_clev_tr
            chemopt .EQ. RACM_SOA_VBS_KPP .OR. chemopt .EQ. RADM2SORG_AQCHEM .OR. chemopt .EQ. RACMSORG_AQCHEM_KPP .OR. &
            chemopt .EQ. CB05_SORG_VBS_AQ_KPP .OR.                                           &
            chemopt .EQ. RACM_SOA_VBS_HET_KPP .OR.   &
-           chemopt .EQ. RACM_ESRLSORG_AQCHEM_KPP .OR. chemopt .EQ. RACM_SOA_VBS_AQCHEM_KPP) &
+           chemopt .EQ. RACM_ESRLSORG_AQCHEM_KPP .OR. chemopt .EQ. RACM_SOA_VBS_AQCHEM_KPP  .OR. &
+           chemopt .EQ. REDHC_KPP .OR. chemopt .EQ. REDHC_SORG_KPP ) &
            .and. (conv_tr_aqchem == 1)) then
         
         !

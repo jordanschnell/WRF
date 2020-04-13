@@ -902,7 +902,12 @@ tile_lon_loop : &
                ddvel(i,j,p_c10h16)    = 0.
             end do
          end do
+         do j=1,numgas
+                  print*,ddvel(1,1,j),"ddvel"
+         enddo
+
       end if
+
 
 END SUBROUTINE wesely_driver
 
@@ -2311,6 +2316,8 @@ is_cbm4_kpp : &
                dvj(p_isopr)    = 0.121
                dvj(p_acetp)    = 0.1054
                dvj(p_sulf)    = 0.0
+
+
         end if
 !--------------------------------------------------
 !     -DH/R (for temperature correction)
@@ -4228,6 +4235,13 @@ seasonal_pft_allocated : &
         deallocate( input_wes_seasonal )
         endif seasonal_pft_allocated
       endif is_mozart
+         do l=1,numgas
+                  print*,l,' index'
+                  print*,hstar(l),"hstar"
+                  print*,dhr(l),"dhr"
+                  print*,f0(l),"f0"
+                  print*,dvj(l),"dvj"
+         enddo
 #endif
       END SUBROUTINE dep_init
 
