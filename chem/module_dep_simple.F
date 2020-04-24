@@ -260,7 +260,8 @@ tile_lon_loop : &
             if ( (config_flags%chem_opt == RADM2           ) .or.   &
                  (config_flags%chem_opt == RADM2SORG       ) .or.   &
                  (config_flags%chem_opt == RADM2SORG_AQ    ) .or.   &
-                 (config_flags%chem_opt == RADM2SORG_AQCHEM) ) then
+                 (config_flags%chem_opt == RADM2SORG_AQCHEM) .or.   &
+                 (config_flags%chem_opt == REDHC_SORG_KPP) ) then
                      ddvel(i,j,p_hcl)         = ddvel(i,j,p_hno3)
             end if
          end do tile_lon_loop
@@ -902,9 +903,6 @@ tile_lon_loop : &
                ddvel(i,j,p_c10h16)    = 0.
             end do
          end do
-         do j=1,numgas
-                  print*,ddvel(1,1,j),"ddvel"
-         enddo
 
       end if
 

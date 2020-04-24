@@ -34,7 +34,7 @@
  { 33:015 } O3+NO=NO2{+O2}                 : ARR2(3.0e-12_dp, 1500.0_dp, TEMP);
  { 34:016 } O+NO2=NO{+O2}                  : ARR2(5.6e-12_dp, -180.0_dp, TEMP);
  { 35:017 } O3+NO2=NO3{+O2}                : ARR2(1.2e-13_dp, 2450.0_dp, TEMP);
- { 36:018 } NO3+HO2=OH+NO2                 : ARR2(2.3e-12_dp, -170.0_dp, TEMP);
+ { 36:018 } NO3+HO2=OH+NO2                 : ARR2(4.0e-12_dp, -170.0_dp, TEMP);
  { 37:019 } NO3+NO2{+M}=N2O5{+M}           : TROE( 2.e-30_dp , 4.4_dp , 1.4e-12_dp , .7_dp , TEMP, C_M) ;
  { 38:020 } N2O5{+M}=NO2+NO3{+M}           : TROEE(3.333e26_dp,10900._dp, 2.2e-30_dp , 4.4_dp , 1.4e-12_dp , .7_dp , TEMP, C_M ) ;
  { 39:021 } OH+NO2{+M}=HNO3{+M}            : TROE( 2.e-30_dp , 3._dp , 2.5e-11_dp , 0._dp , TEMP, C_M) ;
@@ -43,9 +43,6 @@
  { 42:024 } HO2+NO2{+M}=HO2NO2{+M}         : TROE( 1.8e-31_dp , 3.2_dp , 4.7e-12_dp , 1.4_dp , TEMP, C_M) ;
  { 43:025 } OH+HO2NO2=NO2+H2O{+O2}         : ARR2(1.3e-12_dp, -380._dp, TEMP);
  { 44:026 } HO2NO2{+M}=HO2+NO2{+M}         : TROEE( 4.76e26_dp,10900._dp, 1.8e-31_dp , 3.2_dp , 4.7e-12_dp , 1.4_dp , TEMP, C_M ) ;
- { 45:027 } N2O5+M=2.00 HNO3{+M}           : usr16( rh, temp ) ;
- { 46:028 } NO3=HNO3                       : usr17(rh, temp) ;
- { 47:029 } NO2=0.5 OH+0.5 NO+0.5 HNO3     : usr17a(rh, temp) ;
  { 48:030 } CH3O2+NO=CH2O+NO2+HO2          : ARR2(2.8e-12_dp, -300._dp, TEMP) ;
  { 49:031 } CH3O2+CH3O2=CH2O+CH2O+HO2+HO2  : ARR2(5.e-13_dp, 424._dp, TEMP) ;
  { 50:032 } CH3O2+CH3O2=CH2O               : ARR2(1.9e-14_dp, -706._dp, TEMP) ;
@@ -82,8 +79,8 @@
  { 81:063 } XO2N+HO2=ROOH                  : usr_xo2n_ho2( TEMP ) ;
  { 82:064 } RXPAR+PAR=M                    : 8.e-11_dp ;
  { 83:065 } SO2+OH=SULF                   : usr23( TEMP, C_M ) ;
- { 84:066 } HO2=.5 H2O2                    : usr26( rh, temp ) ;
  { 85:067 } C10H16+O3=6 PAR+1.44 CH3CHO+.64 CH2O+.25 HO2+.29 XO2+.4 OH+.9 RXPAR : 1.e-16_dp ;
  { 86:068 } C10H16+OH=6 PAR+CH2O+CH3CHO+XO2+HO2+RXPAR+C2O3 : 6.e-11_dp ;
  { 87:069 } C10H16+NO3=6 PAR+C2O3+HNO3+.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 4.e-12_dp ;
- { 88:070 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ; ;
+ { 88:070 } NH3+OH=M                       : ARR2(1.7e-12_dp, 710._dp, TEMP) ;
+ { 89:071 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ; ;

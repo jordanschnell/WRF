@@ -280,7 +280,8 @@
       chm_is_mozart = config_flags%chem_opt == MOZART_KPP .or. &
                       config_flags%chem_opt == MOZCART_KPP .or. &
                       config_flags%chem_opt == T1_MOZCART_KPP .or. &
-                      config_flags%chem_opt == MOZART_MOSAIC_4BIN_KPP
+                      config_flags%chem_opt == MOZART_MOSAIC_4BIN_KPP .or. &
+                      config_flags%chem_opt == MOZART_MOSAIC_4BIN_AQ_KPP
 !----------------------------------------------------
 !     set o3,o2 column densities at model top
 !----------------------------------------------------
@@ -298,7 +299,8 @@
          CASE (RADM2SORG,RADM2SORG_KPP,RACMSORG_KPP,RADM2SORG_AQCHEM, &
                RACM_ESRLSORG_KPP,RACMSORG_AQ,RACMSORG_AQCHEM_KPP,     &
                RACM_ESRLSORG_AQCHEM_KPP,CBMZSORG,CBMZSORG_AQ,         &
-               CB05_SORG_AQ_KPP,CB05_SORG_VBS_AQ_KPP)
+               CB05_SORG_AQ_KPP,CB05_SORG_VBS_AQ_KPP,                 &
+               REDHC_SORG_KPP)
              isorg=1
              CALL wrf_debug(15,'SORGAM aerosols initialization ')
          CASE (MOZART_MOSAIC_4BIN_KPP, MOZART_MOSAIC_4BIN_AQ_KPP)
