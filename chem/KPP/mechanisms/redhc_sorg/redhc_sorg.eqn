@@ -7,7 +7,6 @@
  {005:J05} HNO3+hv=OH+NO2 		: j(Pj_hno3) ;
  {006:J06} NO3+hv=.89 NO2+ .11 NO + .89 O3: j(Pj_no3o) ; 
  {007:J07} HO2NO2+hv=0.66 HO2+0.66 NO2+0.33 OH+0.33 NO3 : j(Pj_hno4) ;
- {008:J08} CH3OOH+hv=CH2O+HO2+OH        : j(Pj_ch3o2h) ;
  {009:J09} CH2O+hv=2 HO2+CO 		: j(Pj_ch2or) ;
  {010:J10} CH2O+hv=CO{+H2} 		: j(Pj_ch2om) ;
  {011:J11} H2O2+hv=OH+OH 		: j(Pj_h2o2) ;
@@ -43,14 +42,10 @@
  { 42:024 } HO2+NO2{+M}=HO2NO2{+M}         : TROE( 1.8e-31_dp , 3.2_dp , 4.7e-12_dp , 1.4_dp , TEMP, C_M) ;
  { 43:025 } OH+HO2NO2=NO2+H2O{+O2}         : ARR2(1.3e-12_dp, -380._dp, TEMP);
  { 44:026 } HO2NO2{+M}=HO2+NO2{+M}         : TROEE( 4.76e26_dp,10900._dp, 1.8e-31_dp , 3.2_dp , 4.7e-12_dp , 1.4_dp , TEMP, C_M ) ;
- { 48:030 } CH3O2+NO=CH2O+NO2+HO2          : ARR2(2.8e-12_dp, -300._dp, TEMP) ;
- { 49:031 } CH3O2+CH3O2=CH2O+CH2O+HO2+HO2  : ARR2(5.e-13_dp, 424._dp, TEMP) ;
- { 50:032 } CH3O2+CH3O2=CH2O               : ARR2(1.9e-14_dp, -706._dp, TEMP) ;
- { 51:033 } CH3O2+HO2=CH3OOH{+O2}          : ARR2(4.1e-13_dp, -750._dp, TEMP) ;
- { 52:034 } CH3OOH+OH=0.7 CH3O2+0.3 OH+0.3 CH2O+H2O : ARR2(3.8e-12_dp, -200._dp, TEMP) ;
  { 53:035 } CH2O+NO3=CO+HO2+HNO3           : ARR2( 6.e-13_dp, 2058._dp, TEMP) ;
  { 54:036 } CH2O+OH=CO+HO2+H2O             : 9.e-12_dp ;
  { 55:037 } CO+OH=HO2{+CO2}                : usr8(temp, c_m) ;
+ { 53:042 } OH=CH2O+XO2+HO2                : ARR2(1.1D+2, -1710.0_dp,TEMP) ;
  { 56:038 } CH3CHO+OH=HO2                  : ARR2( 7.e-12_dp, -250._dp, TEMP) ;
  { 57:039 } CH3CHO+OH=.5 HO2+.5 C2O3       : ARR2( 7.e-12_dp, -250._dp, TEMP) ;
  { 58:040 } CH3CHO+NO3=HNO3+C2O3           : 2.5e-15_dp ;
