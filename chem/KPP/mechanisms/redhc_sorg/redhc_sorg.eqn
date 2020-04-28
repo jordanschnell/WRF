@@ -45,7 +45,7 @@
  { 53:035 } CH2O+NO3=CO+HO2+HNO3           : ARR2( 6.e-13_dp, 2058._dp, TEMP) ;
  { 54:036 } CH2O+OH=CO+HO2+H2O             : 9.e-12_dp ;
  { 55:037 } CO+OH=HO2{+CO2}                : usr8(temp, c_m) ;
- { 53:042 } OH=CH2O+XO2+HO2                : ARR2(1.1D+2, -1710.0_dp,TEMP) ;
+ { 53:042 } OH=CH2O+XO2+HO2                : ARR2(1.1D+2, 1710.0_dp,TEMP) ;
  { 56:038 } CH3CHO+OH=HO2                  : ARR2( 7.e-12_dp, -250._dp, TEMP) ;
  { 57:039 } CH3CHO+OH=.5 HO2+.5 C2O3       : ARR2( 7.e-12_dp, -250._dp, TEMP) ;
  { 58:040 } CH3CHO+NO3=HNO3+C2O3           : 2.5e-15_dp ;
