@@ -594,9 +594,9 @@ SUBROUTINE setup_gasprofile_map_redhc(numgas)
 
   if( numgas < listlast ) &
        call wrf_error_fatal("numgas < listlast in setup_gasprofile_map_redhc")
-  iref(numgas+1:numgas+5)    = (/    26,     13,    11,    15,   15/)
-  fracref(numgas+1:numgas+5) = (/    1.,     1.,    1.,    .5,   1./)
-  ggnam(numgas+1:numgas+5)   = (/'HC3 ', 'HC5 ','HC8 ','OLI ','OLT'/)
+  iref(numgas+1:numgas+7)    = (/   26,     13,    11,  17,   15,     15,   6/)
+  fracref(numgas+1:numgas+7) = (/   1.,     1.,    1.,   1.,   .5,   1., 7.5E-4/)
+  ggnam(numgas+1:numgas+7)   = (/'HC3 ','HC5 ','HC8 ','KET ','OLI ','OLT','ORA2'/)
 
 END SUBROUTINE setup_gasprofile_map_redhc
 
@@ -939,6 +939,7 @@ SUBROUTINE input_chem_profile (si_grid)
          do j = ny1,ny2
          do k = nz1,nz2
          do i = nx1,nx2
+!           /'HC3 ','HC5 ','HC8 ','KET ','OLI ','OLT','ORA2'/)
             !Construct the sum of the profiles for hc3, hc5, & hc8
             hc358 = ( 2.9*fracref(numgas+1)*stor(i,k,j,iref(numgas+1)) &
                      +4.8*fracref(numgas+2)*stor(i,k,j,iref(numgas+2)) &
@@ -947,7 +948,9 @@ SUBROUTINE input_chem_profile (si_grid)
             olit = (  2.8*fracref(numgas+5)*stor(i,k,j,iref(numgas+4)) &
                      +1.8*fracref(numgas+6)*stor(i,k,j,iref(numgas+5)) &
                    )*1.E6
-            chem(i,k,j,p_par) = hc358
+            chem(i,k,j,p_par) = 0.4*chem(i,k,j,p_ald) + hc358 &
+                              + 0.9*fracref(numgas+4)*stor(i,k,j,iref(numgas+4)) &
+                              + 1.0*fracref(numgas+7)*stor(i,k,j,iref(numgas+7))
             chem(i,k,j,p_ole) = olit
          end do
          end do
