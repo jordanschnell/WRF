@@ -31,7 +31,7 @@
  { 31:013 } OH+OH{+M}=H2O2{+M}             : TROE( 6.90e-31_dp , 1.0_dp , 2.60e-11_dp , 0.0_dp , TEMP, C_M) ;
  { 32:014 } NO+HO2=NO2+OH                  : ARR2(3.5e-12_dp, -250.0_dp, TEMP) ;
  { 33:015 } O3+NO=NO2{+O2}                 : ARR2(3.0e-12_dp, 1500.0_dp, TEMP);
- { 34:016 } O+NO2=NO{+O2}                  : ARR2(5.6e-12_dp, -180.0_dp, TEMP);
+ { 34:999 } O+NO2=NO{+O2}                  : ARR2(5.6e-12_dp, -180.0_dp, TEMP);
  { 35:017 } O3+NO2=NO3{+O2}                : ARR2(1.2e-13_dp, 2450.0_dp, TEMP);
  { 36:018 } NO3+HO2=OH+NO2                 : ARR2(4.0e-12_dp, -170.0_dp, TEMP);
  { 37:019 } NO3+NO2{+M}=N2O5{+M}           : TROE( 2.e-30_dp , 4.4_dp , 1.4e-12_dp , .7_dp , TEMP, C_M) ;
@@ -60,7 +60,7 @@
  { 68:042 } OLE+O3=.44 CH3CHO+.64 CH2O+.37 CO+.25 HO2+.29 XO2+.4 OH+.9 RXPAR : ARR2( 4.33e-15_dp, 1800._dp, TEMP) ;
  { 69:043 } OLE+NO3=.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 7.7e-15_dp ;
  { 70:044 } C2H4+O3=CH2O+.26 HO2+.43 CO+.12 OH : ARR2( 9.1e-15_dp, 2850._dp, TEMP) ;
- { 70:045 } C2H4+OH=XO2+ 1.56 HCHO + HO2 + .22 CH3CHO  : JPL_TROE(1.0D-28, -0.8_dp, 8.8D-12, 0.0_dp, TEMP, C_M) ;
+ { 70:045 } C2H4+OH=XO2+ 1.56 CH2O + HO2 + .22 CH3CHO  : TROEMS(1.0D-28, -0.8_dp, 8.8D-12, 0.0_dp, TEMP, C_M) ;
  { 71:046 } CH3COCHO+OH=XO2+C2O3           : 1.7e-11_dp ;
  { 72:047 } ISOP+OH=.85 XO2+.61 CH2O+.85 HO2+.03 CH3COCHO+.58 OLE+.15 XO2N+.63 PAR : ARR2(2.54e-11_dp, -410._dp, TEMP) ;
  { 73:048 } ISOP+O3=.9 CH2O+.55 OLE+.18 XO2+.36 CO+.15 C2O3+.03 CH3COCHO+.63 PAR+.3 HO2+.28 OH : ARR2(1.23e-14_dp, 2013._dp, TEMP) ;

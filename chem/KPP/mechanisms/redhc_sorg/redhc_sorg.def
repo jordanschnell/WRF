@@ -7,6 +7,28 @@
 
 #INLINE F90_RATES
 
+
+REAL(KIND=dp) FUNCTION TROEMS(k0_300K,n,kinf_300K,m,TEMP,C_M)
+
+    INTRINSIC LOG10
+
+    REAL(KIND=dp), INTENT(IN) :: TEMP      ! TEMPerature [K]
+    REAL(KIND=dp), INTENT(IN) :: C_M      ! air concentration [molecules/cm3]
+    REAL(KIND=dp), INTENT(IN) :: k0_300K   ! low pressure limit at 300 K
+    REAL(KIND=dp), INTENT(IN) :: n         ! exponent for low pressure limit
+    REAL(KIND=dp), INTENT(IN) :: kinf_300K ! high pressure limit at 300 K
+    REAL(KIND=dp), INTENT(IN) :: m         ! exponent for high pressure limit
+    REAL(KIND=dp)             :: zt_help, k0_T, kinf_T, k_ratio
+
+    zt_help = TEMP/300._dp
+    k0_T    = k0_300K   * zt_help**(n) * C_M ! k_0   at current T
+    kinf_T  = kinf_300K * zt_help**(m)        ! k_inf at current T
+    k_ratio = k0_T/kinf_T
+    TROEMS   = k0_T/(1._dp+k_ratio)*0.6_dp**(1._dp/(1._dp+LOG10(k_ratio)**2))
+
+END FUNCTION TROEMS
+
+
 REAL(kind=dp) FUNCTION JPL_TROE( k0_300K, n, kinf_300K, m, base, temp, cair )
 
 !------------------------------------------------------------
