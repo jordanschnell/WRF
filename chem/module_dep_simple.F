@@ -892,15 +892,15 @@ tile_lon_loop : &
                ddvel(i,j,p_o)         = 0.  
                ddvel(i,j,p_o1d_cb4)   = 0.
                ddvel(i,j,p_ch3o2)     = 0.
-               ddvel(i,j,p_ho)        = 0.
-               ddvel(i,j,p_ho2)       = 0.
+!               ddvel(i,j,p_ho)        = 0.
+!               ddvel(i,j,p_ho2)       = 0.
                ddvel(i,j,p_c2o3)      = 0.
                ddvel(i,j,p_ror)       = 0.
-               ddvel(i,j,p_c2h4)      = 0. 
+               ddvel(i,j,p_c2h4)      = 0.
                ddvel(i,j,p_xo2)       = 0. 
                ddvel(i,j,p_xo2n)      = 0.
                ddvel(i,j,p_xpar)      = 0.
-               ddvel(i,j,p_c10h16)    = 0.
+               ddvel(i,j,p_c10h16)    = ddvel(i,j,p_ole)
             end do
          end do
 
