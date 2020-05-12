@@ -210,7 +210,7 @@ CONTAINS
         enddo
         enddo
         enddo
-      CASE (REDHC_KPP,REDHC_SORG_KPP)
+      CASE (REDHC_KPP,REDHC_SORG_KPP,REDHC_MADE_SOA_VBS_KPP)
         if( biomass_burn_opt == BIOMASSB_REDHC ) then
           do j=jts,jte
             do k=kts,kte

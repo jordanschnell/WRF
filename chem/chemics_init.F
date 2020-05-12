@@ -262,6 +262,8 @@ call wrf_message("**************************************************************
         CALL wrf_debug(15,'calling REDHC_KPP chemistry from chem_driver')
      CASE (REDHC_SORG_KPP)
         CALL wrf_debug(15,'calling REDHC_SORG_KPP chemistry from chem_driver')
+     CASE (REDHC_MADE_SOA_VBS_KPP)
+        CALL wrf_debug(15,'calling REDHC_MADE_SOA_VBS_KPP chemistry from chem_driver')
    END SELECT chem_select
 
    if ( config_flags%dust_opt == 1 ) then
@@ -306,7 +308,8 @@ call wrf_message("**************************************************************
          config_flags%chem_opt /= mozcart_kpp .and. &
          config_flags%chem_opt /= t1_mozcart_kpp .and. &
          config_flags%chem_opt /= redhc_kpp .and. & 
-         config_flags%chem_opt /= redhc_sorg_kpp) THEN
+         config_flags%chem_opt /= redhc_sorg_kpp .and. &
+         config_flags%chem_opt /= redhc_made_soa_vbs_kpp ) THEN
        write(message_txt,'(''--- ERROR: chem_opt '',i3,'' not setup for TUV photolysis at this time'')') &
               config_flags%chem_opt
        CALL wrf_error_fatal( trim(message_txt) )
@@ -1605,7 +1608,7 @@ CASE(GOCARTRACM_KPP,RACM_KPP,RACMPM_KPP,RACMSORG_KPP,RACM_MIM_KPP,RACM_ESRLSORG_
              enddo
           enddo
         !endif
-   CASE (REDHC_SORG_KPP)
+   CASE (REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
         
        !if(config_flags%chem_in_opt == 0 )then
           do j=jts,jte
@@ -1874,7 +1877,7 @@ ENDIF ghg_block
         endif
         endif
         chem(its:ite,kts:min(kte,kde-1),jts:jte,:)=max(chem(its:ite,kts:min(kte,kde-1),jts:jte,:),epsilc)
-    CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP)
+    CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP,REDHC_MADE_SOA_VBS_KPP)
        CALL wrf_debug(15,'call MADE/SOA_VBS aerosols initialization')
 
        call aerosols_soa_vbs_init(chem,convfac,z_at_w,                &
@@ -2661,7 +2664,7 @@ subroutine print_chem_species_index( chem_opt )
      print*,p_ch4,"ch4"
   case (CB05_SORG_AQ_KPP, CB05_SORG_VBS_AQ_KPP)
      print*,p_nh3,"nh3"
-  case (REDHC_KPP,REDHC_SORG_KPP)
+  case (REDHC_KPP,REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
      print*,p_o3,"o3"
      print*,p_o,"o"
      print*,p_o1d_cb4,"o1d_cb4"
@@ -3440,7 +3443,7 @@ subroutine print_chem_species_index( chem_opt )
      print*,p_nh4_c7,"nh4_c7"
      print*,p_num_c7,"num_c7"
 
-  case (RACM_SOA_VBS_KPP,RACM_SOA_VBS_HET_KPP)
+  case (RACM_SOA_VBS_KPP,RACM_SOA_VBS_HET_KPP, REDHC_MADE_SOA_VBS_KPP)
      print*,p_so4aj,"so4aj"
      print*,p_so4ai,"so4ai"
      print*,p_nh4aj,"nh4aj"

@@ -390,7 +390,7 @@ SUBROUTINE setup_gasprofile_maps(chem_opt, numgas)
   case (MOZART_MOSAIC_4BIN_AQ_KPP)
      call wrf_debug("setup_profile_maps: nothing done for mozart_mosaic_4bin_aq_kpp")
 
-  case (REDHC_KPP, REDHC_SORG_KPP)
+  case (REDHC_KPP, REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
      call setup_gasprofile_map_redhc(numgas)
   case (CO2_TRACER,GHG_TRACER)
      call wrf_debug("setup_profile_maps: nothing done for the GHG options")
@@ -935,7 +935,7 @@ SUBROUTINE input_chem_profile (si_grid)
          end do
          end do
 
-      CASE (REDHC_KPP, REDHC_SORG_KPP)
+      CASE (REDHC_KPP, REDHC_SORG_KPP,REDHC_MADE_SOA_VBS_KPP)
          do j = ny1,ny2
          do k = nz1,nz2
          do i = nx1,nx2
@@ -1744,7 +1744,8 @@ END SUBROUTINE bdy_chem_value_ghg
           i_bdy_method = 17
           end if
       else if (config_flags%chem_opt == REDHC_KPP .or. &
-               config_flags%chem_Opt == REDHC_SORG_KPP ) then     
+               config_flags%chem_opt == REDHC_SORG_KPP .or. & 
+               config_flags%chem_opt == REDHC_MADE_SOA_VBS_KPP ) then     
                if ((ic .ge. p_so4aj) .and. (ic .le. p_corn)) then
                    i_bdy_method = 2
                else
@@ -2532,7 +2533,7 @@ END SUBROUTINE bdy_chem_value_ghg
      case ( CBMZ_CAM_MAM3_NOAQ, CBMZ_CAM_MAM3_AQ, CBMZ_CAM_MAM7_NOAQ, CBMZ_CAM_MAM7_AQ )
         get_last_gas = p_soag
      
-     case (REDHC_KPP, REDHC_SORG_KPP)
+     case (REDHC_KPP, REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
         get_last_gas = p_acetp
      
      case default

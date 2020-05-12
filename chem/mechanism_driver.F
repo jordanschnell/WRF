@@ -144,7 +144,7 @@
      CASE(RACMSORG_KPP,RADM2SORG_KPP,RACMSORG_AQ,RACMSORG_AQCHEM_KPP,  &
           RACM_ESRLSORG_AQCHEM_KPP,RACM_ESRLSORG_KPP,RACM_SOA_VBS_KPP, &
           RACM_SOA_VBS_HET_KPP,                                        &
-          REDHC_KPP,REDHC_SORG_KPP)
+          REDHC_KPP,REDHC_SORG_KPP,REDHC_MADE_SOA_VBS_KPP )
          vcsulf_old(its:ite,kts:kte,jts:jte) = &
           max(chem(its:ite,kts:kte,jts:jte,p_sulf),epsilc)
 

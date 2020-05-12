@@ -1474,7 +1474,8 @@ END subroutine cup_env_clev_tr
                                       RADM2SORG_AQCHEM,RACMSORG_AQCHEM_KPP,RACM_ESRLSORG_AQCHEM_KPP, &
                                       RACM_SOA_VBS_AQCHEM_KPP,                           &
                                       RACM_SOA_VBS_HET_KPP,                              &
-                                      CB05_SORG_VBS_AQ_KPP,REDHC_KPP,REDHC_SORG_KPP
+                                      CB05_SORG_VBS_AQ_KPP,REDHC_KPP,REDHC_SORG_KPP,     &
+                                      REDHC_MADE_SOA_VBS_KPP
   USE module_ctrans_aqchem
   USE module_input_chem_data, only: get_last_gas
   USE module_HLawConst, only: HLC

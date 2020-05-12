@@ -486,9 +486,10 @@ CONTAINS
        ! get p_of_megan2crimech(:), p_of_crimech(:), and crimech_per_megan(:)
        CALL get_megan2crimech_table
 
-    CASE ( REDHC_KPP, REDHC_SORG_KPP )
+    CASE ( REDHC_KPP, REDHC_SORG_KPP)
        CALL get_megan2redhc_table
-
+    CASE ( REDHC_MADE_SOA_VBS_KPP )
+       CALL get_megan2redhc_soa_table
     CASE DEFAULT
        
        CALL wrf_error_fatal('Species conversion table for MEGAN v2.04 not available. ')
@@ -1660,10 +1661,58 @@ is_mozm_species : &
                 END IF !( p_of_redhc(icount) .NE. non_react )
 
             END DO
+          
+          CASE (REDHC_MADE_SOA_VBS_KPP )
+
+            DO icount = 1, n_megan2redhcsoa
+
+                IF ( p_of_redhcsoa(icount) .NE. non_react ) THEN
+
+                   ! Get index to chem array for the corresponding
+                   ! RACM-SOA-VBS-KPP
+                   ! species.  
+                   p_in_chem = p_of_redhcsoa(icount)
+
+                   ! Check if the species is actually in the mechanism
+                   IF( p_in_chem >= param_first_scalar ) THEN
+
+                      ! Emission rate of mechanism species in mol km-2 hr-1
+                      gas_emis =  redhcsoa_per_megan(icount) * &
+                                  E_megan2(p_of_megan2redhcsoa(icount))
+
+                      ! Add emissions to diagnostic output variables.
+                      ! ebio_xxx (mol km-2 hr-1) were originally used by the 
+                      ! BEIS3.11 biogenic emissions module. 
+                      ! I have also borrowed variable e_bio (ppm m min-1).
+
+                      IF ( p_in_chem == p_isopr ) THEN
+                         ebio_iso(i,j) = ebio_iso(i,j) + gas_emis
+                         e_bio(i,j,p_isopr-1)  = e_bio(i,j,p_isopr-1)  + gas_emis*convert2
+                      ELSE IF ( p_in_chem == p_c10h16 ) THEN
+                         ebio_c10h16(i,j) = ebio_c10h16(i,j) + gas_emis
+                         e_bio(i,j,p_c10h16-1) = e_bio(i,j,p_c10h16-1)  + gas_emis*convert2
+                      ELSE IF ( p_in_chem == p_sesq ) THEN
+                         ebio_sesq(i,j) = ebio_sesq(i,j) + gas_emis
+                         e_bio(i,j,p_sesq-1)   = e_bio(i,j,p_sesq-1) + gas_emis*convert2 
+                      ELSE IF ( p_in_chem == p_mbo ) THEN
+                         ebio_mbo(i,j)  = ebio_mbo(i,j) + gas_emis
+                         e_bio(i,j,p_mbo-1)    = e_bio(i,j,p_mbo-1) + gas_emis*convert2
+                      ELSE IF ( p_in_chem == p_par ) THEN
+                         ebio_par(i,j)  = ebio_par(i,j) + gas_emis
+                         e_bio(i,j,p_par-1)    = e_bio(i,j,p_par-1) + gas_emis*convert2
+                      ELSE IF ( p_in_chem == p_ole ) THEN
+                         ebio_ole(i,j)  = ebio_ole(i,j) + gas_emis
+                         e_bio(i,j,p_ole-1)    = e_bio(i,j,p_ole-1) + gas_emis*convert2
+                      END IF
+
+                   END IF !( p_in_chem > param_first_scalar )
+
+                END IF !( p_of_redhc(icount) .NE. non_react )
+
+            END DO
 
 
-
-          CASE (SAPRC99_KPP,SAPRC99_MOSAIC_4BIN_VBS2_KPP, &
+           CASE (SAPRC99_KPP,SAPRC99_MOSAIC_4BIN_VBS2_KPP, &
                SAPRC99_MOSAIC_8BIN_VBS2_AQ_KPP,SAPRC99_MOSAIC_8BIN_VBS2_KPP)!BSINGH(12/03/2013): Added SAPRC 8 bin and non-aq on (04/07/2014) ! FIX FOR SAPRC99 AND SAPRC07
 
              DO icount = 1, n_megan2saprcnov

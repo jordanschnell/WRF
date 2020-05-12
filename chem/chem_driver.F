@@ -706,7 +706,8 @@
 !!! TUCCELLA
       case (RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RADM2SORG_KPP, &
             RACM_ESRLSORG_KPP,RACMSORG_AQ,RACMSORG_KPP, RACMSORG_AQCHEM_KPP, RACM_ESRLSORG_AQCHEM_KPP, &
-            RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, REDHC_SORG_KPP)
+            RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
+            REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
          do j=jps,jpe
             do k=kps,kpe
                do i=ips,ipe
@@ -1343,7 +1344,7 @@ CALL kpp_mechanism_driver (chem,                                                
    IF(config_flags%conv_tr_aqchem == 0 ) THEN
       so2so4_selecta: SELECT CASE(config_flags%chem_opt)
       CASE (RADM2SORG,RADM2SORG_KPP,RACMSORG_KPP,RACM_SOA_VBS_KPP,RACM_SOA_VBS_HET_KPP, &
-            REDHC_KPP, REDHC_SORG_KPP)
+            REDHC_KPP, REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
          CALL wrf_debug(15,'gocart so2-so4 conversion')
          CALL  so2so4(0,chem,p_so2,p_sulf,p_h2o2,p_QC,T_PHY,MOIST,           &
               grid%qc_cu, grid%gd_cldfr, config_flags%cu_diag,                   &
@@ -1357,7 +1358,7 @@ CALL kpp_mechanism_driver (chem,                                                
    else IF(config_flags%conv_tr_aqchem == 1 ) THEN
       so2so4_selectb: SELECT CASE(config_flags%chem_opt)
       CASE (RADM2SORG,RADM2SORG_KPP,RACMSORG_KPP,RACM_SOA_VBS_KPP,RACM_SOA_VBS_HET_KPP, &
-            REDHC_KPP, REDHC_SORG_KPP)
+            REDHC_KPP, REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
          CALL wrf_debug(15,'gocart so2-so4 conversion')
          CALL  so2so4(1,chem,p_so2,p_sulf,p_h2o2,p_QC,T_PHY,MOIST,           &
               grid%qc_cu, grid%gd_cldfr, config_flags%cu_diag,                 &

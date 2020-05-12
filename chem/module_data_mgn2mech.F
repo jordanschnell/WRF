@@ -90,6 +90,11 @@ MODULE module_data_mgn2mech
   INTEGER, DIMENSION (n_megan2redhc) :: p_of_megan2redhc, p_of_redhc
   REAL,    DIMENSION (n_megan2redhc) :: redhc_per_megan
   DATA p_of_redhc / n_megan2redhc*non_react /
+
+  INTEGER, PARAMETER :: n_megan2redhcsoa = 68
+  INTEGER, DIMENSION (n_megan2redhcsoa) :: p_of_megan2redhcsoa, p_of_redhcsoa
+  REAL,    DIMENSION (n_megan2redhcsoa) :: redhcsoa_per_megan
+  DATA p_of_redhcsoa / n_megan2redhcsoa*non_react /
 !--------------------------------------------------------------------
 ! Some naming convention in denoting MEGAN species
 ! _a  = alpha     , _b  = beta      , _c  = cis       , _al = allo    ,
@@ -342,6 +347,91 @@ CONTAINS
     p_of_megan2redhc( 68) = is_mbo_3m3e1ol          ; p_of_redhc( 68) = p_isopr          ; redhc_per_megan( 68)  =  1.25
 
   END SUBROUTINE get_megan2redhc_table
+
+
+  SUBROUTINE get_megan2redhcsoa_table
+!--------------------------------------------------------------------
+! For MEGAN v2.04 species conversion to REDHC species
+! Based on Tan's MAP_CV2CBMZ.EXT; updated on 08/03/2007
+! based on Rahul A. Zaveri's suggestions.
+!--------------------------------------------------------------------
+
+!-----------------------------------------------------------------------------------------------------------
+!     Index of                                       Index of                           Molar ratio
+!     MEGAN species                                  REDHC Species
+!-----------------------------------------------------------------------------------------------------------
+
+
+    p_of_megan2redhcsoa(  1) = is_isoprene             ; p_of_redhcsoa(  1) = p_isopr          ; redhcsoa_per_megan(  1)  =  1.
+    p_of_megan2redhcsoa(  2) = is_myrcene              ; p_of_redhcsoa(  2) = p_c10h16         ; redhcsoa_per_megan(  2)  =  1.
+    p_of_megan2redhcsoa(  3) = is_sabinene             ; p_of_redhcsoa(  3) = p_c10h16         ; redhcsoa_per_megan(  3)  =  1.
+    p_of_megan2redhcsoa(  4) = is_limonene             ; p_of_redhcsoa(  4) = p_c10h16         ; redhcsoa_per_megan(  4)  =  1.
+    p_of_megan2redhcsoa(  5) = is_carene_3             ; p_of_redhcsoa(  5) = p_c10h16         ; redhcsoa_per_megan(  5)  =  1.
+    p_of_megan2redhcsoa(  6) = is_ocimene_t_b          ; p_of_redhcsoa(  6) = p_c10h16         ; redhcsoa_per_megan(  6)  =  1.
+    p_of_megan2redhcsoa(  7) = is_pinene_b             ; p_of_redhcsoa(  7) = p_c10h16         ; redhcsoa_per_megan(  7)  =  1.
+    p_of_megan2redhcsoa(  8) = is_pinene_a             ; p_of_redhcsoa(  8) = p_c10h16         ; redhcsoa_per_megan(  8)  =  1.
+    p_of_megan2redhcsoa(  9) = is_2met_styrene         ; p_of_redhcsoa(  9) = p_c10h16         ; redhcsoa_per_megan(  9)  =  1.
+    p_of_megan2redhcsoa( 10) = is_phellandrene_a       ; p_of_redhcsoa( 10) = p_c10h16         ; redhcsoa_per_megan( 10)  =  1.
+    p_of_megan2redhcsoa( 11) = is_thujene_a            ; p_of_redhcsoa( 11) = p_c10h16         ; redhcsoa_per_megan( 11)  =  1.
+    p_of_megan2redhcsoa( 12) = is_terpinene_a          ; p_of_redhcsoa( 12) = p_c10h16         ; redhcsoa_per_megan( 12)  =  1.
+    p_of_megan2redhcsoa( 13) = is_terpinene_g          ; p_of_redhcsoa( 13) = p_c10h16         ; redhcsoa_per_megan( 13)  =  1.
+    p_of_megan2redhcsoa( 14) = is_terpinolene          ; p_of_redhcsoa( 14) = p_c10h16         ; redhcsoa_per_megan( 14)  =  1.
+    p_of_megan2redhcsoa( 15) = is_phellandrene_b       ; p_of_redhcsoa( 15) = p_c10h16         ; redhcsoa_per_megan( 15)  =  1.
+    p_of_megan2redhcsoa( 16) = is_camphene             ; p_of_redhcsoa( 16) = p_c10h16         ; redhcsoa_per_megan( 16)  =  1.
+    p_of_megan2redhcsoa( 17) = is_bornene              ; p_of_redhcsoa( 17) = p_c10h16         ; redhcsoa_per_megan( 17)  =  1.
+    p_of_megan2redhcsoa( 18) = is_fenchene_a           ; p_of_redhcsoa( 18) = p_c10h16         ; redhcsoa_per_megan( 18)  =  1.
+    p_of_megan2redhcsoa( 19) = is_ocimene_al           ; p_of_redhcsoa( 19) = p_c10h16         ; redhcsoa_per_megan( 19)  =  1.
+    p_of_megan2redhcsoa( 20) = is_ocimene_c_b          ; p_of_redhcsoa( 20) = p_c10h16         ; redhcsoa_per_megan( 20)  =  1.
+    p_of_megan2redhcsoa( 21) = is_tricyclene           ; p_of_redhcsoa( 21) = p_c10h16         ; redhcsoa_per_megan( 21)  =  1.
+    p_of_megan2redhcsoa( 22) = is_estragole            ; p_of_redhcsoa( 22) = p_c10h16         ; redhcsoa_per_megan( 22)  =  1.
+    p_of_megan2redhcsoa( 23) = is_piperitone           ; p_of_redhcsoa( 23) = p_c10h16         ; redhcsoa_per_megan( 23)  =  1.
+    p_of_megan2redhcsoa( 24) = is_linalool             ; p_of_redhcsoa( 24) = p_c10h16         ; redhcsoa_per_megan( 24)  =  1.
+    p_of_megan2redhcsoa( 25) = is_terpineol_4          ; p_of_redhcsoa( 25) = p_c10h16         ; redhcsoa_per_megan( 25)  =  1.
+    p_of_megan2redhcsoa( 26) = is_terpineol_a          ; p_of_redhcsoa( 26) = p_c10h16         ; redhcsoa_per_megan( 26)  =  1.
+    p_of_megan2redhcsoa( 27) = is_linalool_oxd_c       ; p_of_redhcsoa( 27) = p_c10h16         ; redhcsoa_per_megan( 27)  =  1.25
+    p_of_megan2redhcsoa( 28) = is_linalool_oxd_t       ; p_of_redhcsoa( 28) = p_c10h16         ; redhcsoa_per_megan( 28)  =  1.25
+    p_of_megan2redhcsoa( 29) = is_ionone_b             ; p_of_redhcsoa( 29) = p_c10h16         ; redhcsoa_per_megan( 29)  =  1.4
+    p_of_megan2redhcsoa( 30) = is_farnescene_a         ; p_of_redhcsoa( 30) = p_c10h16         ; redhcsoa_per_megan( 30)  =  1.5
+    p_of_megan2redhcsoa( 31) = is_caryophyllene_b      ; p_of_redhcsoa( 31) = p_c10h16         ; redhcsoa_per_megan( 31)  =  1.5
+    p_of_megan2redhcsoa( 32) = is_acoradiene           ; p_of_redhcsoa( 32) = p_c10h16         ; redhcsoa_per_megan( 32)  =  1.5
+    p_of_megan2redhcsoa( 33) = is_aromadendrene        ; p_of_redhcsoa( 33) = p_c10h16         ; redhcsoa_per_megan( 33)  =  1.5
+    p_of_megan2redhcsoa( 34) = is_bergamotene_a        ; p_of_redhcsoa( 34) = p_c10h16         ; redhcsoa_per_megan( 34)  =  1.5
+    p_of_megan2redhcsoa( 35) = is_bergamotene_b        ; p_of_redhcsoa( 35) = p_c10h16         ; redhcsoa_per_megan( 35)  =  1.5
+    p_of_megan2redhcsoa( 36) = is_bisabolene_a         ; p_of_redhcsoa( 36) = p_c10h16         ; redhcsoa_per_megan( 36)  =  1.5
+    p_of_megan2redhcsoa( 37) = is_bisabolene_b         ; p_of_redhcsoa( 37) = p_c10h16         ; redhcsoa_per_megan( 37)  =  1.5
+    p_of_megan2redhcsoa( 38) = is_bourbonene_b         ; p_of_redhcsoa( 38) = p_c10h16         ; redhcsoa_per_megan( 38)  =  1.5
+    p_of_megan2redhcsoa( 39) = is_cadinene_d           ; p_of_redhcsoa( 39) = p_c10h16         ; redhcsoa_per_megan( 39)  =  1.5
+    p_of_megan2redhcsoa( 40) = is_cadinene_g           ; p_of_redhcsoa( 40) = p_c10h16         ; redhcsoa_per_megan( 40)  =  1.5
+    p_of_megan2redhcsoa( 41) = is_cedrene_a            ; p_of_redhcsoa( 41) = p_c10h16         ; redhcsoa_per_megan( 41)  =  1.5
+    p_of_megan2redhcsoa( 42) = is_copaene_a            ; p_of_redhcsoa( 42) = p_c10h16         ; redhcsoa_per_megan( 42)  =  1.5
+    p_of_megan2redhcsoa( 43) = is_cubebene_a           ; p_of_redhcsoa( 43) = p_c10h16         ; redhcsoa_per_megan( 43)  =  1.5
+    p_of_megan2redhcsoa( 44) = is_cubebene_b           ; p_of_redhcsoa( 44) = p_c10h16         ; redhcsoa_per_megan( 44)  =  1.5
+    p_of_megan2redhcsoa( 45) = is_elemene_b            ; p_of_redhcsoa( 45) = p_c10h16         ; redhcsoa_per_megan( 45)  =  1.5
+    p_of_megan2redhcsoa( 46) = is_farnescene_b         ; p_of_redhcsoa( 46) = p_c10h16         ; redhcsoa_per_megan( 46)  =  1.5
+    p_of_megan2redhcsoa( 47) = is_germacrene_B         ; p_of_redhcsoa( 47) = p_c10h16         ; redhcsoa_per_megan( 47)  =  1.5
+    p_of_megan2redhcsoa( 48) = is_germacrene_D         ; p_of_redhcsoa( 48) = p_c10h16         ; redhcsoa_per_megan( 48)  =  1.5
+    p_of_megan2redhcsoa( 49) = is_gurjunene_b          ; p_of_redhcsoa( 49) = p_c10h16         ; redhcsoa_per_megan( 49)  =  1.5
+    p_of_megan2redhcsoa( 50) = is_humulene_a           ; p_of_redhcsoa( 50) = p_c10h16         ; redhcsoa_per_megan( 50)  =  1.5
+    p_of_megan2redhcsoa( 51) = is_humulene_g           ; p_of_redhcsoa( 51) = p_c10h16         ; redhcsoa_per_megan( 51)  =  1.5
+    p_of_megan2redhcsoa( 52) = is_isolongifolene       ; p_of_redhcsoa( 52) = p_c10h16         ; redhcsoa_per_megan( 52)  =  1.5
+    p_of_megan2redhcsoa( 53) = is_longifolene          ; p_of_redhcsoa( 53) = p_c10h16         ; redhcsoa_per_megan( 53)  =  1.5
+    p_of_megan2redhcsoa( 54) = is_longipinene          ; p_of_redhcsoa( 54) = p_c10h16         ; redhcsoa_per_megan( 54)  =  1.5
+    p_of_megan2redhcsoa( 55) = is_muurolene_a          ; p_of_redhcsoa( 55) = p_c10h16         ; redhcsoa_per_megan( 55)  =  1.5
+    p_of_megan2redhcsoa( 56) = is_muurolene_g          ; p_of_redhcsoa( 56) = p_c10h16         ; redhcsoa_per_megan( 56)  =  1.5
+    p_of_megan2redhcsoa( 57) = is_selinene_b           ; p_of_redhcsoa( 57) = p_c10h16         ; redhcsoa_per_megan( 57)  =  1.5
+    p_of_megan2redhcsoa( 58) = is_selinene_d           ; p_of_redhcsoa( 58) = p_c10h16         ; redhcsoa_per_megan( 58)  =  1.5
+    p_of_megan2redhcsoa( 59) = is_nerolidol_c          ; p_of_redhcsoa( 59) = p_c10h16         ; redhcsoa_per_megan( 59)  =  1.5
+    p_of_megan2redhcsoa( 60) = is_nerolidol_t          ; p_of_redhcsoa( 60) = p_c10h16         ; redhcsoa_per_megan( 60)  =  1.5
+    p_of_megan2redhcsoa( 61) = is_mbo_2m3e2ol          ; p_of_redhcsoa( 61) = p_isopr          ; redhcsoa_per_megan( 61)  =  2.4
+    p_of_megan2redhcsoa( 62) = is_mbo_3m2e1ol          ; p_of_redhcsoa( 62) = p_isopr          ; redhcsoa_per_megan( 62)  =  1.25
+    p_of_megan2redhcsoa( 63) = is_geranyl_acetone      ; p_of_redhcsoa( 63) = p_c10h16         ; redhcsoa_per_megan( 63)  =  1.4
+    p_of_megan2redhcsoa( 64) = is_terpinyl_act_a       ; p_of_redhcsoa( 64) = p_c10h16         ; redhcsoa_per_megan( 64)  =  1.4
+    p_of_megan2redhcsoa( 65) = is_2met_nonatriene      ; p_of_redhcsoa( 65) = p_c10h16         ; redhcsoa_per_megan( 65)  =  1.1
+    p_of_megan2redhcsoa( 66) = is_jasmone              ; p_of_redhcsoa( 66) = p_c10h16         ; redhcsoa_per_megan( 66)  =  1.2
+    p_of_megan2redhcsoa( 67) = is_met_jasmonate        ; p_of_redhcsoa( 67) = p_c10h16         ; redhcsoa_per_megan( 67)  =  1.6
+    p_of_megan2redhcsoa( 68) = is_mbo_3m3e1ol          ; p_of_redhcsoa( 68) = p_isopr          ; redhcsoa_per_megan( 68)  =  1.25
+
+  END SUBROUTINE get_megan2redhcsoa_table
 
 
   SUBROUTINE get_megan2t1_mozc_table

@@ -270,7 +270,8 @@
             ids,ide, jds,jde, kds,kde,                                  &
             ims,ime, jms,jme, kms,kme,                                  &
             its,ite, jts,jte, kts,kte                                   )
-   CASE ( RACM_SOA_VBS_KPP, RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP )
+   CASE ( RACM_SOA_VBS_KPP, RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, &
+          REDHC_MADE_SOA_VBS_KPP )
        CALL wrf_debug(15,'aerosols_driver calling soa_vbs_driver')
        do ii=its,ite
           do kk=kts,kte
@@ -475,7 +476,8 @@
             config_flags%dust_opt,ids,ide, jds,jde, kds,kde,           &
             ims,ime, jms,jme, kms,kme,                                 &
             its,ite, jts,jte, kts,kte                                  )
-   CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP)
+   CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
+         REDHC_MADE_SOA_VBS_KPP)
        CALL wrf_debug(15,'sum_pm_driver: calling sum_pm_soa_vbs')
        CALL sum_pm_soa_vbs (                                           &
             alt, chem, h2oaj, h2oai,                                   &

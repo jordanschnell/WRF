@@ -202,7 +202,8 @@ is_mozart:if( is_moz_chm ) then
               chem(i,k,j,p_ch3co2h) = chem(i,k,j,p_ch3co2h) + emis_ant(i,k,j,p_e_ch3co2h)*conv_rho(i)
             end do
           elseif( config_flags%chem_opt == REDHC_KPP .or. &
-                  config_flags%chem_opt == REDHC_SORG_KPP ) then
+                  config_flags%chem_opt == REDHC_SORG_KPP .or. &
+                  config_flags%chem_opt == REDHC_MADE_SOA_VBS_KPP ) then
             do i=its,ite
               chem(i,k,j,p_c2h4)   = chem(i,k,j,p_c2h4)   + emis_ant(i,k,j,p_e_c2h4)*conv_rho(i)
               chem(i,k,j,p_hcho)   = chem(i,k,j,p_hcho)   + emis_ant(i,k,j,p_e_hcho)*conv_rho(i)
