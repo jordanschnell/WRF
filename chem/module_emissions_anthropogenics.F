@@ -212,6 +212,7 @@ is_mozart:if( is_moz_chm ) then
               chem(i,k,j,p_c10h16) = chem(i,k,j,p_c10h16) + emis_ant(i,k,j,p_e_c10h16)*conv_rho(i)
               chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + emis_ant(i,k,j,p_e_ole)*conv_rho(i)
               chem(i,k,j,p_par)    = chem(i,k,j,p_par)    + emis_ant(i,k,j,p_e_par)*conv_rho(i)
+              chem(i,k,j,p_mgly)   = chem(i,k,j,p_mgly)   + emis_ant(i,k,j,p_e_mgly)*conv_rho(i)
             end do
           else is_mozart
             do i=its,ite  
