@@ -824,7 +824,7 @@ CONTAINS
                   RACM_KPP, RACMPM_KPP, RACM_MIM_KPP, RACMSORG_AQ,RACMSORG_AQCHEM_KPP,        &
                   RACM_ESRLSORG_AQCHEM_KPP, RACMSORG_KPP,RACM_ESRLSORG_KPP, RACM_SOA_VBS_KPP, &
                   RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, CBM4_KPP, NMHC9_KPP,         & 
-                  GOCARTRACM_KPP,GOCARTRADM2)
+                  GOCARTRACM_KPP,GOCARTRADM2,REDHC_SORG_KPP)
             CASE DEFAULT 
                CALL wrf_error_fatal( &
                   "emissions_driver: beis3.1.4 biogenic emis. implemented for RADM2 & RACM only")

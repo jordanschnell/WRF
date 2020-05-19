@@ -321,6 +321,7 @@ is_mozart:if( is_moz_chm ) then
      CALL wrf_debug(15,'adding biogenic emissions: Gunther1')
       do j=jts,jte  
         conv_rho(its:ite) = dtstep/(dz8w(its:ite,kts,j)*60.)
+        
         chem(its:ite,kts,j,p_iso)=chem(its:ite,kts,j,p_iso) + e_bio(its:ite,j,p_iso-1)*conv_rho(its:ite)
         chem(its:ite,kts,j,p_oli)=chem(its:ite,kts,j,p_oli) + e_bio(its:ite,j,p_oli-1)*conv_rho(its:ite)
         chem(its:ite,kts,j,p_xyl)=chem(its:ite,kts,j,p_xyl) + e_bio(its:ite,j,p_xyl-1)*conv_rho(its:ite)
@@ -390,6 +391,29 @@ is_mozart:if( is_moz_chm ) then
      CALL wrf_debug(100,'adding biogenic emissions: beis3.1.4')
       do j=jts,jte  
         conv_rho(its:ite)=4.828e-4/rho_phy(its:ite,kts,j)*dtstep/(dz8w(its:ite,kts,j)*60.)
+        
+
+        if ( p_par >= param_first_scalar) then ! Catch for redhc/CB mechs
+
+        chem(its:ite,kts,j,p_isopr)=chem(its:ite,kts,j,p_isopr) + ebio_iso(its:ite,j)*conv_rho(its:ite) 
+        chem(its:ite,kts,j,p_ole)  =chem(its:ite,kts,j,p_ole) + &
+                                    (ebio_oli(its:ite,j) + ebio_olt(its:ite,j))*conv_rho(its:ite)
+        chem(its:ite,kts,j,p_par)  =chem(its:ite,kts,j,p_par) + &
+                                    ( 0.4*ebio_ald(its:ite,j) + &
+                                      2.9*ebio_hc3(its:ite,j) + &
+                                      0.9*ebio_ket(its:ite,j) + &
+                                      2.8*ebio_oli(its:ite,j) + &
+                                      1.8*ebio_olt(its:ite,j) + &
+                                      1.0*ebio_ora2(its:ite,j) + &
+                                      2.0*ebio_eth(its:ite,j) + &
+                                      1.0*ebio_xyl(its:ite,j)) * conv_rho(its:ite)
+        chem(its:ite,kts,j,p_ch3cho)=chem(its:ite,kts,j,p_ch3cho) + ebio_ald(its:ite,j)*conv_rho(its:ite) 
+        chem(its:ite,kts,j,p_hcho)=chem(its:ite,kts,j,p_hcho) + ebio_hcho(its:ite,j)*conv_rho(its:ite)
+        chem(its:ite,kts,j,p_co)=chem(its:ite,kts,j,p_co)+ ebio_co(its:ite,j)*conv_rho(its:ite)
+        chem(its:ite,kts,j,p_no)=chem(its:ite,kts,j,p_no)+ ebio_no(its:ite,j)*conv_rho(its:ite)
+        chem(its:ite,kts,j,p_c10h16)=chem(its:ite,kts,j,p_c10h16) + &
+                                     (ebio_api(its:ite,j) + ebio_lim(its:ite,j))*conv_rho(its:ite)
+        else
         chem(its:ite,kts,j,p_iso)=chem(its:ite,kts,j,p_iso)+ ebio_iso(its:ite,j)*conv_rho(its:ite)
         chem(its:ite,kts,j,p_oli)=chem(its:ite,kts,j,p_oli)+ ebio_oli(its:ite,j)*conv_rho(its:ite)
         chem(its:ite,kts,j,p_xyl)=chem(its:ite,kts,j,p_xyl)+ ebio_xyl(its:ite,j)*conv_rho(its:ite)
@@ -429,6 +453,7 @@ is_mozart:if( is_moz_chm ) then
         if(p_mbo >= param_first_scalar) then
           chem(its:ite,kts,j,p_mbo)=chem(its:ite,kts,j,p_mbo)+ ebio_mbo(its:ite,j)*conv_rho(its:ite)
         endif
+       endif
       enddo
      CASE (MEGAN2)
       do j = jts,jte
