@@ -60,6 +60,7 @@ CONTAINS
   USE module_cam_mam_drydep, only:  cam_mam_drydep_driver
   use module_scalar_tables,     only: chem_dname_table !Balwinder.Singh@pnnl.gov:Added for MAM aerosols dry deposition
   USE module_aerosols_sorgam_vbs, only: sorgam_vbs_depdriver
+  USE module_made_soa2, only: soa2_depdriver  ! RAR:
   
   IMPLICIT NONE
 
@@ -575,8 +576,7 @@ CONTAINS
                ims,ime, jms,jme, kms,kme,                               &
                its,ite, jts,jte, kts,kte                                )
 !!! TUCCELLA
-     CASE ( RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
-            REDHC_MADE_SOA_VBS_KPP )
+     CASE ( RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP )
        CALL wrf_debug(15,'DOING DRY DEP VELOCITIES FOR SOA_VBS AEROSOLS')
        call soa_vbs_depdriver (id,config_flags,ktau,dtstep,             &
                ust,t_phy,moist,p8w,t8w,rmol,znt,pbl,                    &
@@ -587,6 +587,18 @@ CONTAINS
                ids,ide, jds,jde, kds,kde,                               &
                ims,ime, jms,jme, kms,kme,                               &
                its,ite, jts,jte, kts,kte                                )
+     CASE (REDHC_MADE_SOA_VBS_KPP)
+       CALL wrf_debug(15,'DOING DRY DEP VELOCITIES FOR SOA2 AEROSOLS')
+       call soa2_depdriver (id,config_flags,ktau,dtstep,                &
+               ust,t_phy,rmol,znt,pbl,                                  &
+               alt,p_phy,chem,dz8w,rh,z,z_at_w,                         &
+               h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3,                    &
+               aer_res,ddvel(:,:,numgas+1:num_chem),                    &
+               num_chem-numgas,                                         &
+               ids,ide, jds,jde, kds,kde,                               &
+               ims,ime, jms,jme, kms,kme,                               &
+               its,ite, jts,jte, kts,kte        
+
     CASE (CBMZ_CAM_MAM3_NOAQ, CBMZ_CAM_MAM3_AQ, CBMZ_CAM_MAM7_NOAQ, CBMZ_CAM_MAM7_AQ)
        CALL wrf_debug(15,'DOING DRY DEP VELOCITIES FOR CAM_MAM AEROSOLS')
        call cam_mam_drydep_driver(                                      &

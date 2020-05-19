@@ -98,6 +98,7 @@ CONTAINS
   USE module_plumerise1
   USE module_aerosols_sorgam_vbs, only: sorgam_vbs_addemiss
   USE module_aerosols_soa_vbs, only: soa_vbs_addemiss
+  USE module_made_soa2, only: soa2_addemiss               ! RAR: New SOA scheme with POA volatility
   USE module_ghg_fluxes
   USE module_lightning_nox_driver
   USE module_cam_mam_addemiss, only: cam_mam_addemiss
@@ -1497,8 +1498,7 @@ CONTAINS
             its,ite, jts,jte, kts,kte                                   )
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
-          REDHC_MADE_SOA_VBS_KPP )
+    CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP )
        call wrf_debug(15,'emissions_driver calling soa_vbs_addemiss')
        call soa_vbs_addemiss( id, dtstep, u10, v10, alt, dz8w, xland, chem,  &
             ebu,                                                        &
@@ -1512,6 +1512,15 @@ CONTAINS
             ids,ide, jds,jde, kds,kde,                                  &
             ims,ime, jms,jme, kms,kme,                                  &
             its,ite, jts,jte, kts,kte                                   )
+     CASE (REDHC_MADE_SOA_VBS_KPP)
+        CALL wrf_debug(15,'emissions_driver calling soa2_addemiss')
+        CALL soa2_addemiss( dtstep, alt, dz8w, chem,                     &
+            emis_ant,config_flags%kemit,config_flags%emiss_opt,         &
+            poa_vol_params,                                             &
+            ids,ide, jds,jde, kds,kde,                                  &
+            ims,ime, jms,jme, kms,kme,                                  &
+            its,ite, jts,jte, kts,kte, config_flags%debug_soa           )
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !Added the aerosol case SAPRC99_MOSAIC_4BIN_VBS2_KPP to call mosaic addemiss

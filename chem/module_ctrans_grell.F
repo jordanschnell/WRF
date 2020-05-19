@@ -1692,7 +1692,7 @@ END subroutine cup_env_clev_tr
            chemopt .EQ. CB05_SORG_VBS_AQ_KPP .OR.                                           &
            chemopt .EQ. RACM_SOA_VBS_HET_KPP .OR.   &
            chemopt .EQ. RACM_ESRLSORG_AQCHEM_KPP .OR. chemopt .EQ. RACM_SOA_VBS_AQCHEM_KPP  .OR. &
-           chemopt .EQ. REDHC_KPP .OR. chemopt .EQ. REDHC_SORG_KPP ) &
+           chemopt .EQ. REDHC_KPP .OR. chemopt .EQ. REDHC_SORG_KPP .OR. chemopt .EQ. REDHC_MADE_SOA_VBS_KPP) &
            .and. (conv_tr_aqchem == 1)) then
         
         !

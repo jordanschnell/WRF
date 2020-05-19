@@ -1,2 +1,2 @@
 !
-   real(kind=dp), intent(in) :: rh
+   REAL(KIND=dp), INTENT(IN) ::  RATE_CVPOA, RATE_CVASOA, RATE_CVBSOA, RATE_CVASOA0, rh

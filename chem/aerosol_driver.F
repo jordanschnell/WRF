@@ -13,7 +13,7 @@
                gamn2o5,cn2o5,kn2o5,yclno2,snu,sac,          &
                h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3,cvaro1,  &
                cvaro2,cvalk1,cvole1,cvapi1,cvapi2,cvlim1,cvlim2,vcsulf_old,&
-               vdrog3, vdrog3_vbs,brch_ratio,dgnum,dgnumwet,wetdens_ap,    &
+               vdrog3, vdrog3_vbs,vdrog3_soa2,brch_ratio,dgnum,dgnumwet,wetdens_ap,    &
                del_h2so4_gasprod,dvmrdt_sv13d,dvmrcwdt_sv13d,              &
                is_CAMMGMP_used,                                            &!BSINGH:01/31/2013: Added is_CAMMGMP_used for cam_mam_aerchem_driver
                ids,ide, jds,jde, kds,kde,                                  &
@@ -38,6 +38,10 @@
    USE modal_aero_data, only:  ntot_amode_cam_mam => ntot_amode
    USE module_cam_support, only: gas_pcnst => gas_pcnst_modal_aero, &
         gas_pcnst_pos => gas_pcnst_modal_aero_pos
+
+! RAR/JLS: new
+   USE module_made_soa2, only: soa2_driver
+   USE module_data_soa2, only: ldrog_soa2
 
    !  This driver calls subroutines for aerosols parameterizations.
    !
@@ -166,6 +170,9 @@
    REAL,  DIMENSION(ims:ime,kms:kme-0,jms:jme,ldrog_vbs),           &
                INTENT(IN   ) ::                                     &
                                                      VDROG3_VBS
+
+   REAL, DIMENSION(ims:ime,kms:kme,jms:jme,ldrog_soa2),           &           !RAR/JLS: For option 252
+               INTENT(IN   ) ::                      VDROG3_SOA2
 !
 ! input from meteorology
    REAL,  DIMENSION( ims:ime , kms:kme , jms:jme )         ,        &
@@ -270,8 +277,7 @@
             ids,ide, jds,jde, kds,kde,                                  &
             ims,ime, jms,jme, kms,kme,                                  &
             its,ite, jts,jte, kts,kte                                   )
-   CASE ( RACM_SOA_VBS_KPP, RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, &
-          REDHC_MADE_SOA_VBS_KPP )
+   CASE ( RACM_SOA_VBS_KPP, RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP )
        CALL wrf_debug(15,'aerosols_driver calling soa_vbs_driver')
        do ii=its,ite
           do kk=kts,kte
@@ -290,7 +296,28 @@
             config_flags%kemit,brch_ratio,                           &
             ids,ide, jds,jde, kds,kde,                               &
             ims,ime, jms,jme, kms,kme,                               &
-            its,ite, jts,jte, kts,kte                                ) 
+            its,ite, jts,jte, kts,kte                                )
+
+   CASE (REDHC_MADE_SOA_VBS_KPP ) 
+       CALL wrf_debug(15,'aerosols_driver calling soa_vbs_driver')
+       do ii=its,ite
+          do kk=kts,kte
+             do jj=jts,jte
+                if(chem(ii,kk,jj,p_nu0).lt.1.e07)then
+                   chem(ii,kk,jj,p_nu0)=1.e7
+                endif
+             enddo
+          enddo
+       enddo
+       CALL soa2_driver ( id,ktauc,dtstepc,t_phy,                &
+                          alt,p_phy,chem,dz8w,rh,z,z_at_w,       &
+                          h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3,  &
+                          vcsulf_old,config_flags%kemit,         &
+                          vdrog3_soa2,brch_ratio,drog,           &
+                          ids,ide, jds,jde, kds,kde,             &
+                          ims,ime, jms,jme, kms,kme,             &
+                          its,ite, jts,jte, kts,kte,             &
+                          config_flags%debug_soa                 ) 
 !--------------------------------------------------------------------------------------------------
    CASE (CBMZ_CAM_MAM3_NOAQ, CBMZ_CAM_MAM3_AQ, CBMZ_CAM_MAM7_NOAQ, CBMZ_CAM_MAM7_AQ)
        CALL wrf_debug(15,'aerosols_driver calling cam_mam_aerchem_driver')
@@ -476,8 +503,7 @@
             config_flags%dust_opt,ids,ide, jds,jde, kds,kde,           &
             ims,ime, jms,jme, kms,kme,                                 &
             its,ite, jts,jte, kts,kte                                  )
-   CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
-         REDHC_MADE_SOA_VBS_KPP)
+   CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP)
        CALL wrf_debug(15,'sum_pm_driver: calling sum_pm_soa_vbs')
        CALL sum_pm_soa_vbs (                                           &
             alt, chem, h2oaj, h2oai,                                   &
@@ -485,6 +511,16 @@
             config_flags%dust_opt,ids,ide, jds,jde, kds,kde,           &
             ims,ime, jms,jme, kms,kme,                                 &
             its,ite, jts,jte, kts,kte                                  )
+
+   CASE ( REDHC_MADE_SOA_VBS ) 
+       CALL wrf_debug(15,'sum_pm_driver: calling redhc_soa_vbs')
+       CALL sum_pm_soa2 (                                              &
+            alt, chem, h2oaj, h2oai,                                   &
+            pm2_5_dry, pm2_5_water, pm2_5_dry_ec,                      &
+            ids,ide, jds,jde, kds,kde,                                 &
+            ims,ime, jms,jme, kms,kme,                                 &
+            its,ite, jts,jte, kts,kte                                  )
+
 !
    CASE (CBMZ_MOSAIC_4BIN, CBMZ_MOSAIC_KPP, CBMZ_MOSAIC_8BIN, CBMZ_MOSAIC_4BIN_AQ, CBMZ_MOSAIC_8BIN_AQ, &
          CBMZ_MOSAIC_DMS_4BIN, CBMZ_MOSAIC_DMS_8BIN, CBMZ_MOSAIC_DMS_4BIN_AQ, CBMZ_MOSAIC_DMS_8BIN_AQ, &

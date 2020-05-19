@@ -34,6 +34,7 @@
   USE module_aer_opt_out,only: aer_opt_out
   USE module_ctrans_grell
   USE module_data_soa_vbs, only: ldrog_vbs
+  USE module_data_soa2, only: ldrog_soa2  ! RAR/JLS: for the REDHC/SOA2.0 scheme
   USE module_dust_load
   USE module_chem_cup, only: chem_cup_driver !BSINGH - For WRFCuP scheme
   USE module_dry_dep_driver
@@ -220,7 +221,8 @@
 ! UoC dust scheme option
    INTEGER :: imod   
 !  REAL    :: convtrans_avglen_m
-
+   INTEGER, save :: icall
+   REAL, PARAMETER :: ppm2mol= 1.E-3*6.022E+23/28.9628
 ! ................................................................
       real, dimension(grid%sm31:grid%em31,grid%sm32:grid%em32,grid%sm33:grid%em33) ::vcsulf_old,vcso2_old,vch2o2_old
       real, dimension(grid%sm31:grid%em31,grid%sm32:grid%em32,grid%sm33:grid%em33,ldrog) ::vdrog3
@@ -237,7 +239,7 @@
       REAL,DIMENSION(grid%sm32:grid%em32-1) :: QL,TL
       REAL,DIMENSION(grid%sm31:grid%em31,grid%sm33:grid%em33) :: REXNSFC,FACTRS                &
                                         ,TOT,TSFC
-
+      REAL,DIMENSION(grid%sm31:grid%em31,grid%sm32:grid%em32,grid%sm33:grid%em33,ldrog_soa2) ::vdrog3_soa2   ! RAR:
       ! temporary arrays for old chemistry values
       REAL,DIMENSION(grid%sm31:grid%em31,grid%sm32:grid%em32,grid%sm33:grid%em33,num_chem_ct) :: chem_old
       INTEGER,DIMENSION(num_chem_ct) :: chem_ct_indices
@@ -632,6 +634,9 @@
      CASE (REDHC_SORG_KPP)
        CALL wrf_debug(15,'calling redhc_sorg_kpp driver from chem_driver')
        haveaer = .true.
+     CASE (REDHC_MADE_SOA_VBS_KPP)
+       CALL wrf_debug(15,'calling redhc_made_soa_vbs from chem_driver')
+       haveaer = .false.       
      CASE (CB05_SORG_AQ_KPP)
        CALL wrf_debug(15,'calling cb05_sorg_aq_kpp from chem_driver')
        haveaer = .true.
@@ -707,7 +712,7 @@
       case (RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RADM2SORG_KPP, &
             RACM_ESRLSORG_KPP,RACMSORG_AQ,RACMSORG_KPP, RACMSORG_AQCHEM_KPP, RACM_ESRLSORG_AQCHEM_KPP, &
             RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
-            REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
+            REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP, REDHC_MADE_SOA_VBS_KPP)
          do j=jps,jpe
             do k=kps,kpe
                do i=ips,ipe
@@ -883,6 +888,7 @@
               grid%biomt_par,grid%emit_par,grid%ebio_co2oce,                               &
               eghg_bio,                                                                    &
               grid%dust_flux, grid%seas_flux,                                              &
+              grid%poa_vol_frac,                                                           &
               ids,ide, jds,jde, kds,kde,                                                   &
               ims,ime, jms,jme, kms,kme,                                                   &
               its,ite,jts,jte,kts,kte)
@@ -1277,6 +1283,7 @@ CALL kpp_mechanism_driver (chem,                                                
    p_phy,t_phy,rho,                                                                   &
    moist,aero_srf_area,                                                               &
    vdrog3, ldrog, vdrog3_vbs, ldrog_vbs,                                              &
+   ldrog_soa2, vdrog3_soa2,                                                           &     ! RAR:
 !
 #include "call_to_kpp_mech_drive.inc"
 !
@@ -1578,8 +1585,8 @@ if ( cam_mam_aerosols ) &
               grid%h2oaj,grid%h2oai,grid%nu3,grid%ac3,grid%cor3,grid%asulf,           &
               grid%ahno3,grid%anh3,grid%cvaro1,grid%cvaro2,grid%cvalk1,grid%cvole1,   &
               grid%cvapi1,grid%cvapi2,grid%cvlim1,grid%cvlim2,vcsulf_old,             &
-              vdrog3,vdrog3_vbs,grid%br_rto,grid%dgnum4d,grid%dgnumwet4d,wetdens_ap,  &
-              del_h2so4_gasprod,grid%dvmrdt_sv13d,grid%dvmrcwdt_sv13d,                &
+              vdrog3,vdrog3_vbs,vdrog3_soa2,grid%br_rto,grid%dgnum4d,grid%dgnumwet4d, &
+              wetdens_ap, del_h2so4_gasprod,grid%dvmrdt_sv13d,grid%dvmrcwdt_sv13d,    &
               grid%is_CAMMGMP_used,                                                   &
               ids,ide, jds,jde, kds,kde,                                              &
               ims,ime, jms,jme, kms,kme,                                              &

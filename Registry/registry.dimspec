@@ -112,6 +112,9 @@ dimspec    %       2     namelist=kdvel                    z     klevs_for_dvel
 dimspec    airc    2     namelist=kemit_aircraft           z     ac_emissions_zdim
 dimspec    ^       2     constant=46                       z     eightday_dimension
 
+# RAR: Dimension for the SOA2 option
+dimspec    pbins   1     constant=5                        z     poa_emis_bins
+
 # Dimensions for the GHG options
 dimspec    ghgv    -     constant=8                        z     vprm_vgcls
 dimspec    ghgt    1     constant=14                       z     termite_vgcls

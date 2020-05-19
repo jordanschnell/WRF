@@ -1,3 +1,1 @@
-!
-   rh, &
-!
+rh, RATE_CVPOA, RATE_CVASOA, RATE_CVBSOA, RATE_CVASOA0, &

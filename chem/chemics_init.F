@@ -70,6 +70,7 @@
 
 !!CYY
    USE module_model_constants, only:t0
+   USE module_made_soa2, only: aerosols_soa2_init   !RAR/JLS:
 
    IMPLICIT NONE
 
@@ -1619,6 +1620,9 @@ CASE(GOCARTRACM_KPP,RACM_KPP,RACMPM_KPP,RACMSORG_KPP,RACM_MIM_KPP,RACM_ESRLSORG_
                    ! Add in chem species not handled
                    ! by module_input_chem_data NALROM species
                    ! chem(i,k,j,p_c10h16) = chem(i,k,j,p_ole)
+                   if(p_ivoc.gt.1) chem(i,k,j,p_ivoc)=1.e-12
+                   if(p_mbo.gt.1)  chem(i,k,j,p_mbo) =1.e-12
+                   if(p_sesq.gt.1) chem(i,k,j,p_sesq)=1.e-12
                 enddo
              enddo
           enddo
@@ -1877,7 +1881,46 @@ ENDIF ghg_block
         endif
         endif
         chem(its:ite,kts:min(kte,kde-1),jts:jte,:)=max(chem(its:ite,kts:min(kte,kde-1),jts:jte,:),epsilc)
-    CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP,REDHC_MADE_SOA_VBS_KPP)
+
+     CASE (REDHC_MADE_SOA_VBS_KPP)
+       CALL wrf_debug(15,'call MADE/SOA2_VBS aerosols initialization')
+
+       call aerosols_soa2_init(chem,convfac,z_at_w,                &
+               pm2_5_dry,pm2_5_water,pm2_5_dry_ec,                 &
+               chem_in_opt,config_flags%aer_ic_opt,                &
+               config_flags%poa_vol_opt, grid%poa_vol_frac,        &
+               ids,ide, jds,jde, kds,kde,                          &
+               ims,ime, jms,jme, kms,kme,                          &
+               its,ite, jts,jte, kts,kte,                          &
+               config_flags%debug_soa                              )
+
+        IF (config_flags%debug_soa) then
+            WRITE(6,*) 'chem_init: after aerosols_soa2_init is called: '
+            WRITE(6,*) 'chem_init: grid%poa_vol_frac ', grid%poa_vol_frac
+            WRITE(6,*) 'chem_init: ims,ime,jms,jme ', ims,ime,jms,jme
+            WRITE(6,*) 'chem_init: its,ite,jts,jte ', its,ite,jts,jte
+            WRITE(6,*) 'chem_init: ids,ide,jds,jde ', ids,ide,jds,jde
+            WRITE(6,*) 'chem_init: convfac(its+1,1,jts+1) ',convfac(its+1,1,jts+1)
+        END IF
+
+ !...Convert aerosols to mixing ratio
+        if( .NOT. config_flags%restart ) then
+        if(config_flags%chem_in_opt == 0 .and. num_chem.gt.numgas)then
+        do l=numgas+1,num_chem
+           do j=jts,jte
+              do k=kts,kte
+                 kk = min(k,kde-1)
+                 do i=its,ite
+                    chem(i,k,j,l)=chem(i,kk,j,l)*alt(i,kk,j)
+                 enddo
+              enddo
+           enddo
+        enddo
+        endif
+        endif
+        chem(its:ite,kts:min(kte,kde-1),jts:jte,:)=max(chem(its:ite,kts:min(kte,kde-1),jts:jte,:),epsilc)
+
+    CASE (RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP)
        CALL wrf_debug(15,'call MADE/SOA_VBS aerosols initialization')
 
        call aerosols_soa_vbs_init(chem,convfac,z_at_w,                &

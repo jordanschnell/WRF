@@ -228,6 +228,9 @@ CONTAINS
                 chem(i,k,j,p_nh3)    = chem(i,k,j,p_nh3)    + ebu(i,k,j,p_ebu_nh3)*conv_rho
                 chem(i,k,j,p_par)    = chem(i,k,j,p_par)    + ebu(i,k,j,p_ebu_par)*conv_rho
                 chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + ebu(i,k,j,p_ebu_ole)*conv_rho
+                chem(i,k,j,p_mgly)   = chem(i,k,j,p_mgly)   + ebu(i,k,j,p_ebu_mgly)*conv_rho
+                        !RAR: added for IVOCs
+                if (p_ivoc>1) chem(i,k,j,p_ivoc) = chem(i,k,j,p_ivoc) + ebu(i,k,j,p_ebu_ivoc)*conv_rho
               enddo
             enddo
           enddo

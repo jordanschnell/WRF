@@ -261,7 +261,7 @@ tile_lon_loop : &
                  (config_flags%chem_opt == RADM2SORG       ) .or.   &
                  (config_flags%chem_opt == RADM2SORG_AQ    ) .or.   &
                  (config_flags%chem_opt == RADM2SORG_AQCHEM) .or.   &
-                 (config_flags%chem_opt == REDHC_SORG_KPP) ) then
+                 (config_flags%chem_opt == REDHC_SORG_KPP  ) ) then
                      ddvel(i,j,p_hcl)         = ddvel(i,j,p_hno3)
             end if
          end do tile_lon_loop
@@ -885,8 +885,9 @@ tile_lon_loop : &
 !----------------
 ! For redhc ...
 !-----------------
-      if ( (config_flags%chem_opt == REDHC_KPP) .or. &
-           (config_flags%chem_opt == REDHC_SORG_KPP)  ) then
+      if ( config_flags%chem_opt == REDHC_KPP .or. &
+           config_flags%chem_opt == REDHC_SORG_KPP .or. & 
+           config_flags%chem_opt == REDHC_MADE_SOA_VBS_KPP ) then
          do j=jts,jte
             do i=its,ite
                ddvel(i,j,p_o)         = 0.  
@@ -901,6 +902,28 @@ tile_lon_loop : &
                ddvel(i,j,p_xo2n)      = 0.
                ddvel(i,j,p_xpar)      = 0.
                ddvel(i,j,p_c10h16)    = ddvel(i,j,p_ole)
+               
+               if(p_sesq.gt.1) ddvel(i,j,p_sesq)= 0.
+               if(p_mbo.gt.1)  ddvel(i,j,p_mbo) = 0.
+
+               if(p_ch4.gt.1)  ddvel(i,j,p_ch4)= 0.
+               if(p_co2.gt.1)  ddvel(i,j,p_co2)= 0.
+
+
+               if(p_cvasoa1.gt.1)  ddvel(i,j,p_cvasoa1) = dep_vap*ddvel(i,j,p_hno3)
+               if(p_cvasoa2.gt.1)  ddvel(i,j,p_cvasoa2) = dep_vap*ddvel(i,j,p_hno3)
+               if(p_cvasoa3.gt.1)  ddvel(i,j,p_cvasoa3) = dep_vap*ddvel(i,j,p_hno3)
+               if(p_cvasoa4.gt.1)  ddvel(i,j,p_cvasoa4) = dep_vap*ddvel(i,j,p_hno3)
+
+               if(p_cvbsoa1.gt.1)  ddvel(i,j,p_cvbsoa1) = dep_vap*ddvel(i,j,p_hno3)
+               if(p_cvbsoa2.gt.1)  ddvel(i,j,p_cvbsoa2) = dep_vap*ddvel(i,j,p_hno3)
+               if(p_cvbsoa3.gt.1)  ddvel(i,j,p_cvbsoa3) = dep_vap*ddvel(i,j,p_hno3)
+               if(p_cvbsoa4.gt.1)  ddvel(i,j,p_cvbsoa4) = dep_vap*ddvel(i,j,p_hno3)
+
+               if(p_cvpoa1.gt.1)   ddvel(i,j,p_cvpoa1) = 0.
+               if(p_cvpoa2.gt.2)   ddvel(i,j,p_cvpoa2) = 0.
+               if(p_cvpoa3.gt.3)   ddvel(i,j,p_cvpoa3) = 0.
+               if(p_cvpoa4.gt.4)   ddvel(i,j,p_cvpoa4) = 0.
             end do
          end do
 
@@ -2288,7 +2311,8 @@ is_cbm4_kpp : &
 !         ... for redhc
 !------------------------------------------------
         if (config_flags%chem_opt == redhc_kpp .or. &
-                   config_flags%chem_opt == redhc_sorg_kpp ) then
+                   config_flags%chem_opt == redhc_sorg_kpp  .or. &
+                   config_Flags%chem_opt == redhc_made_soa_vbs_kpp ) then
         CALL wrf_debug(150, 'Setting up hstar, dhr, F0, Dvj for REDHC')           
 ! HSTAR
                hstar(p_ch3ooh) = 311.

@@ -1,4 +1,4 @@
-#EQUATIONS {redhc_sorg}
+#EQUATIONS {redhc_made_soa_vbs}
 // photorates
  {001:J01} O3+hv=O1D_CB4{+O2}  		: j(Pj_o31d) ;
  {002:J02} O3+hv=O{+O2}  		: j(Pj_o33p) ;
@@ -85,11 +85,16 @@
  { 92:066 } SESQ+NO3=XO2N+0.027 CH3COCHO+0.522 OLE : 2.20D-11 ;
  { 93:067 } MBO+O3=0.635 CO+ 0.369 OH+0.084 HO2+0.085 PAR : ARR2( 4.40D-15 , 845.0_dp, TEMP ) ; 
  { 94:068 } MBO+OH=0.935 XO2+0.935 CH3CHO+0.311 CH2O+0.185 PAR+0.065 XO2N : ARR2( 1.33D-11 , -500.0_dp, TEMP ) ;
- { 95:069 } 
-// extra reactions for soa 
- {251:228} CVASOA4+OH=1.075 CVASOA3+OH                  : ARR2(1.0D-11, 0.0_dp, TEMP);
- {252:229} CVASOA3+OH=1.075 CVASOA2+OH                  : ARR2(1.0D-11, 0.0_dp, TEMP);
- {253:230} CVASOA2+OH=1.075 CVASOA1+OH                  : ARR2(1.0D-11, 0.0_dp, TEMP);
- {254:231} CVBSOA4+OH=1.075 CVBSOA3+OH                  : ARR2(1.0D-11, 0.0_dp, TEMP);
- {255:232} CVBSOA3+OH=1.075 CVBSOA2+OH                  : ARR2(1.0D-11, 0.0_dp, TEMP);
- {256:233} CVBSOA2+OH=1.075 CVBSOA1+OH                  : ARR2(1.0D-11, 0.0_dp, TEMP);;
+// extra reactions for soa
+ {251:228} CVPOA4+OH= 1.667 CVASOA3+OH                  : RATE_CVPOA ;            {RAR: oxidation of the primary organic condensable vapors}
+ {252:229} CVPOA3+OH= 1.667 CVASOA2+OH                  : RATE_CVPOA ;
+ {253:230} CVPOA2+OH= 1.667 CVASOA1+OH                  : RATE_CVPOA ;
+ {254:231} CVPOA1+OH= 1.667 CVASOA0+OH                  : RATE_CVPOA ;
+ {255:232} CVASOA4+OH= CVASOA3+OH                       : RATE_CVASOA ;           {RAR: aging of anthropogenic organic condensable vapors}
+ {256:233} CVASOA3+OH= CVASOA2+OH                       : RATE_CVASOA ;
+ {257:234} CVASOA2+OH= CVASOA1+OH                       : RATE_CVASOA ;
+ {258:235} CVASOA1+OH= CVASOA0+OH                       : RATE_CVASOA0 ;          {RAR: aging of anthropogenic organic condensable vapors from bin-1 to bin-0}
+ {259:236} CVBSOA4+OH= CVBSOA3+OH                       : RATE_CVBSOA ;           {RAR: aging of biogenic organic condensable vapors}
+ {260:237} CVBSOA3+OH= CVBSOA2+OH                       : RATE_CVBSOA ;
+ {261:238} CVBSOA2+OH= CVBSOA1+OH                       : RATE_CVBSOA ;
+ {262:239} IVOC+OH   = OH                               : 2.3D-11 ;               {RAR: oxidation rate the same as hexadecane}

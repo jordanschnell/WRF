@@ -37,6 +37,7 @@
    USE module_mosaic_driver, ONLY: sum_pm_mosaic
    USE module_input_tracer, ONLY: initialize_tracer
    USE module_aerosols_soa_vbs, only: sum_pm_soa_vbs
+   USE module_made_soa2, only: sum_pm_soa2  ! RAR:
 #endif
    USE module_diag_pld, ONLY : pld
    USE module_diag_zld, ONLY : zld
@@ -1790,6 +1791,14 @@ endif
                  grid%alt, chem, grid%h2oaj, grid%h2oai,                                   &
                  grid%pm2_5_dry, grid%pm2_5_water, grid%pm2_5_dry_ec, grid%pm10,                &
                  config_flags%dust_opt,ids,ide, jds,jde, kds,kde,           &
+                 ims,ime, jms,jme, kms,kme,                                 &
+                 its,ite, jts,jte, kts,kte-1                                )
+! RAR:
+        case (REDHC_MADE_SOA_VBS_KPP)
+           call  sum_pm_soa2 (                                             &
+                 grid%alt, chem, grid%h2oaj, grid%h2oai,                    &
+                 grid%pm2_5_dry, grid%pm2_5_water, grid%pm2_5_dry_ec,       &
+                 ids,ide, jds,jde, kds,kde,                                 &
                  ims,ime, jms,jme, kms,kme,                                 &
                  its,ite, jts,jte, kts,kte-1                                )
 
