@@ -489,7 +489,7 @@ CONTAINS
     CASE ( REDHC_KPP, REDHC_SORG_KPP)
        CALL get_megan2redhc_table
     CASE ( REDHC_MADE_SOA_VBS_KPP )
-       CALL get_megan2redhc_soa_table
+       CALL get_megan2redhcsoa_table
     CASE DEFAULT
        
        CALL wrf_error_fatal('Species conversion table for MEGAN v2.04 not available. ')
@@ -1697,12 +1697,12 @@ is_mozm_species : &
                       ELSE IF ( p_in_chem == p_mbo ) THEN
                          ebio_mbo(i,j)  = ebio_mbo(i,j) + gas_emis
                          e_bio(i,j,p_mbo-1)    = e_bio(i,j,p_mbo-1) + gas_emis*convert2
-                      ELSE IF ( p_in_chem == p_par ) THEN
-                         ebio_par(i,j)  = ebio_par(i,j) + gas_emis
-                         e_bio(i,j,p_par-1)    = e_bio(i,j,p_par-1) + gas_emis*convert2
-                      ELSE IF ( p_in_chem == p_ole ) THEN
-                         ebio_ole(i,j)  = ebio_ole(i,j) + gas_emis
-                         e_bio(i,j,p_ole-1)    = e_bio(i,j,p_ole-1) + gas_emis*convert2
+                      !ELSE IF ( p_in_chem == p_par ) THEN
+                      !   ebio_par(i,j)  = ebio_par(i,j) + gas_emis
+                      !   e_bio(i,j,p_par-1)    = e_bio(i,j,p_par-1) + gas_emis*convert2
+                      !ELSE IF ( p_in_chem == p_ole ) THEN
+                      !   ebio_ole(i,j)  = ebio_ole(i,j) + gas_emis
+                      !   e_bio(i,j,p_ole-1)    = e_bio(i,j,p_ole-1) + gas_emis*convert2
                       END IF
 
                    END IF !( p_in_chem > param_first_scalar )

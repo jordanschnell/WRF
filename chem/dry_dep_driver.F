@@ -597,7 +597,7 @@ CONTAINS
                num_chem-numgas,                                         &
                ids,ide, jds,jde, kds,kde,                               &
                ims,ime, jms,jme, kms,kme,                               &
-               its,ite, jts,jte, kts,kte        
+               its,ite, jts,jte, kts,kte                                ) 
 
     CASE (CBMZ_CAM_MAM3_NOAQ, CBMZ_CAM_MAM3_AQ, CBMZ_CAM_MAM7_NOAQ, CBMZ_CAM_MAM7_AQ)
        CALL wrf_debug(15,'DOING DRY DEP VELOCITIES FOR CAM_MAM AEROSOLS')

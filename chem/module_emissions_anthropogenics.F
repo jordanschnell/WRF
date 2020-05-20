@@ -9,6 +9,7 @@ CONTAINS
 !
    subroutine add_anthropogenics(id,dtstep,dz8w,config_flags,rho_phy,alt,  &
                chem, emis_ant, emis_aircraft,                              &
+               poa_frc4,                                                   &  !RAR:
                ids,ide, jds,jde, kds,kde,                                  &
                ims,ime, jms,jme, kms,kme,                                  &
                its,ite, jts,jte, kts,kte                                   )
@@ -28,7 +29,7 @@ CONTAINS
                                   ims,ime, jms,jme, kms,kme,               &
                                   its,ite, jts,jte, kts,kte
       REAL,      INTENT(IN   ) ::                                          &
-                             dtstep
+                             dtstep, poa_frc4
 !
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme, num_chem ),                 &
          INTENT(INOUT ) ::                                   chem
@@ -64,6 +65,31 @@ CONTAINS
 
     logical :: is_moz_chm
     character(len=256) :: msg
+
+    real :: poa_to_cvpoa
+
+    INTEGER, SAVE :: icall
+
+! RAR: this constant to convert aerosol emissions in ug/m2/s to mol/km2/hour,
+! for CVPOA species
+! mol/km2/hour= const_aer_gas* ug/m2/s
+
+    REAL, PARAMETER :: const_aer_gas= 3600./250.        ! 250 g/mol - MW for POA species, Tsimpidi et al., 2010
+
+    poa_to_cvpoa= poa_frc4*const_aer_gas                ! poa_frc4 - is a fraction of POA to be emitted at bin-4,
+                                                        ! It is assumed that all
+                                                        ! the POA emissions come
+                                                        ! in total mass unit
+! .. Intrinsic Functions ..
+
+         call wrf_debug(15,'add_anthropogenics')
+
+         ! RAR: Debugging:
+         if ( config_flags%debug_soa .AND. icall<200 ) then
+             WRITE(6,*) 'add_anthropogenics: poa_to_cvpoa,conv_rho,p_cvpoa4',poa_to_cvpoa, conv_rho, p_cvpoa4
+         end if
+
+
 
 !--- deposition and emissions stuff
 
@@ -213,6 +239,22 @@ is_mozart:if( is_moz_chm ) then
               chem(i,k,j,p_c10h16) = chem(i,k,j,p_c10h16) + emis_ant(i,k,j,p_e_c10h16)*conv_rho(i)
               chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + emis_ant(i,k,j,p_e_ole)*conv_rho(i)
               chem(i,k,j,p_par)    = chem(i,k,j,p_par)    + emis_ant(i,k,j,p_e_par)*conv_rho(i)
+! RAR: added to handle direct IVOC emissions
+              if(config_flags%add_ivoc) then
+                    chem(i,k,j,p_ivoc) = chem(i,k,j,p_ivoc)                          &
+                         +emis_ant(i,k,j,p_e_unid)*conv_rho(i)
+              endif
+
+
+              ! RAR: Bin 4 for POA/SOA; POA emissions are in ug/m2/s, so we need
+              ! const_aer_gas
+              ! poa_frc4 controls fraction of POA emissions emitted in this bin:
+
+              if( p_cvpoa4>1 ) then 
+                    chem(i,k,j,p_cvpoa4)= chem(i,k,j,p_cvpoa4) &
+                     + poa_to_cvpoa * ( emis_ant(i,k,j,p_e_orgi) + emis_ant(i,k,j,p_e_orgj))*conv_rho(i)
+              endif
+
             end do
           else is_mozart
             do i=its,ite  

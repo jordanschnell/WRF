@@ -13,7 +13,7 @@
                gamn2o5,cn2o5,kn2o5,yclno2,snu,sac,          &
                h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3,cvaro1,  &
                cvaro2,cvalk1,cvole1,cvapi1,cvapi2,cvlim1,cvlim2,vcsulf_old,&
-               vdrog3, vdrog3_vbs,vdrog3_soa2,brch_ratio,dgnum,dgnumwet,wetdens_ap,    &
+               vdrog3, vdrog3_vbs,vdrog3_soa2,drog,brch_ratio,dgnum,dgnumwet,wetdens_ap,    &
                del_h2so4_gasprod,dvmrdt_sv13d,dvmrcwdt_sv13d,              &
                is_CAMMGMP_used,                                            &!BSINGH:01/31/2013: Added is_CAMMGMP_used for cam_mam_aerchem_driver
                ids,ide, jds,jde, kds,kde,                                  &
@@ -137,6 +137,10 @@
 !
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme, num_chem ),          &
          INTENT(INOUT ) ::                                chem
+
+! RAR: Accumulated dROGs for diagnostics
+   REAL, DIMENSION( ims:ime, kms:kme, jms:jme, num_drog ),          &
+         INTENT(INOUT ) ::                                drog
 !
 ! following are aerosol arrays that are not advected
 !
@@ -403,6 +407,7 @@
    USE module_gocart_aerosols, only: sum_pm_gocart
    USE module_aerosols_soa_vbs, only: sum_pm_soa_vbs
    USE module_aerosols_sorgam_vbs, only: sum_pm_sorgam_vbs
+   USE module_made_soa2, only: sum_pm_soa2  ! RAR:
 
    IMPLICIT NONE
 
@@ -512,7 +517,7 @@
             ims,ime, jms,jme, kms,kme,                                 &
             its,ite, jts,jte, kts,kte                                  )
 
-   CASE ( REDHC_MADE_SOA_VBS ) 
+   CASE ( REDHC_MADE_SOA_VBS_KPP ) 
        CALL wrf_debug(15,'sum_pm_driver: calling redhc_soa_vbs')
        CALL sum_pm_soa2 (                                              &
             alt, chem, h2oaj, h2oai,                                   &

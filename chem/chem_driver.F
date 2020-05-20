@@ -712,7 +712,7 @@
       case (RADM2SORG, RADM2SORG_AQ, RADM2SORG_AQCHEM, RADM2SORG_KPP, &
             RACM_ESRLSORG_KPP,RACMSORG_AQ,RACMSORG_KPP, RACMSORG_AQCHEM_KPP, RACM_ESRLSORG_AQCHEM_KPP, &
             RACM_SOA_VBS_KPP,RACM_SOA_VBS_AQCHEM_KPP,RACM_SOA_VBS_HET_KPP, &
-            REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP, REDHC_MADE_SOA_VBS_KPP)
+            REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
          do j=jps,jpe
             do k=kps,kpe
                do i=ips,ipe
@@ -1585,7 +1585,7 @@ if ( cam_mam_aerosols ) &
               grid%h2oaj,grid%h2oai,grid%nu3,grid%ac3,grid%cor3,grid%asulf,           &
               grid%ahno3,grid%anh3,grid%cvaro1,grid%cvaro2,grid%cvalk1,grid%cvole1,   &
               grid%cvapi1,grid%cvapi2,grid%cvlim1,grid%cvlim2,vcsulf_old,             &
-              vdrog3,vdrog3_vbs,vdrog3_soa2,grid%br_rto,grid%dgnum4d,grid%dgnumwet4d, &
+              vdrog3,vdrog3_vbs,vdrog3_soa2,drog,grid%br_rto,grid%dgnum4d,grid%dgnumwet4d, &
               wetdens_ap, del_h2so4_gasprod,grid%dvmrdt_sv13d,grid%dvmrcwdt_sv13d,    &
               grid%is_CAMMGMP_used,                                                   &
               ids,ide, jds,jde, kds,kde,                                              &
@@ -1685,7 +1685,8 @@ end if !Chemistry time step check
 !
         if(config_flags%wetscav_onoff<0)then
            call wrf_debug(15,'calculate LS wet deposition')
-           call wetdep_ls(grid%dt,chem,grid%rainncv,moist,rho,num_moist, &
+           call wetdep_ls(config_flags,                                  & !RAR/JLS 
+                grid%dt,chem,grid%rainncv,moist,rho,num_moist, &
                 num_chem,numgas,dz8w,vvel,grid%chem_opt,                 &
                 ids,ide, jds,jde, kds,kde,                               &
                 ims,ime, jms,jme, kms,kme,                               &

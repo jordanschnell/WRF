@@ -864,7 +864,7 @@ state    real  wflx_p25i     ivjf      wflx           1         -      h{24}    
 state    real  wflx_ecj      ivjf      wflx           1         -      h{24}      "wflx_ecj"      "CVOPOA1 deposition flux"                      ""
 state    real  wflx_poa0j    ivjf      wflx           1         -      h{24}      "wflx_poa0j"    "CVOPOA1 deposition flux"                      ""
 state    real  wflx_asoa1j   ivjf      wflx           1         -      h{24}      "wflx_asoa1j"   "CVOPOA1 deposition flux"                      ""
-state    real  wflx_bsoa1j   ivjf      wflx           1         -      h{24}      "wflx_bsoa1j"   "CVOPOA1 deposition flux
+state    real  wflx_bsoa1j   ivjf      wflx           1         -      h{24}      "wflx_bsoa1j"   "CVOPOA1 deposition flux"                      ""
 
 # accumulated dry deposition
 state    real  ddmass_o3       i%jf      dvel          1         -      rdu    "ddmass_o3"        "O3 dry deposition, accumulated "  "mol/m2"
@@ -1615,6 +1615,9 @@ state   real   t_ann             ivjf          wet_in      1        -     i{15}r
 # Parameters to for calculating the termite emissions online
 state   real   biomt_par         {ghgt}       misc        1        -     -    "BIOMT_PAR"    "biomass termite per vegetation type"  "g/m^2"
 state   real   emit_par          {ghgt}       misc        1        -     -    "EMIT_PAR"     " " " "
+
+# Parameters to split POA emissions among volatility bins
+state   real   poa_vol_frac      {pbins}      misc        1        -     -    "POA_VOL_FRAC"     " " " "
 
 # Chem Scalars
 state   real    -              ikjftb   chem        1         -     -    -                                       

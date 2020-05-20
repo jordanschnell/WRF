@@ -71,6 +71,7 @@ CONTAINS
          xtime,tslb,wet_in,rainc,rainnc,potevp,sfcevp,lu_index,            &
          biomt_par,emit_par,ebio_co2oce,eghg_bio,                          &
          dust_flux, seas_flux,                                             &
+         poa_vol_params,                                                   &
          ids,ide, jds,jde, kds,kde,                                        &
          ims,ime, jms,jme, kms,kme,                                        &
          its,ite, jts,jte, kts,kte                                         )
@@ -303,6 +304,8 @@ CONTAINS
 
       REAL, INTENT(IN   ) ::                                           &
            bioemdt, dtstep, dx, gmt, g
+
+      REAL, DIMENSION (5), INTENT(IN)   ::      poa_vol_params  ! RAR:
 
       INTEGER, INTENT(IN   ) ::                                        &
            plumerisefire_frq
@@ -899,7 +902,7 @@ CONTAINS
           RACM_SOA_VBS_KPP, RACM_SOA_VBS_AQCHEM_KPP, RACM_SOA_VBS_HET_KPP, RACM_ESRLSORG_KPP, MOZART_KPP, MOZCART_KPP,  &
           T1_MOZCART_KPP, MOZART_MOSAIC_4BIN_KPP, MOZART_MOSAIC_4BIN_AQ_KPP, &
           CRIMECH_KPP, CRI_MOSAIC_8BIN_AQ_KPP, CRI_MOSAIC_4BIN_AQ_KPP, &
-          REDHC_KPP, REDHC_SORG_KPP, REDHC_MADE_SOA_VBS)
+          REDHC_KPP, REDHC_SORG_KPP, REDHC_MADE_SOA_VBS_KPP)
        IF(config_flags%emiss_inpt_opt /= 3 ) then
        IF(config_flags%kemit .GT. kte-ksub) THEN
          k=config_flags%kemit
@@ -909,6 +912,7 @@ CONTAINS
        call wrf_debug(15,'emissions_driver calling add_anthropogenics')
        call add_anthropogenics(id,dtstep,dz8w,config_flags,rho_phy,alt, &
             chem, emis_ant,emis_aircraft,                               &
+            poa_vol_params(5),                                          & ! RAR:
             ids,ide, jds,jde, kds,kde,                                  &
             ims,ime, jms,jme, kms,kme,                                  &
             its,ite, jts,jte, kts,kte                                   )
@@ -1344,6 +1348,7 @@ CONTAINS
        call wrf_debug(15,'emissions_driver calling add_anthropogenics')
        call add_anthropogenics(id,dtstep,dz8w,config_flags,rho_phy,alt, &
             chem, emis_ant,emis_aircraft,                               &
+            0.0,                                                        &
             ids,ide, jds,jde, kds,kde,                                  &
             ims,ime, jms,jme, kms,kme,                                  &
             its,ite, jts,jte, kts,kte                                   )
