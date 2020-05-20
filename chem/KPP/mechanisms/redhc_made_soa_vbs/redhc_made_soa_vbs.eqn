@@ -98,3 +98,4 @@
  {260:237} CVBSOA3+OH= CVBSOA2+OH                       : RATE_CVBSOA ;
  {261:238} CVBSOA2+OH= CVBSOA1+OH                       : RATE_CVBSOA ;
  {262:239} IVOC+OH   = OH                               : 2.3D-11 ;               {RAR: oxidation rate the same as hexadecane}
+ {263:240} SOAALK+OH = OH                               : ARR2( 1.64D-11 , 125.0_dp, TEMP ) ;

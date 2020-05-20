@@ -15,31 +15,40 @@
 !
 if(p_nu0.gt.1)then
 
+
      ! OLE only, RACM_SOA is OLI and OLT
-     roleho  = RCONST(10)
-     roleo3  = RCONST(10)
-     roleno3 = RCONST(10)
+     roleho  = RCONST(56)
+     roleo3  = RCONST(57)
+     roleno3 = RCONST(58)
 
      ! TOL
-     rtolho =   RCONST(10)
+     rtolho =   RCONST(75)
 
      ! NO XYL
 
      ! NO CSL
 
-     ! PAR, RACM_SOA is HC5 and HC8 
-     rparho  =  RCONST(10)
+     ! PAR, RACM_SOA is HC5 and HC8
+     rsoaalkho  =  RCONST(96)
 
      ! ISO
-     risoho  =  RCONST(10)
-     risoo3  =  RCONST(10)
-     risono3 =  RCONST(10)
+     risoho  =  RCONST(62)
+     risoo3  =  RCONST(63)
+     risono3 =  RCONST(64)
 
      ! C10H16, RACM is seperate for API and LIM
-     rc10h16ho  = RCONST(10)
-     rc10h16o3  = RCONST(10)
-     rc10h16no3 = RCONST(10)    
- 
+     rc10h16ho  = RCONST(77)
+     rc10h16o3  = RCONST(76)
+     rc10h16no3 = RCONST(78)
+
+     ! SESQ
+     rsesqho  =  RCONST(80)
+     rsesqo3  =  RCONST(79)
+     rsesqno3 =  RCONST(81)
+
+     ! IVOC
+     rivocho = RCONST(95)
+
      ! SESQ
      rsesqho  =  RCONST(10)
      rsesqo3  =  RCONST(10)
@@ -48,12 +57,11 @@ if(p_nu0.gt.1)then
      ! IVOC 
      rivocho = RCONST(10)
      
-
      ! NO Isoprene radical, RACM uses ISOP + HO, NO, MO2, ACO3 to deterimine branching ratio, what whould we use?
 ! ---------------------    
   
      ! production from anthropogenic VOCs
-     PRDROG(PPAR)= rparho*var(ind_par)*var(ind_oh)
+     PRDROG(PSOAALK)= rsoaalkho*var(ind_soaalk)*var(ind_oh)
 
      PRDROG(POLE)= roleho*var(ind_ole)*var(ind_oh) + roleo3*var(ind_ole)*var(ind_o3) + roleno3*var(ind_ole)*var(ind_no3)
 

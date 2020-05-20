@@ -245,7 +245,12 @@ is_mozart:if( is_moz_chm ) then
                          +emis_ant(i,k,j,p_e_unid)*conv_rho(i)
               endif
 
-
+! Here assumes SOAAALK is emitted, could write so E_SOAALK = E_HC5 + E_HC8 in
+! new module -- ...to do
+              if ( p_soaalk > 1 ) then
+                   chem(i,k,j,p_soaalk) = chem(i,k,j,p_soaalk) &
+                     + emis_ant(i,k,j,p_e_soaalk)*conv_rho(i)    
+              endif 
               ! RAR: Bin 4 for POA/SOA; POA emissions are in ug/m2/s, so we need
               ! const_aer_gas
               ! poa_frc4 controls fraction of POA emissions emitted in this bin:

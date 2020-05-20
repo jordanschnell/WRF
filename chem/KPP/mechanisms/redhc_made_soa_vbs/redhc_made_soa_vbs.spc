@@ -48,6 +48,7 @@
  SO2 =IGNORE ;
  SULF =IGNORE ;
  NH3  =IGNORE ;
+ SOAALK =IGNORE ;
 #DEFFIX
  H2O = IGNORE ;   {water}
  M  = IGNORE ;
