@@ -422,14 +422,14 @@ CONTAINS
     p_of_megan2redhcsoa( 58) = is_selinene_d           ; p_of_redhcsoa( 58) = p_c10h16         ; redhcsoa_per_megan( 58)  =  1.5
     p_of_megan2redhcsoa( 59) = is_nerolidol_c          ; p_of_redhcsoa( 59) = p_c10h16         ; redhcsoa_per_megan( 59)  =  1.5
     p_of_megan2redhcsoa( 60) = is_nerolidol_t          ; p_of_redhcsoa( 60) = p_c10h16         ; redhcsoa_per_megan( 60)  =  1.5
-    p_of_megan2redhcsoa( 61) = is_mbo_2m3e2ol          ; p_of_redhcsoa( 61) = p_isopr          ; redhcsoa_per_megan( 61)  =  2.4
-    p_of_megan2redhcsoa( 62) = is_mbo_3m2e1ol          ; p_of_redhcsoa( 62) = p_isopr          ; redhcsoa_per_megan( 62)  =  1.25
+    p_of_megan2redhcsoa( 61) = is_mbo_2m3e2ol          ; p_of_redhcsoa( 61) = p_mbo            ; redhcsoa_per_megan( 61)  =  1.0
+    p_of_megan2redhcsoa( 62) = is_mbo_3m2e1ol          ; p_of_redhcsoa( 62) = p_mbo            ; redhcsoa_per_megan( 62)  =  1.0
     p_of_megan2redhcsoa( 63) = is_geranyl_acetone      ; p_of_redhcsoa( 63) = p_c10h16         ; redhcsoa_per_megan( 63)  =  1.4
     p_of_megan2redhcsoa( 64) = is_terpinyl_act_a       ; p_of_redhcsoa( 64) = p_c10h16         ; redhcsoa_per_megan( 64)  =  1.4
     p_of_megan2redhcsoa( 65) = is_2met_nonatriene      ; p_of_redhcsoa( 65) = p_c10h16         ; redhcsoa_per_megan( 65)  =  1.1
     p_of_megan2redhcsoa( 66) = is_jasmone              ; p_of_redhcsoa( 66) = p_c10h16         ; redhcsoa_per_megan( 66)  =  1.2
     p_of_megan2redhcsoa( 67) = is_met_jasmonate        ; p_of_redhcsoa( 67) = p_c10h16         ; redhcsoa_per_megan( 67)  =  1.6
-    p_of_megan2redhcsoa( 68) = is_mbo_3m3e1ol          ; p_of_redhcsoa( 68) = p_isopr          ; redhcsoa_per_megan( 68)  =  1.25
+    p_of_megan2redhcsoa( 68) = is_mbo_3m3e1ol          ; p_of_redhcsoa( 68) = p_mbo            ; redhcsoa_per_megan( 68)  =  1.0
 
   END SUBROUTINE get_megan2redhcsoa_table
 

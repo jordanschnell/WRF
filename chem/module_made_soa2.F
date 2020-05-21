@@ -5512,7 +5512,7 @@ INTEGER, SAVE :: icall
 !
 ! Increment the aerosol numbers...
 !    if(emissopt  .lt. 5 )then
-    if (emissopt == 3) then      ! For my runs emiss_opt=3
+    if ( emissopt == 3 .or. emissopt == 23 ) then      ! For my runs emiss_opt=3
 !
 ! Aitken mode first...
 ! RAR: For nu0 and ac0 I use only non-volatile part of the e_org* emissions!
@@ -5552,11 +5552,11 @@ end if
 
 ! And now the coarse mode...
 
-!  chem(its:ite,kts:kemit,jts:jte,p_corn) =                       &
-!       chem(its:ite,kts:kemit,jts:jte,p_corn) +                  &
-!       factor(its:ite,kts:kemit,jts:jte)*factnumc*anthfac*                           &
-!       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)
-!!
+  chem(its:ite,kts:kemit,jts:jte,p_corn) =                       &
+       chem(its:ite,kts:kemit,jts:jte,p_corn) +                  &
+       factor(its:ite,kts:kemit,jts:jte)*factnumc*anthfac*                           &
+       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)
+!
 ! Increment the aerosol masses...
 !
 !  chem(its:ite,kts:kemit,jts:jte,p_antha) =                      &
@@ -5662,7 +5662,7 @@ end if
 ! Thia bin contains gas phase OCVs only, therefore the emissions are added in add_anthropogenics
 !-------------------------------------------------------------------------------------------
  else
-    CALL wrf_error_fatal ( 'emiss_opt in namelist must be =3')
+    CALL wrf_error_fatal ( 'emiss_opt in namelist must be =3 or 23')
  end if
 
 ! RAR: The parts of the code dealing with biomass burning, dust and sea salt emissions have been removed
