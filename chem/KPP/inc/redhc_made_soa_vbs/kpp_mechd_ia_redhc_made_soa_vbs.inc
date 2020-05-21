@@ -49,13 +49,6 @@ if(p_nu0.gt.1)then
      ! IVOC
      rivocho = RCONST(95)
 
-     ! SESQ
-     rsesqho  =  RCONST(10)
-     rsesqo3  =  RCONST(10)
-     rsesqno3 =  RCONST(10)
-
-     ! IVOC 
-     rivocho = RCONST(10)
      
      ! NO Isoprene radical, RACM uses ISOP + HO, NO, MO2, ACO3 to deterimine branching ratio, what whould we use?
 ! ---------------------    
