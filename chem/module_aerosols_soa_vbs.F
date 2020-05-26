@@ -272,9 +272,9 @@ INTEGER :: i,j,k,l,debug_level
                nh3_in = max(epsilc,chem(i,k,j,p_nh3)*convfac*mwnh3)
 !liqy
 !uncomment hcl_in = max(epsilc,chem(i,k,j,p_hcl)*convfac*mwhcl)
-               hcl_in = max(epsilc,chem(i,k,j,p_hcl)*convfac*mwhcl)
+!               hcl_in = max(epsilc,chem(i,k,j,p_hcl)*convfac*mwhcl)
 !comment hcl_in = 0.
-!               hcl_in = 0.
+               hcl_in = 0.
               cblk(1,vn2o5) = max(epsilc,chem(i,k,j,p_n2o5)*convfac*mwn2o5)
               cblk(1,vclno2) =max(epsilc,chem(i,k,j,p_clno2)*convfac*mwclno2)
 !liqy-20140905
