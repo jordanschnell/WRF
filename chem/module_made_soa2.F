@@ -5552,10 +5552,10 @@ end if
 
 ! And now the coarse mode...
 
-  chem(its:ite,kts:kemit,jts:jte,p_corn) =                       &
-       chem(its:ite,kts:kemit,jts:jte,p_corn) +                  &
-       factor(its:ite,kts:kemit,jts:jte)*factnumc*anthfac*                           &
-       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)
+!  chem(its:ite,kts:kemit,jts:jte,p_corn) =                       &
+!       chem(its:ite,kts:kemit,jts:jte,p_corn) +                  &
+!       factor(its:ite,kts:kemit,jts:jte)*factnumc*anthfac*                           &
+!       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)
 !
 ! Increment the aerosol masses...
 !
