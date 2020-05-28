@@ -64,10 +64,10 @@
  { 71:046 } CH3COCHO+OH=XO2+C2O3           : 1.7e-11_dp ;
  { 72:047 } ISOP+OH=.85 XO2+.61 CH2O+.85 HO2+.03 CH3COCHO+.58 OLE+.15 XO2N+.63 PAR : ARR2(2.54e-11_dp, -410._dp, TEMP) ;
  { 73:048 } ISOP+O3=.9 CH2O+.55 OLE+.18 XO2+.36 CO+.15 C2O3+.03 CH3COCHO+.63 PAR+.3 HO2+.28 OH : ARR2(1.23e-14_dp, 2013._dp, TEMP) ;
- { 74:049 } ISOP+NO3=.9 HO2+.9 ONIT+.03 CH2O+.45 OLE+.12 CH3CHO+.1 NO2+.08 CH3COCHO : 7.8e-13_dp ;
+ { 74:049 } ISOP+NO3=.9 HO2+.9 ONIT+.03 CH2O+.45 OLE+.12 CH3CHO+.1 NO2+.08 CH3COCHO : ARR2( 3.03D-12 , 446.0_dp, TEMP ) ;
  { 75:050 } ROOH+OH=.7 XO2+.3 OH           : 3.2e-12_dp ;
- { 76:051 } ONIT+OH=NO2+XO2                : 1.78e-12_dp ;
- { 77:052 } XO2+NO=NO2                     : ARR2(4.2e-12_dp, -180._dp, TEMP) ;
+ { 76:051 } ONIT+OH=NO2+XO2                : ARR2(5.9E−13_dp, 360._dp, TEMP) ;
+ { 77:052 } XO2+NO=NO2                     : ARR2(2.6e-12_dp, -365._dp, TEMP) ;
  { 78:053 } XO2+XO2=M                      : ARR2(1.7e-14_dp, -1300._dp, TEMP) ;
  { 79:054 } XO2N+NO=ONIT                   : 6.8e-13_dp ;
  { 80:055 } XO2+HO2=ROOH                   : ARR2(3.5e-13_dp, -1000._dp, TEMP);
@@ -76,10 +76,10 @@
  { 83:058 } SO2+OH=SULF                   : usr23( TEMP, C_M ) ;
  { 84:059 } NH3+OH=M                       : ARR2(1.7e-12_dp, 710._dp, TEMP) ;
  { 85:060 } TOLUENE+OH=.2 XO2N+.6 XO2+.6 HO2+.4 CO+.85 CH3COCHO+.1 C2O3 : 5.5e-11_dp ;
-// Biogenic oxidation
- { 86:061 } C10H16+O3=6 PAR+1.44 CH3CHO+.64 CH2O+.25 HO2+.29 XO2+.4 OH+.9 RXPAR : 1.e-16_dp ;
- { 87:062 } C10H16+OH=6 PAR+CH2O+CH3CHO+XO2+HO2+RXPAR+C2O3 : 6.e-11_dp ;
- { 88:063 } C10H16+NO3=6 PAR+C2O3+HNO3+.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 4.e-12_dp ;
+// Added biogenic oxidation
+ { 84:059 } C10H16+O3=0.570 OH   + 0.070 HO2 + 0.760 XO2  + 0.180 XO2N + 0.240 CH2O + 0.001 CO + 7.000 PAR  + 0.210 CH3CHO + 0.390 C2O3 : ARR2(1.2D-15, 821.0_dp, TEMP);
+ { 86:060 } C10H16+OH=0.750 HO2  + 1.250 XO2 + 0.250 XO2N + 0.280 CH2O + 1.66  PAR  + 0.470 CH3CHO : ARR2(1.5D-11, -449.0_dp, TEMP);
+ { 87:061 } C10H16+NO3=0.470 NO2  + 0.280 HO2 + 1.030 XO2  + 0.250 XO2N + 0.470 CH3CHO + 0.530 ONIT : ARR2(3.7D-12, -175.0_dp, TEMP);
  { 89:064 } SESQ+O3=0.51 CH2O+0.85 CH3CHO+0.63 OH+0.21 PAR : 5.60D-16 ;
  { 90:065 } SESQ+OH=0.3 CH2O+0.19 XO2+0.324 PAR : 2.52D-10 ;
  { 92:066 } SESQ+NO3=XO2N+0.027 CH3COCHO+0.522 OLE : 2.20D-11 ;
