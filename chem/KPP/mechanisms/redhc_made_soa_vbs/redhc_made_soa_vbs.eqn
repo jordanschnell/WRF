@@ -64,9 +64,9 @@
  { 71:046 } CH3COCHO+OH=XO2+C2O3           : 1.7e-11_dp ;
  { 72:047 } ISOP+OH=.85 XO2+.61 CH2O+.85 HO2+.03 CH3COCHO+.58 OLE+.15 XO2N+.63 PAR : ARR2(2.54e-11_dp, -410._dp, TEMP) ;
  { 73:048 } ISOP+O3=.9 CH2O+.55 OLE+.18 XO2+.36 CO+.15 C2O3+.03 CH3COCHO+.63 PAR+.3 HO2+.28 OH : ARR2(1.23e-14_dp, 2013._dp, TEMP) ;
- { 74:049 } ISOP+NO3=.9 HO2+.9 ONIT+.03 CH2O+.45 OLE+.12 CH3CHO+.1 NO2+.08 CH3COCHO : ARR2( 3.03D-12 , 446.0_dp, TEMP ) ;
+ { 74:049 } ISOP+NO3=.9 HO2+.9 ONIT+.03 CH2O+.45 OLE+.12 CH3CHO+.1 NO2+.08 CH3COCHO : ARR2( 3.03e-12_dp , 446.0_dp, TEMP ) ;
  { 75:050 } ROOH+OH=.7 XO2+.3 OH           : 3.2e-12_dp ;
- { 76:051 } ONIT+OH=NO2+XO2                : ARR2(5.9E−13_dp, 360._dp, TEMP) ;
+ { 76:051 } ONIT+OH=NO2+XO2                : ARR2(5.9e-13_dp, 360._dp, TEMP) ;
  { 77:052 } XO2+NO=NO2                     : ARR2(2.6e-12_dp, -365._dp, TEMP) ;
  { 78:053 } XO2+XO2=M                      : ARR2(1.7e-14_dp, -1300._dp, TEMP) ;
  { 79:054 } XO2N+NO=ONIT                   : 6.8e-13_dp ;
