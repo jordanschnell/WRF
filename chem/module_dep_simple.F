@@ -890,9 +890,9 @@ tile_lon_loop : &
            config_flags%chem_opt == REDHC_MADE_SOA_VBS_KPP ) then
          do j=jts,jte
             do i=its,ite
-               ddvel(i,j,p_o)         = 0.  
-               ddvel(i,j,p_o1d_cb4)   = 0.
-               ddvel(i,j,p_ch3o2)     = 0.
+               if(p_o.gt.1) ddvel(i,j,p_o)         = 0.  
+               if(p_o1d_cb4.gt.1) ddvel(i,j,p_o1d_cb4)   = 0.
+!               ddvel(i,j,p_ch3o2)     = 0.
 !               ddvel(i,j,p_ho)        = 0.
 !               ddvel(i,j,p_ho2)       = 0.
                ddvel(i,j,p_c2o3)      = 0.

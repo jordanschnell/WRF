@@ -1,7 +1,9 @@
 REAL(KIND=dp) :: roleho,roleo3,roleno3,rtolho,    &
                  rsoaalkho,rivocho,risoho,risoo3,risono3,           &
                  rc10h16ho,rc10h16o3,rc10h16no3,                  &
-                 rsesqho,rsesqo3,rsesqno3
+                 rsesqho,rsesqo3,rsesqno3,       &
+                 ro2loss,rxo2no,rxo2xo2,rxo2ho2
+
 
 REAL(KIND=dp) , DIMENSION(ldrog_soa2)  :: PRDROG
 

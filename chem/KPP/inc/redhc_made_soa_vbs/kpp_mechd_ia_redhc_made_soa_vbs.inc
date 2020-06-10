@@ -17,40 +17,44 @@ if(p_nu0.gt.1)then
 
 
      ! OLE only, RACM_SOA is OLI and OLT
-     roleho  = RCONST(56)
-     roleo3  = RCONST(57)
-     roleno3 = RCONST(58)
+     roleho  = RCONST(48)
+     roleo3  = RCONST(49)
+     roleno3 = RCONST(50)
 
      ! TOL
-     rtolho =   RCONST(75)
+     rtolho =   RCONST(67)
 
      ! NO XYL
 
      ! NO CSL
 
      ! PAR, RACM_SOA is HC5 and HC8
-     rsoaalkho  =  RCONST(96)
+     rsoaalkho  =  RCONST(88)
 
      ! ISO
-     risoho  =  RCONST(62)
-     risoo3  =  RCONST(63)
-     risono3 =  RCONST(64)
+     risoho  =  RCONST(54)
+     risoo3  =  RCONST(55)
+     risono3 =  RCONST(56)
 
      ! C10H16, RACM is seperate for API and LIM
-     rc10h16ho  = RCONST(77)
-     rc10h16o3  = RCONST(76)
-     rc10h16no3 = RCONST(78)
+     rc10h16ho  = RCONST(69)
+     rc10h16o3  = RCONST(68)
+     rc10h16no3 = RCONST(70)
 
      ! SESQ
-     rsesqho  =  RCONST(80)
-     rsesqo3  =  RCONST(79)
-     rsesqno3 =  RCONST(81)
+     rsesqho  =  RCONST(72)
+     rsesqo3  =  RCONST(71)
+     rsesqno3 =  RCONST(73)
 
      ! IVOC
-     rivocho = RCONST(95)
+     rivocho = RCONST(87)
 
      
      ! NO Isoprene radical, RACM uses ISOP + HO, NO, MO2, ACO3 to deterimine branching ratio, what whould we use?
+     ! Based on Lane et al., 2008, just need RO2/NO/HO2 reactions...
+     rxo2no  = RCONST(59)
+     rxo2xo2 = RCONST(60)
+     rxo2ho2 = RCONST(62) 
 ! ---------------------    
   
      ! production from anthropogenic VOCs
@@ -72,18 +76,17 @@ if(p_nu0.gt.1)then
 
 ! RAR: to calculate the branching ratios to determine high NOx versus low NOx
 
-!!!!!!     PRDROG(PBRCH)= risopno*var(ind_no)
+     PRDROG(PBRCH)= rxo2no*var(ind_no)
 
      ! VDROG carrying the branching ratios
-!     if (PRDROG(PBRCH)>1.E-12) then
-!        ro2loss= PRDROG(PBRCH) + risopho2*var(ind_ho2) + risopmo2*var(ind_mo2) + risopaco3*var(ind_aco3) +  &
-!                               risopisop*var(ind_isopp)
-!        VDROG3_SOA2( i,k,j,LDROG_VBS )= MIN( 1.D0,(PRDROG(PBRCH)/ro2loss) )
-!     else
-!         VDROG3_SOA2( i,k,j,LDROG_VBS )= 0.
-!     end if
-!
-     DO n = 1, ldrog_soa2-1
+     if (PRDROG(PBRCH)>1.E-12) then
+        ro2loss= PRDROG(PBRCH) + rxo2xo2*var(ind_xo2) + rxo2ho2*var(ind_ho2)
+        VDROG3_SOA2( i,k,j,PBRCH )= MIN( 1.D0,(PRDROG(PBRCH)/ro2loss) )
+     else
+        VDROG3_SOA2( i,k,j,PBRCH )= 0.
+     end if
+
+     DO n = 1, ldrog_soa2-2
         VDROG3_SOA2( i,k,j,n ) =  oconv* PRDROG( n ) * DTSTEPC
         VDROG3_SOA2( i,k,j,n ) =  MAX( 0., VDROG3_SOA2( i,k,j,n ) )
      ENDDO
@@ -95,17 +98,17 @@ if(p_nu0.gt.1)then
 endif
 
 ! RAR: debugging
-!if (i==8 .AND. j==18) then
-!   if (k==1) then
+if (i==8 .AND. j==18) then
+   if (k==1) then
 !        write(*,*)'rhch5ho',rhc5ho,'rhc8ho',rhc8ho,'rhc8ho',roltho,'roliho',roliho, &
 !                  'rtolho',rtolho,'rxylho',rxylho,'rsesqno3',rsesqno3
 !        write(*,*)'ind_toluene',ind_toluene,'var(ind_toluene)',var(ind_toluene)
 !        write(*,*)'ind_oh',ind_oh,'var(ind_oh)',var(ind_oh)
 !        write(*,*)'ind_isop',ind_isop,'risoho',risoho
-!        write(*,*)'PRDROG(PBRCH)', PRDROG(PBRCH),'ro2loss=',ro2loss        
+        write(*,*)'PRDROG(PBRCH)', PRDROG(PBRCH),'ro2loss=',ro2loss        
 !        write(*,*)'VDROG3(8,1,18,:)', VDROG3(i,k,j,:)
-!   end if
-!end if
+   end if
+end if
 !
 !if (j==18 .AND. k==1) then
 !        write(*,*)'VDROG3(:,18,1,:)', VDROG3(i,k,j,:)

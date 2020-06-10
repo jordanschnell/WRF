@@ -6,7 +6,7 @@ INTEGER, PARAMETER :: pivoc=4
 
 ! biogenic
 INTEGER, PARAMETER :: pisop=5
-INTEGER, PARAMETER :: pterp=5
+INTEGER, PARAMETER :: pterp=6
 INTEGER, PARAMETER :: psesq=7
 
 ! for branching

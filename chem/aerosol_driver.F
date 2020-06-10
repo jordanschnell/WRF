@@ -315,7 +315,7 @@
        enddo
        CALL soa2_driver ( id,ktauc,dtstepc,t_phy,                &
                           alt,p_phy,chem,dz8w,rh,z,z_at_w,       &
-                          h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3,  &
+                          h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3,  &
                           vcsulf_old,config_flags%kemit,         &
                           vdrog3_soa2,brch_ratio,drog,           &
                           ids,ide, jds,jde, kds,kde,             &
@@ -521,7 +521,7 @@
        CALL wrf_debug(15,'sum_pm_driver: calling redhc_soa_vbs')
        CALL sum_pm_soa2 (                                              &
             alt, chem, h2oaj, h2oai,                                   &
-            pm2_5_dry, pm2_5_water, pm2_5_dry_ec,                      &
+            pm2_5_dry, pm2_5_water, pm2_5_dry_ec,pm10,                 &
             ids,ide, jds,jde, kds,kde,                                 &
             ims,ime, jms,jme, kms,kme,                                 &
             its,ite, jts,jte, kts,kte                                  )

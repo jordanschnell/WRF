@@ -229,23 +229,12 @@ CONTAINS
                 chem(i,k,j,p_par)    = chem(i,k,j,p_par)    + ebu(i,k,j,p_ebu_par)*conv_rho
                 chem(i,k,j,p_ole)    = chem(i,k,j,p_ole)    + ebu(i,k,j,p_ebu_ole)*conv_rho
                 chem(i,k,j,p_mgly)   = chem(i,k,j,p_mgly)   + ebu(i,k,j,p_ebu_mgly)*conv_rho
-                        !RAR: added for IVOCs
                 if (p_ivoc>1) chem(i,k,j,p_ivoc) = chem(i,k,j,p_ivoc) + ebu(i,k,j,p_ebu_ivoc)*conv_rho
+                if (p_soaalk>1) chem(i,k,j,p_soaalk) = chem(i,k,j,p_soaalk) + ebu(i,k,j,p_ebu_soaalk)*conv_rho
               enddo
             enddo
           enddo
-          ! For now, test for aerosol option so other mechs can be added later
-          if( chem_opt == REDHC_SORG_KPP ) then
-            do j=jts,jte
-              do k=kts,kte
-                do i=its,ite
-                  conv_rho = (r_q*dtstep)/(rho_phy(i,k,j)*dz8w(i,k,j))
-                enddo
-              enddo
-            enddo
-          endif
-        endif
-
+         endif
 
 
       CASE (GOCART_SIMPLE)

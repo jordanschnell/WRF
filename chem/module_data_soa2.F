@@ -26,7 +26,7 @@ MODULE module_data_soa2
       !sm number of SAPRC species variables in CMU lumped partitioning table
       !sm 1=ALK4(hc5), 2=ALK5(hc8), 3=IVOC,  4=OLE1(ol2), 5=OLE2(oli), 6=ARO1(tol)
       !sm 7=AOR2(xyl), 8=ISOP(iso), 9=SESQ(?),10=TERP(alp)
-      INTEGER, PARAMETER :: nsaprc=10   ! number of SOA precursor classes, SAPRC99
+      INTEGER, PARAMETER :: nsaprc=7  ! number of SOA precursor classes, SAPRC99
 
 ! RAR: for this option we have 32 advect aerosol spfp25ies (laerdvc)
 ! Non-advected species are: H2OA, NU3, AC3, sulf, hno3, nh3 and OCVs
@@ -43,7 +43,7 @@ MODULE module_data_soa2
 !
 ! Non-advected aerosol species: Water in aeorosl (2), 3rd mode (2), 3 species for inorganic part (vsulf, nitate, nh3);
 !                               Total=7
-      INTEGER, PARAMETER :: nspcsda=34+7+lsv_ocv   ! nspcsda=53 cblk species
+      INTEGER, PARAMETER :: nspcsda=34+7+lsv_ocv+4+4   ! nspcsda=53 cblk species
 
       INTEGER, PARAMETER :: Nbin_voc_ox= 4, Nbin_all= 5
 
@@ -85,7 +85,7 @@ MODULE module_data_soa2
 !ia		    currently only sulfate (=1)
 !bs
 ! updated ldrog numbers for the new SOA mechanism
-      INTEGER, PARAMETER :: ldroga=7    ! anthropogenic: ALK4,ALK5,IVOC,OLE1,OLE2,ARO1,ARO2
+      INTEGER, PARAMETER :: ldroga=4    ! anthropogenic: ALK4,ALK5,IVOC,OLE1,OLE2,ARO1,ARO2
       INTEGER, PARAMETER :: ldrogb=3    ! biogenic: ISOP,SESQ,TERP
       INTEGER, PARAMETER :: ldrogr=1    ! for branching ratio
       INTEGER, PARAMETER :: ldrog0=1    ! for CVASOA0 production
@@ -108,90 +108,106 @@ MODULE module_data_soa2
       INTEGER, PARAMETER ::  vno3aj= 5
       INTEGER, PARAMETER ::  vno3ai= 6
 
+      INTEGER, PARAMETER ::  vnaaj= 7
+      INTEGER, PARAMETER ::  vnaai= 8
+      INTEGER, PARAMETER ::  vclaj= 9
+      INTEGER, PARAMETER ::  vclai= 10
+
+
 ! indices for accumulation and aitken modes of semi-volatile POA:
-      INTEGER, PARAMETER ::  vpoa0j= 7
-      INTEGER, PARAMETER ::  vpoa0i= 8
+      INTEGER, PARAMETER ::  vpoa0i= 11
+      INTEGER, PARAMETER ::  vpoa0j= 12
 
-      INTEGER, PARAMETER ::  vpoa1j= 9
-      INTEGER, PARAMETER ::  vpoa1i= 10
+      INTEGER, PARAMETER ::  vpoa1i= 13
+      INTEGER, PARAMETER ::  vpoa1j= 14
 
-      INTEGER, PARAMETER ::  vpoa2j= 11
-      INTEGER, PARAMETER ::  vpoa2i= 12
+      INTEGER, PARAMETER ::  vpoa2i= 15
+      INTEGER, PARAMETER ::  vpoa2j= 16
 
-      INTEGER, PARAMETER ::  vpoa3j= 13
-      INTEGER, PARAMETER ::  vpoa3i= 14
+      INTEGER, PARAMETER ::  vpoa3i= 17
+      INTEGER, PARAMETER ::  vpoa3j= 18
 
 ! indices for accumulation and aitken modes of anthropogenic SOA
-      INTEGER, PARAMETER ::  vasoa0j= 15
-      INTEGER, PARAMETER ::  vasoa0i= 16
+      INTEGER, PARAMETER ::  vasoa0i= 19
+      INTEGER, PARAMETER ::  vasoa0j= 20
 
-      INTEGER, PARAMETER ::  vasoa1j= 17
-      INTEGER, PARAMETER ::  vasoa1i= 18
+      INTEGER, PARAMETER ::  vasoa1i= 21
+      INTEGER, PARAMETER ::  vasoa1j= 22
 
-      INTEGER, PARAMETER ::  vasoa2j= 19
-      INTEGER, PARAMETER ::  vasoa2i= 20
+      INTEGER, PARAMETER ::  vasoa2i= 23
+      INTEGER, PARAMETER ::  vasoa2j= 24
 
-      INTEGER, PARAMETER ::  vasoa3j= 21
-      INTEGER, PARAMETER ::  vasoa3i= 22
+      INTEGER, PARAMETER ::  vasoa3i= 25
+      INTEGER, PARAMETER ::  vasoa3j= 26
 
 ! indices for accumulation and aitken modes of biogenic SOA
-      INTEGER, PARAMETER ::  vbsoa1j= 23
-      INTEGER, PARAMETER ::  vbsoa1i= 24
+      INTEGER, PARAMETER ::  vbsoa1j= 27
+      INTEGER, PARAMETER ::  vbsoa1i= 28
 
-      INTEGER, PARAMETER ::  vbsoa2j= 25
-      INTEGER, PARAMETER ::  vbsoa2i= 26
+      INTEGER, PARAMETER ::  vbsoa2j= 29
+      INTEGER, PARAMETER ::  vbsoa2i= 30
 
-      INTEGER, PARAMETER ::  vbsoa3j= 27
-      INTEGER, PARAMETER ::  vbsoa3i= 28
+      INTEGER, PARAMETER ::  vbsoa3j= 31
+      INTEGER, PARAMETER ::  vbsoa3i= 32
 
 ! Elemental carbon
-      INTEGER, PARAMETER ::  vecj   = 29
-      INTEGER, PARAMETER ::  veci   = 30
+      INTEGER, PARAMETER ::  vecj   = 33
+      INTEGER, PARAMETER ::  veci   = 34
 
-      INTEGER, PARAMETER ::  vp25aj = 31
-      INTEGER, PARAMETER ::  vp25ai = 32
+      INTEGER, PARAMETER ::  vp25aj = 35
+      INTEGER, PARAMETER ::  vp25ai = 36
 !-------------------------------------------------------------------------------
 
-! Aitken and accumulation mode numbers
-      INTEGER, PARAMETER ::  vnu0= 33
-      INTEGER, PARAMETER ::  vac0= 34
+! Anthro coarse mode
+      INTEGER, PARAMETER :: vantha = 37
+! Seasalt
+      INTEGER, PARAMETER :: vseas  = 38
+! soil
+      INTEGER, PARAMETER :: vsoila = 39       
 
+! Aitken and accumulation mode numbers
+      INTEGER, PARAMETER ::  vnu0= 40
+      INTEGER, PARAMETER ::  vac0= 41
+      INTEGER, PARAMETER ::  vcorn= 42
 ! aerosol water concentration, not advected
-      INTEGER, PARAMETER ::  vh2oaj= 35
-      INTEGER, PARAMETER ::  vh2oai= 36
+      INTEGER, PARAMETER ::  vh2oaj= 43
+      INTEGER, PARAMETER ::  vh2oai= 44
 
 ! index for Aitken mode 3'rd moment, not advected
-      INTEGER, PARAMETER ::  vnu3  = 37
+      INTEGER, PARAMETER ::  vnu3  = 45
 
 ! index for Accumulation mode 3'rd moment, not advected
-      INTEGER, PARAMETER ::  vac3 = 38
+      INTEGER, PARAMETER ::  vac3 = 46
+     
+! -- coarse
+     INTEGER, PARAMETER :: vcor3 = 47
 
 ! index for sulfuric acid vapor concentration
-      INTEGER, PARAMETER ::  vsulf= 39
+      INTEGER, PARAMETER ::  vsulf= 48
 
 ! index for nitric acid vapor concentration
-      INTEGER, PARAMETER ::  vhno3= 40
+      INTEGER, PARAMETER ::  vhno3= 49
 
 ! index for ammonia gas concentration
-      INTEGER, PARAMETER ::  vnh3 = 41
+      INTEGER, PARAMETER ::  vnh3 = 50
 
 ! OCVs from POA:
-      INTEGER, PARAMETER ::  vcvpoa1= 42
-      INTEGER, PARAMETER ::  vcvpoa2= 43
-      INTEGER, PARAMETER ::  vcvpoa3= 44
-      INTEGER, PARAMETER ::  vcvpoa4= 45
+      INTEGER, PARAMETER ::  vcvpoa1= 51
+      INTEGER, PARAMETER ::  vcvpoa2= 52
+      INTEGER, PARAMETER ::  vcvpoa3= 53
+      INTEGER, PARAMETER ::  vcvpoa4= 54
 
 ! Anthropogenic OCVs:
-      INTEGER, PARAMETER ::  vcvasoa1= 46
-      INTEGER, PARAMETER ::  vcvasoa2= 47
-      INTEGER, PARAMETER ::  vcvasoa3= 48
-      INTEGER, PARAMETER ::  vcvasoa4= 49
-
+      INTEGER, PARAMETER ::  vcvasoa1= 55
+      INTEGER, PARAMETER ::  vcvasoa2= 56
+      INTEGER, PARAMETER ::  vcvasoa3= 57
+      INTEGER, PARAMETER ::  vcvasoa4= 58
 ! Biogenic OCVs:
-      INTEGER, PARAMETER ::  vcvbsoa1= 50
-      INTEGER, PARAMETER ::  vcvbsoa2= 51
-      INTEGER, PARAMETER ::  vcvbsoa3= 52
-      INTEGER, PARAMETER ::  vcvbsoa4= 53
+      INTEGER, PARAMETER ::  vcvbsoa1= 59
+      INTEGER, PARAMETER ::  vcvbsoa2= 60
+      INTEGER, PARAMETER ::  vcvbsoa3= 61
+      INTEGER, PARAMETER ::  vcvbsoa4= 62
+
 !-----------------------------------------------------------------------------
 ! RAR: I left deposition velocities here as before, to keep VDVG_2 intact
 ! All the species in this section are for deposition
@@ -249,24 +265,27 @@ MODULE module_data_soa2
 
     ! SOA precursors + OH, O3, NO3
     ! anthropogenic
-    INTEGER, PARAMETER :: palk4=1
-    INTEGER, PARAMETER :: palk5=2
-    INTEGER, PARAMETER :: pivoc=3
-    INTEGER, PARAMETER :: pole1=4
-    INTEGER, PARAMETER :: pole2=5
-    INTEGER, PARAMETER :: paro1=6
-    INTEGER, PARAMETER :: paro2=7
+    INTEGER, PARAMETER :: psoaalk=1 
+    INTEGER, PARAMETER :: pole=2
+    INTEGER, PARAMETER :: paro=3
+    INTEGER, PARAMETER :: pivoc=4
+!    INTEGER, PARAMETER :: palk5=2
+!    INTEGER, PARAMETER :: pivoc=3
+!    INTEGER, PARAMETER :: pole1=4
+!    INTEGER, PARAMETER :: pole2=5
+!    INTEGER, PARAMETER :: paro1=6
+!    INTEGER, PARAMETER :: paro2=7
 
     ! biogenic
-    INTEGER, PARAMETER :: pisop=8
-    INTEGER, PARAMETER :: pterp=9
-    INTEGER, PARAMETER :: psesq=10
+    INTEGER, PARAMETER :: pisop=5
+    INTEGER, PARAMETER :: pterp=6
+    INTEGER, PARAMETER :: psesq=7
 
     ! for branching
-    INTEGER, PARAMETER :: pbrch=11
+    INTEGER, PARAMETER :: pbrch=8
 
     ! for CVASOA0
-    INTEGER, PARAMETER :: pocv0=12
+    INTEGER, PARAMETER :: pocv0=9
 
     ! new indices for OCVs
     INTEGER, PARAMETER :: ipoa1=1
@@ -416,20 +435,20 @@ MODULE module_data_soa2
 !      REAL, PARAMETER :: rat_om_oc=1.25     ! RAR: not needed, NEI emissions come in ug/m3
 
 ! bulk density for aerosol soil dust
-!      REAL, PARAMETER :: rhosoil=2.6E3
+      REAL, PARAMETER :: rhosoil=2.6E3
 
 ! bulk density for marine aerosol
-!      REAL, PARAMETER :: rhoseas=2.2E3
+      REAL, PARAMETER :: rhoseas=2.2E3
 
 ! bulk density for anthropogenic aerosol
       REAL, PARAMETER :: rhoanth=2.2E3
 
 ! bulk density of aerosol sodium
-!      REAL, PARAMETER :: rhona=2.2E3
+      REAL, PARAMETER :: rhona=2.2E3
 
 ! bulk density of aerosol chloride
-!      REAL rhocl
-!      PARAMETER (rhocl=2.2E3)
+      REAL rhocl
+      PARAMETER (rhocl=2.2E3)
 
 ! *** Factors for converting aerosol mass concentration [ ug m**-3] to
 !      	  to 3rd moment concentration [ m**3 m^-3]
@@ -444,19 +463,19 @@ MODULE module_data_soa2
 
       REAL, PARAMETER :: orgfac=f6dpim9/rhoorg
 
-!      REAL soilfac
-!      PARAMETER (soilfac=f6dpim9/rhosoil)
+      REAL soilfac
+      PARAMETER (soilfac=f6dpim9/rhosoil)
 !
-!      REAL seasfac
-!      PARAMETER (seasfac=f6dpim9/rhoseas)
+      REAL seasfac
+      PARAMETER (seasfac=f6dpim9/rhoseas)
 !
       REAL, PARAMETER :: anthfac=f6dpim9/rhoanth
 
-!      REAL nafac
-!      PARAMETER (nafac=f6dpim9/rhona)
+      REAL nafac
+      PARAMETER (nafac=f6dpim9/rhona)
 
-!      REAL clfac
-!      PARAMETER (clfac=f6dpim9/rhocl)
+      REAL clfac
+      PARAMETER (clfac=f6dpim9/rhocl)
 
 !  starting standard surface pressure [ Pa ]  
       REAL, PARAMETER :: pss0=101325.0
@@ -647,7 +666,7 @@ MODULE module_data_soa2
 ! *** factors for getting number emissions rate from mass emissions rate
       REAL factnumn       ! Aitken mode
       REAL factnuma       ! accumulation mode
-!      REAL factnumc       ! coarse mode
+      REAL factnumc       ! coarse mode
 
       REAL, PARAMETER :: facatkn_min=0.04
       REAL facacc_min
@@ -850,12 +869,12 @@ MODULE module_data_soa2
 !      	  lptr_bsoa4_aer(maxd_asize,maxd_atype,maxd_aphase),     &
 
       	  lptr_ec_aer(maxd_asize,maxd_atype,maxd_aphase),         &
-      	  lptr_p25_aer(maxd_asize,maxd_atype,maxd_aphase)
-!         lptr_anth_aer(maxd_asize,maxd_atype,maxd_aphase),       &
-!      	  lptr_cl_aer(maxd_asize,maxd_atype,maxd_aphase),         &
-!      	  lptr_na_aer(maxd_asize,maxd_atype,maxd_aphase),         &
-!      	  lptr_seas_aer(maxd_asize,maxd_atype,maxd_aphase),       &
-!     	  lptr_soil_aer(maxd_asize,maxd_atype,maxd_aphase)
+      	  lptr_p25_aer(maxd_asize,maxd_atype,maxd_aphase),        &
+          lptr_anth_aer(maxd_asize,maxd_atype,maxd_aphase),       &
+     	  lptr_cl_aer(maxd_asize,maxd_atype,maxd_aphase),         &
+      	  lptr_na_aer(maxd_asize,maxd_atype,maxd_aphase),         &
+      	  lptr_seas_aer(maxd_asize,maxd_atype,maxd_aphase),       &
+     	  lptr_soil_aer(maxd_asize,maxd_atype,maxd_aphase)
 
 	logical, save ::  do_cloudchem_aer(maxd_asize,maxd_atype)
 
@@ -865,11 +884,11 @@ MODULE module_data_soa2
 	real, parameter :: mw_nh4_aer   = 18.042
 	real, parameter :: mw_oc_aer    = 250.0
 	real, parameter :: mw_ec_aer    = 1.0
-!	real, parameter :: mw_oin_aer   = 1.0
-!	real, parameter :: mw_dust_aer  = 100.087
-!	real, parameter :: mw_seas_aer  = 58.440
-!	real, parameter :: mw_cl_aer    = 35.450
-!	real, parameter :: mw_na_aer    = 22.990
+	real, parameter :: mw_oin_aer   = 1.0
+	real, parameter :: mw_dust_aer  = 100.087
+	real, parameter :: mw_seas_aer  = 58.440
+	real, parameter :: mw_cl_aer    = 35.450
+	real, parameter :: mw_na_aer    = 22.990
 	real, parameter :: mw_water_aer = 18.016
 
 !   dry densities (g/cm3)
@@ -878,11 +897,11 @@ MODULE module_data_soa2
 	real, parameter :: dens_nh4_aer  = 1.80   ! = rhonh4
 	real, parameter :: dens_oc_aer   = 1.40   ! = rhoorg ! (Ng et al., 2007) RAR
 	real, parameter :: dens_ec_aer   = 1.70
-!	real, parameter :: dens_dust_aer = 2.60  ! = rhosoil
-!	real, parameter :: dens_oin_aer  = 2.20  ! = rhoanth
-!	real, parameter :: dens_seas_aer = 2.20  ! = rhoseas
-!	real, parameter :: dens_cl_aer   = 2.20
-!	real, parameter :: dens_na_aer   = 2.20
+	real, parameter :: dens_dust_aer = 2.60  ! = rhosoil
+	real, parameter :: dens_oin_aer  = 2.20  ! = rhoanth
+	real, parameter :: dens_seas_aer = 2.20  ! = rhoseas
+	real, parameter :: dens_cl_aer   = 2.20
+	real, parameter :: dens_na_aer   = 2.20
 
 !   water density (g/cm3)
 	real, parameter :: dens_water_aer  = 1.0
@@ -893,11 +912,11 @@ MODULE module_data_soa2
 	real, parameter :: hygro_nh4_aer  = 0.5
 	real, parameter :: hygro_oc_aer   = 0.14
 	real, parameter :: hygro_ec_aer   = 1.e-6
-!	real, parameter :: hygro_oin_aer  = 0.14
-!	real, parameter :: hygro_dust_aer = 0.1
-!	real, parameter :: hygro_seas_aer = 1.16
-!	real, parameter :: hygro_cl_aer   = 1.16
-!	real, parameter :: hygro_na_aer   = 1.16
+	real, parameter :: hygro_oin_aer  = 0.14
+	real, parameter :: hygro_dust_aer = 0.1
+	real, parameter :: hygro_seas_aer = 1.16
+	real, parameter :: hygro_cl_aer   = 1.16
+	real, parameter :: hygro_na_aer   = 1.16
 
 ! table lookup of aerosol impaction/interception scavenging rates
 	real dlndg_nimptblgrow

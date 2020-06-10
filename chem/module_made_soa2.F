@@ -42,7 +42,7 @@ CONTAINS
 
    SUBROUTINE  soa2_driver ( id,ktau,dtstep,t_phy,                 &
                              alt,p_phy,chem,dz8w,rh,z,z_at_w,      &
-                             h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3, &
+                             h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3, &
                              vcsulf_old,kemit,                     &
                              vdrog3,brch_ratio,drog,               &
                              ids,ide, jds,jde, kds,kde,            &
@@ -68,7 +68,7 @@ LOGICAL, INTENT(IN ) :: diagn_opt
 ! following are aerosol arrays that are not advected
 !
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ),                       &
-         INTENT(INOUT ) ::  h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3
+         INTENT(INOUT ) ::  h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3
 
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ),                       &
          INTENT(INOUT ) ::  brch_ratio
@@ -104,7 +104,7 @@ LOGICAL, INTENT(IN ) :: diagn_opt
 !bs total # of cond. vapors in CTM
       REAL cblk(blksize,nspcsda) ! main array of variables
                                    ! particles [ug/m^3/s]
-!      REAL soilrat_in
+      REAL soilrat_in
                     ! emission rate of soil derived coars
                     ! input HNO3 to CBLK [ug/m^3]
       REAL nitrate_in     ! input NH3 to CBLK  [ug/m^3]
@@ -112,7 +112,8 @@ LOGICAL, INTENT(IN ) :: diagn_opt
       REAL vsulf_in
 
       REAL so4rat_in      ! input SO4 formation[ug/m^3/sec]
-      REAL epm25i,epm25j  !epmcoarse(blksize)
+      REAL epm25i,epm25j 
+      REAL epmcoarse(blksize)
                         ! Emission rate of i-mode EC [ug m**-3 s**-1]
       REAL eeci_in      ! Emission rate of j-mode EC [ug m**-3 s**-1]
       REAL eecj_in      ! Emission rate of j-mode org. aerosol [ug m**-
@@ -155,32 +156,39 @@ INTEGER, SAVE :: icall
 
                convfac =  p(k)/rgasuniv/t(k)*1000.    ! = rho/mw
                so4rat_in= ( chem(i,k,j,p_sulf) - vcsulf_old(i,k,j) )/dtstep*convfac*mwso4
-!               soilrat_in = 0.
+               soilrat_in = 0.
                vsulf_in =   max(epsilc,chem(i,k,j,p_sulf)*convfac*mwso4)
                nitrate_in = max(epsilc,chem(i,k,j,p_hno3)*convfac*mwhno3)
                nh3_in =     max(epsilc,chem(i,k,j,p_nh3)*convfac*mwnh3)
 
 ! * organic aerosol precursors DeltaROG and SOA production (10 species)
-               drog_in(palk4) = vdrog3(i,k,j,palk4)
-               drog_in(palk5) = vdrog3(i,k,j,palk5)
+              ! drog_in(palk4) = vdrog3(i,k,j,palk4)
+              ! drog_in(palk5) = vdrog3(i,k,j,palk5)
+               drog_in(psoaalk) = vdrog3(i,k,j,psoaalk)
+               drog_in(pole) = vdrog3(i,k,j,pole)
+               drog_in(paro) = vdrog3(i,k,j,paro)
                drog_in(pivoc) = vdrog3(i,k,j,pivoc)
-               drog_in(pole1) = vdrog3(i,k,j,pole1)
-               drog_in(pole2) = vdrog3(i,k,j,pole2)
-               drog_in(paro1) = vdrog3(i,k,j,paro1)
-               drog_in(paro2) = vdrog3(i,k,j,paro2)
+!               drog_in(pole1) = vdrog3(i,k,j,pole1)
+!               drog_in(pole2) = vdrog3(i,k,j,pole2)
+!               drog_in(paro1) = vdrog3(i,k,j,paro1)
+!               drog_in(paro2) = vdrog3(i,k,j,paro2)
                drog_in(pisop) = vdrog3(i,k,j,pisop)
                drog_in(pterp) = vdrog3(i,k,j,pterp)
                drog_in(psesq) = vdrog3(i,k,j,psesq)
                drog_in(pbrch) = vdrog3(i,k,j,pbrch)
                drog_in(pocv0) = vdrog3(i,k,j,pocv0)
 
-               drog(i,k,j,p_drog_alk4)= drog(i,k,j,p_drog_alk4) + drog_in(palk4)
-               drog(i,k,j,p_drog_alk5)= drog(i,k,j,p_drog_alk5) + drog_in(palk5)
+
+               drog(i,k,j,p_drog_soaalk)= drog(i,k,j,p_drog_soaalk) + drog_in(psoaalk)
+               drog(i,k,j,p_drog_ole)= drog(i,k,j,p_drog_ole) + drog_in(pole)
+               drog(i,k,j,p_drog_aro)= drog(i,k,j,p_drog_aro) + drog_in(paro)
+!               drog(i,k,j,p_drog_alk4)= drog(i,k,j,p_drog_alk4) + drog_in(palk4)
+!               drog(i,k,j,p_drog_alk5)= drog(i,k,j,p_drog_alk5) + drog_in(palk5)
                drog(i,k,j,p_drog_ivoc)= drog(i,k,j,p_drog_ivoc) + drog_in(pivoc)
-               drog(i,k,j,p_drog_ole1)= drog(i,k,j,p_drog_ole1) + drog_in(pole1)
-               drog(i,k,j,p_drog_ole2)= drog(i,k,j,p_drog_ole2) + drog_in(pole2)
-               drog(i,k,j,p_drog_aro1)= drog(i,k,j,p_drog_aro1) + drog_in(paro1)
-               drog(i,k,j,p_drog_aro2)= drog(i,k,j,p_drog_aro2) + drog_in(paro2)
+!               drog(i,k,j,p_drog_ole1)= drog(i,k,j,p_drog_ole1) + drog_in(pole1)
+!               drog(i,k,j,p_drog_ole2)= drog(i,k,j,p_drog_ole2) + drog_in(pole2)
+!               drog(i,k,j,p_drog_aro1)= drog(i,k,j,p_drog_aro1) + drog_in(paro1)
+!               drog(i,k,j,p_drog_aro2)= drog(i,k,j,p_drog_aro2) + drog_in(paro2)
                drog(i,k,j,p_drog_isop)= drog(i,k,j,p_drog_isop) + drog_in(pisop)
                drog(i,k,j,p_drog_terp)= drog(i,k,j,p_drog_terp) + drog_in(pterp)
                drog(i,k,j,p_drog_sesq)= drog(i,k,j,p_drog_sesq) + drog_in(psesq)
@@ -240,10 +248,14 @@ INTEGER, SAVE :: icall
         cblk(1,vp25aj ) =  chem(i,k,j,p_p25j)
         cblk(1,vp25ai ) =  chem(i,k,j,p_p25i)
 
+        cblk(1,VANTHA   ) =   chem(i,k,j,p_antha)
+        cblk(1,VSEAS    ) =   chem(i,k,j,p_seas)
+        cblk(1,VSOILA   ) =   chem(i,k,j,p_soila)
+
 ! Number concentrations (2)
         cblk(1,vnu0  ) =   max(1.e7,chem(i,k,j,p_nu0))
         cblk(1,vac0  ) =   max(1.e7,chem(i,k,j,p_ac0))
-
+        cblk(1,vcorn ) =   chem(i,k,j,p_corn)
 ! Non-advected part:
 ! Water in aerosol, (2)
         cblk(1,vh2oaj) =   max(epsilc,h2oaj(i,k,j))
@@ -252,6 +264,7 @@ INTEGER, SAVE :: icall
 ! 3rd mode
         cblk(1,vnu3  ) =   max(epsilc,nu3(i,k,j))
         cblk(1,vac3  ) =   max(epsilc,ac3(i,k,j))
+        cblk(1,VCOR3 ) =   max(epsilc,cor3(i,k,j))
 
 ! Primary OCVs, not oxidized (4)
         cblk(1,vcvpoa1) =  chem(i,k,j,p_cvpoa1)
@@ -280,6 +293,12 @@ INTEGER, SAVE :: icall
         cblk(1,vhno3)  =   nitrate_in
         cblk(1,vnh3)   =   nh3_in
 
+         cblk(1,VNAAJ   ) = chem(i,k,j,p_naaj)
+         cblk(1,VNAAI   ) = chem(i,k,j,p_naai)
+
+         cblk(1,VCLAJ   ) = chem(i,k,j,p_claj)
+         cblk(1,VCLAI   ) = chem(i,k,j,p_clai)
+
         if (diagn_opt .AND. icall<200 .AND. k<3) then
             WRITE(6,*) 'soa2_driver: chem(i,k,j,p_poa0j), chem(i,k,j,p_cvpoa1)',chem(i,k,j,p_poa0j), chem(i,k,j,p_cvpoa1)
             WRITE(6,*) 'soa2_driver: nspcsda, cblk', nspcsda, cblk
@@ -289,13 +308,14 @@ INTEGER, SAVE :: icall
         end if
 
 ! Set emissions to zero      !! RAR: Do we need these here???
-!         epmcoarse(1)     = 0.
+         epmcoarse(1)     = 0.
          epm25i        = 0.
          epm25j        = 0.
          eeci_in       = 0.
          eecj_in       = 0.
          eorgi_in      = 0.
          eorgj_in      = 0.
+
 
 ! End of the cblk initialization
 !-------------------------------------------------------------------------------
@@ -305,7 +325,7 @@ INTEGER, SAVE :: icall
                    nitrate_in,nh3_in,vsulf_in,so4rat_in,       &
                    drog_in,                                    &
                    eeci_in,eecj_in,eorgi_in,eorgj_in,          &
-                   epm25i,epm25j,                              &
+                   epm25i,epm25j,epmcoarse,soilrat_in,         &
                    cblk,i,j,k,brrto,diagn_opt)
 
 ! calculation of brch_ratio
@@ -317,6 +337,11 @@ INTEGER, SAVE :: icall
         chem(i,k,j,p_nh4ai) = cblk(1,vnh4ai )
         chem(i,k,j,p_no3aj) = cblk(1,vno3aj )
         chem(i,k,j,p_no3ai) = cblk(1,vno3ai )
+
+        chem(i,k,j,p_naaj)  = cblk(1,VNAAJ   )
+        chem(i,k,j,p_naai)  = cblk(1,VNAAI   )
+        chem(i,k,j,p_claj) = cblk(1,VCLAJ   )
+        chem(i,k,j,p_clai) = cblk(1,VCLAI   )
 
         chem(i,k,j,p_poa0j) =   cblk(1,vpoa0j)
         chem(i,k,j,p_poa0i) =   cblk(1,vpoa0i)
@@ -348,13 +373,19 @@ INTEGER, SAVE :: icall
         chem(i,k,j,p_p25j)   = cblk(1,vp25aj)
         chem(i,k,j,p_p25i)   = cblk(1,vp25ai)
 
+        chem(i,k,j,p_antha)  = cblk(1,VANTHA   )
+        chem(i,k,j,p_seas)   = cblk(1,VSEAS    )
+        chem(i,k,j,p_soila)  = cblk(1,VSOILA   )
+
         chem(i,k,j,p_nu0)    = max(1.e7,cblk(1,vnu0))
         chem(i,k,j,p_ac0)    = max(1.e7,cblk(1,vac0))
+        chem(i,k,j,p_corn) = cblk(1,VCORN    )
 
         h2oaj(i,k,j) = cblk(1,vh2oaj)
         h2oai(i,k,j) = cblk(1,vh2oai)
         nu3(i,k,j)   = cblk(1,vnu3  )
         ac3(i,k,j)   = cblk(1,vac3  )
+        cor3(i,k,j)  = cblk(1,vcor3 )
 
         chem(i,k,j,p_cvpoa1)= cblk(1,vcvpoa1)
         chem(i,k,j,p_cvpoa2)= cblk(1,vcvpoa2)
@@ -404,10 +435,10 @@ INTEGER, SAVE :: icall
 END SUBROUTINE soa2_driver
 !-------------------------------------------------------------------------------
 
-SUBROUTINE sum_pm_soa2 ( alt, chem, h2oaj, h2oai,              &
-                         pm2_5_dry, pm2_5_water, pm2_5_dry_ec, &
-                         ids,ide, jds,jde, kds,kde,            &
-                         ims,ime, jms,jme, kms,kme,            &
+SUBROUTINE sum_pm_soa2 ( alt, chem, h2oaj, h2oai,                    &
+                         pm2_5_dry, pm2_5_water, pm2_5_dry_ec,pm10,  &
+                         ids,ide, jds,jde, kds,kde,                  &
+                         ims,ime, jms,jme, kms,kme,                  &
                          its,ite, jts,jte, kts,kte             )
 
    INTEGER, INTENT(IN   ) ::     ids,ide, jds,jde, kds,kde,       &
@@ -421,7 +452,7 @@ SUBROUTINE sum_pm_soa2 ( alt, chem, h2oaj, h2oai,              &
          INTENT(IN ) :: alt,h2oaj,h2oai
 
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ),                       &
-         INTENT(OUT) :: pm2_5_dry,pm2_5_water,pm2_5_dry_ec
+         INTENT(OUT) :: pm2_5_dry,pm2_5_water,pm2_5_dry_ec,pm10
 
    INTEGER :: i,ii,j,jj,k,n
 !
@@ -450,25 +481,25 @@ SUBROUTINE sum_pm_soa2 ( alt, chem, h2oaj, h2oai,              &
       enddo
 
 ! RAR: isn't used in this option
-!      do j=jts,jte
-!         jj=min(jde-1,j)
-!         do k=kts,kte
-!            do i=its,ite
-!               ii=min(ide-1,i)
-!               pm10(i,k,j) = pm2_5_dry(i,k,j)                       &
-!                           + ( chem(ii,k,jj,p_antha)               &
-!                           + chem(ii,k,jj,p_soila)                 &
-!                           + chem(ii,k,jj,p_seas) ) / alt(ii,k,jj)
-!            enddo
-!         enddo
-!      enddo
+      do j=jts,jte
+         jj=min(jde-1,j)
+         do k=kts,kte
+            do i=its,ite
+               ii=min(ide-1,i)
+               pm10(i,k,j) = pm2_5_dry(i,k,j)                       &
+                           + ( chem(ii,k,jj,p_antha)               &
+                           + chem(ii,k,jj,p_soila)                 &
+                           + chem(ii,k,jj,p_seas) ) / alt(ii,k,jj)
+            enddo
+         enddo
+      enddo
     END SUBROUTINE sum_pm_soa2
 ! ///////////////////////////////////////////////////
 
 SUBROUTINE     soa2_depdriver (id,config_flags,ktau,dtstep,                    &
                                ust,t_phy,rmol,znt,pbl,                   &
                                alt,p_phy,chem,dz8w,rh,z,z_at_w,                &
-                               h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3,           &
+                               h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3,           &
                                aer_res,vgsa,                                   &
                                numaer,                                         &
                                ids,ide, jds,jde, kds,kde,                      &
@@ -498,7 +529,7 @@ SUBROUTINE     soa2_depdriver (id,config_flags,ktau,dtstep,                    &
          INTENT(INOUT ) ::           aer_res
 
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ),                       &
-         INTENT(INOUT ) ::   h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3
+         INTENT(INOUT ) ::   h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3
 
    REAL,  DIMENSION( ims:ime , kms:kme , jms:jme )         ,    &
           INTENT(IN   ) :: t_phy,alt,p_phy,dz8w,rh,z,z_at_w
@@ -525,7 +556,7 @@ SUBROUTINE     soa2_depdriver (id,config_flags,ktau,dtstep,                    &
 !bs total # of cond. vapors in CTM
       REAL cblk(blksize,nspcsda) ! main array of variables
                                    ! particles [ug/m^3/s]
-!      REAL soilrat_in
+      REAL soilrat_in
                     ! emission rate of soil derived coars
                     ! input HNO3 to CBLK [ug/m^3]
       REAL nitrate_in
@@ -671,19 +702,19 @@ INTEGER, SAVE :: icall
       cblk(1,vp25aj)  =  max(epsilc,chem(i,k,j,p_p25j)*convfac2)
       cblk(1,vp25ai)  =  max(epsilc,chem(i,k,j,p_p25i)*convfac2)
 
-!      cblk(1,VANTHA   ) =   max(epsilc,chem(i,k,j,p_antha)*convfac2)
-!      cblk(1,VSEAS    ) =   max(epsilc,chem(i,k,j,p_seas)*convfac2)
-!      cblk(1,VSOILA   ) =   max(epsilc,chem(i,k,j,p_soila)*convfac2)
+      cblk(1,VANTHA   ) =   max(epsilc,chem(i,k,j,p_antha)*convfac2)
+      cblk(1,VSEAS    ) =   max(epsilc,chem(i,k,j,p_seas)*convfac2)
+      cblk(1,VSOILA   ) =   max(epsilc,chem(i,k,j,p_soila)*convfac2)
 
       cblk(1,vnu0) =   max(epsilc,chem(i,k,j,p_nu0)*convfac2)
       cblk(1,vac0) =   max(epsilc,chem(i,k,j,p_ac0)*convfac2)
 
-!      cblk(1,vcorn    ) =   max(epsilc,chem(i,k,j,p_corn)*convfac2)
+      cblk(1,vcorn    ) =   max(epsilc,chem(i,k,j,p_corn)*convfac2)
       cblk(1,vh2oaj) =   h2oaj(i,k,j)
       cblk(1,vh2oai) =   h2oai(i,k,j)
       cblk(1,vnu3  ) =   nu3(i,k,j)
       cblk(1,vac3  ) =   ac3(i,k,j)
-!      cblk(1,VCOR3    ) =   cor3(i,k,j)
+      cblk(1,VCOR3    ) =   cor3(i,k,j)
 
 ! RAR: Debugging:
 IF (config_flags%debug_soa .AND. icall<200) then
@@ -719,6 +750,11 @@ CALL modpar ( cblk,blkta,blkprs,      &
         VGSA(i, j, vnh4ai ) =  VGSA(i, j, vso4ai )
         VGSA(i, j, vno3aj ) =  VGSA(i, j, vso4aj )
         VGSA(i, j, vno3ai ) =  VGSA(i, j, vso4ai )
+
+        if (p_naai >= param_first_scalar) VGSA(i, j, VNAAI )  =  VGSA(i, j, VSO4AI )
+        if (p_naaj >= param_first_scalar) VGSA(i, j, VNAAJ )  =  VGSA(i, j, VSO4AJ )
+        if (p_clai >= param_first_scalar) VGSA(i, j, VCLAI )  =  VGSA(i, j, VSO4AI )
+        if (p_claj >= param_first_scalar) VGSA(i, j, VCLAJ )  =  VGSA(i, j, VSO4AJ )
 
         VGSA(i, j, vpoa0j ) =  VGSA(i, j, vso4aj )
         VGSA(i, j, vpoa0i ) =  VGSA(i, j, vso4ai )
@@ -757,12 +793,12 @@ CALL modpar ( cblk,blkta,blkprs,      &
         VGSA(i, j, vp25aj  )  =  VGSA(i, j, vso4aj )
         VGSA(i, j, vp25ai  )  =  VGSA(i, j, vso4ai )
 
-!        VGSA(i, j, VANTHA  )  =  VDEP(1, VDMCOR )
-!        VGSA(i, j, VSEAS   )  =  VGSA(i, j, VANTHA )
-!        VGSA(i, j, VSOILA  )  =  VGSA(i, j, VANTHA )
+        VGSA(i, j, VANTHA  )  =  VDEP(1, VDMCOR )
+        VGSA(i, j, VSEAS   )  =  VGSA(i, j, VANTHA )
+        VGSA(i, j, VSOILA  )  =  VGSA(i, j, VANTHA )
         VGSA(i, j, vnu0    )  =  VDEP(1, vdnnuc )
         VGSA(i, j, vac0    )  =  VDEP(1, vdnacc )
-!        VGSA(i, j, VCORN   )  =  VDEP(1, VDNCOR )
+        VGSA(i, j, VCORN   )  =  VDEP(1, VDNCOR )
 !     enddo         ! k-loop
 
 ! RAR: Debugging:
@@ -1079,7 +1115,7 @@ SUBROUTINE aeroproc(layer,cblk,dt,blkta,blkprs,blkdens,blkrh,so4rat,          &
             !    orgbio1rat,orgbio2rat,orgbio3rat,orgbio4rat,drog,ldrog_vbs,ncv,nacv,epm25i, &
             !    epm25j,eorgi,eorgj,eeci,eecj,epmcoarse,esoil,eseas,xlm,amu,dgnuc, &
 
-                drog_in,epm25i,epm25j,eorgi,eorgj,eeci,eecj,xlm,amu,                &
+                drog_in,epm25i,epm25j,eorgi,eorgj,eeci,eecj,epmcoarse,esoil,eseas,xlm,amu,    &
                 dgnuc,dgacc,dgcor,pmassn,pmassa,pmassc,pdensn,pdensa,pdensc,                  &
                 knnuc,knacc,kncor,fconcn,fconca,fconcn_org,fconca_org,dmdt,dndt,cgrn3,cgra3,  &
                 urn00,ura00,brna01,c30,deltaso4a,igrid,jgrid,kgrid,brrto, diagn_opt)
@@ -1142,9 +1178,9 @@ LOGICAL :: diagn_opt
 
 ! *** emissions rates for coarse mode particles
 ! Accumululaton mode                    
-!      REAL esoil(blksize) ! soil derived coarse aerosols
-!      REAL eseas(blksize) ! marine coarse aerosols
-!      REAL epmcoarse(blksize)
+      REAL esoil(blksize) ! soil derived coarse aerosols
+      REAL eseas(blksize) ! marine coarse aerosols
+      REAL epmcoarse(blksize)
 
 ! *** OUTPUT:
 ! *** atmospheric properties
@@ -1262,7 +1298,7 @@ LOGICAL :: diagn_opt
              orgpoa1rat,orgpoa2rat,orgpoa3rat, &
              organt0rat,organt1rat,organt2rat,organt3rat, &
              orgbio1rat,orgbio2rat,orgbio3rat, &
-             epm25i,epm25j,eorgi,eorgj,eeci,eecj, &
+             epm25i,epm25j,eorgi,eorgj,eeci,eecj,epmcoarse,esoil,eseas, &
              dgnuc,dgacc,fconcn,fconca,fconcn_org,fconca_org,pmassn,pmassa,pmassc, &
              dmdt,dndt,deltaso4a,urn00,ura00,brna01,c30,cgrn3,cgra3,igrid,jgrid,kgrid,diagn_opt)
 
@@ -1279,7 +1315,7 @@ LOGICAL :: diagn_opt
                  orgpoa1rat,orgpoa2rat,orgpoa3rat, &
                  organt0rat,organt1rat,organt2rat,organt3rat, &
                  orgbio1rat,orgbio2rat,orgbio3rat, &
-                 epm25i,epm25j,eorgi,eorgj,eeci,eecj, &
+                 epm25i,epm25j,eorgi,eorgj,eeci,eecj,epmcoarse,esoil,eseas, &
                  dgnuc,dgacc,fconcn,fconca,fconcn_org,fconca_org,pmassn,pmassa,pmassc, &
                  dmdt,dndt,deltaso4a,urn00,ura00,brna01,c30,cgrn3,cgra3,igrid,jgrid,kgrid, diagn_opt)
 
@@ -1361,9 +1397,9 @@ LOGICAL :: diagn_opt
 
 ! *** emissions rates for coarse mode particles
 ! Accumululaton mode                    
-!      REAL esoil(blksize) ! soil derived coarse aerosols
-!      REAL eseas(blksize) ! marine coarse aerosols
-!      REAL epmcoarse(blksize)
+      REAL esoil(blksize) ! soil derived coarse aerosols
+      REAL eseas(blksize) ! marine coarse aerosols
+      REAL epmcoarse(blksize)
 ! anthropogenic coarse aerosols         
       REAL dgnuc(blksize) ! nuclei mode mean diameter [ m ]
       REAL dgacc(blksize) 
@@ -1531,10 +1567,10 @@ LOGICAL :: diagn_opt
 ! *** now do coarse mode number neglecting coagulation
 ! update                     
 !       print *,soilfac,seasfac,anthfac,esoil(l),eseas(l),epmcoarse(l)
-!        prod = soilfac*esoil(l) + seasfac*eseas(l) + anthfac*epmcoarse(l)
+        prod = soilfac*esoil(l) + seasfac*eseas(l) + anthfac*epmcoarse(l)
 
 !       print *,cblk(l,vcorn),factnumc,prod
-!        cblk(l,vcorn) = cblk(l,vcorn) + factnumc*prod*dt
+        cblk(l,vcorn) = cblk(l,vcorn) + factnumc*prod*dt
 
 ! *** Prepare to advance modal mass concentration one time step.
 
@@ -1769,16 +1805,16 @@ end if
 
 ! *** coarse mode
 ! *** soil dust
-!        cblk(l,vsoila) = cblk(l,vsoila) + esoil(l)*dt
-!        cblk(l,vsoila) = max(conmin,cblk(l,vsoila))
+        cblk(l,vsoila) = cblk(l,vsoila) + esoil(l)*dt
+        cblk(l,vsoila) = max(conmin,cblk(l,vsoila))
 
 ! *** sea salt
-!        cblk(l,vseas) = cblk(l,vseas) + eseas(l)*dt
-!        cblk(l,vseas) = max(conmin,cblk(l,vseas))
+        cblk(l,vseas) = cblk(l,vseas) + eseas(l)*dt
+        cblk(l,vseas) = max(conmin,cblk(l,vseas))
 
 ! *** anthropogenic PM10 coarse fraction
-!        cblk(l,vantha) = cblk(l,vantha) + epmcoarse(l)*dt
-!        cblk(l,vantha) = max(conmin,cblk(l,vantha))
+        cblk(l,vantha) = cblk(l,vantha) + epmcoarse(l)*dt
+        cblk(l,vantha) = max(conmin,cblk(l,vantha))
 
       END DO    ! numcells
 
@@ -1847,6 +1883,9 @@ end if
 
     cblk(lcell,vno3aj) = cblk(lcell,vno3aj) + cblk(lcell,vno3ai)*fm3
 
+    cblk(lcell,vnaaj) = cblk(lcell,vnaaj) + cblk(lcell,vnaai)*fm3
+    cblk(lcell,vclaj) = cblk(lcell,vclaj) + cblk(lcell,vclai)*fm3
+
 ! POA:
     cblk(lcell,vpoa0j) = cblk(lcell,vpoa0j) + cblk(lcell,vpoa0i)*fm3
 
@@ -1900,6 +1939,9 @@ end if
           cblk(lcell,vnh4ai) = cblk(lcell,vnh4ai)*phm3
 
           cblk(lcell,vno3ai) = cblk(lcell,vno3ai)*phm3
+
+          cblk(lcell,vclai) = cblk(lcell,vclai)*phm3
+          cblk(lcell,vnaai) = cblk(lcell,vnaai)*phm3
 ! POA
           cblk(lcell,vpoa0i) = cblk(lcell,vpoa0i)*phm3
 
@@ -2504,6 +2546,7 @@ LOGICAL :: diagn_opt
 !.......................................................................
       REAL fracj
 
+      REAL ana,acl
 ! Fraction of dry sulfate mass in j-mode         
       DO lcell = 1,numcells
 ! *** Fetch temperature, fractional relative humidity, and
@@ -2556,11 +2599,20 @@ ENDIF
         cblk(lcell,vh2oai) = fraci*ah2o
         cblk(lcell,vnh4ai) = fraci*anh4
         cblk(lcell,vno3ai) = fraci*ano3
+        ana = 0.0 ! calculate without ISORROPIA?
+        acl = 0.0 ! ????????????????????????????
+        cblk(lcell,vnaai) = fraci*ana
+        cblk(lcell,vclai) = fraci*acl
+
+
 
 ! *** update accumulation mode:
         cblk(lcell,vh2oaj) = fracj*ah2o
         cblk(lcell,vnh4aj) = fracj*anh4
         cblk(lcell,vno3aj) = fracj*ano3
+        cblk(lcell,vnaaj) = fracj*ana
+        cblk(lcell,vclaj) = fracj*acl
+
 
 ! *** update gas / vapor phase
         cblk(lcell,vnh3) = gnh3
@@ -2922,8 +2974,8 @@ IF (diagn_opt .AND. icall<100) then
 ENDIF
 
 ! *** coarse mode
-!        cblk(lcell,vcor3) = max(conmin,(soilfac*cblk(lcell, & ! ghan rely on conmin applied to mass, not moment
-!          vsoila)+seasfac*cblk(lcell,vseas)+anthfac*cblk(lcell,vantha)))
+        cblk(lcell,vcor3) = max(conmin,(soilfac*cblk(lcell, & ! ghan rely on conmin applied to mass, not moment
+          vsoila)+seasfac*cblk(lcell,vseas)+anthfac*cblk(lcell,vantha)))
 !        cblk(lcell,vcor3) = soilfac*cblk(lcell, &
 !          vsoila)+seasfac*cblk(lcell,vseas)+anthfac*cblk(lcell,vantha)
 
@@ -2951,9 +3003,9 @@ IF (diagn_opt .AND. icall<100) then
 ENDIF
 
 ! *** coarse mode:
-!        pmassc(lcell) = max(conmin,cblk(lcell,vsoila)+cblk(lcell,vseas)+cblk( &
-!          lcell,vantha))
-        pmassc(lcell)= conmin       ! RAR: just a placeholder
+        pmassc(lcell) = max(conmin,cblk(lcell,vsoila)+cblk(lcell,vseas)+cblk( &
+          lcell,vantha))
+!        pmassc(lcell)= conmin       ! RAR: just a placeholder
 
       END DO
 ! *** now get particle density, mean free path, and dynamic viscosity
@@ -3000,9 +3052,8 @@ ENDIF
 
         dgacc(lcell) = max(dgmin,(cblk(lcell,vac3)/(cblk(lcell,vac0)*esa36))**one3)
 
-        dgcor(lcell) = dgmin    ! RAR:
-!        dgcor(lcell) = max(dgmin,(cblk(lcell,vcor3)/(cblk(lcell,vcorn)*esc36)) &
-!          **one3)
+!        dgcor(lcell) = dgmin    ! RAR:
+        dgcor(lcell) = max(dgmin,(cblk(lcell,vcor3)/(cblk(lcell,vcorn)*esc36))**one3)
 
 ! RAR: Debugging:
 IF (diagn_opt .AND. icall<200) then
@@ -4244,7 +4295,7 @@ END SUBROUTINE rpmares_old
                        nitrate_in,nh3_in,vsulf_in,so4rat_in, &
                        drog_in,                              &
                        eeci_in,eecj_in,eorgi_in,eorgj_in,    &
-                       epm25i,epm25j,                        & 
+                       epm25i,epm25j,epmcoarse,soilrat_in,   & 
                        cblk,igrid,jgrid,kgrid,brrto,diagn_opt)
 
 !     Includes:
@@ -4289,7 +4340,7 @@ LOGICAL :: diagn_opt
 ! Production rate of sulfuric acid   [ ug m**-3
       REAL so4rat_in
                          ! aerosol [ ug m**-3 s**-1 ]
-!      REAL soilrat_in
+      REAL soilrat_in
 ! Production rate of soil derived coarse       
 ! Emission rate of i,j-mode EC [ug m**-3 s**-1]
       REAL eeci_in, eecj_in
@@ -4327,9 +4378,9 @@ LOGICAL :: diagn_opt
 
 ! Accumululaton mode                    
       REAL epm25(blksize) ! emissions rate for PM2.5 mass           
-!      REAL esoil(blksize) ! emissions rate for soil derived coarse a
-!      REAL eseas(blksize) ! emissions rate for marine coarse aerosol
-!      REAL epmcoarse(blksize)
+      REAL esoil(blksize) ! emissions rate for soil derived coarse a
+      REAL eseas(blksize) ! emissions rate for marine coarse aerosol
+      REAL epmcoarse(blksize)
 ! emissions rate for anthropogenic coarse 
 
       REAL dtsec
@@ -4482,10 +4533,10 @@ LOGICAL :: diagn_opt
 
       epm25 = 0.0       !currently from input file ACTIONIA
 
-!      esoil(blksize) = & ! ACTIONIA
-!        soilrat_in
-!      eseas(blksize) = & !currently from input file ACTIONIA
-!        0.0
+      esoil(blksize) = & ! ACTIONIA
+        soilrat_in
+      eseas(blksize) = & !currently from input file ACTIONIA
+        0.0
 !     epmcoarse(blksize) = & !currently from input file ACTIONIA    
 !       0.0
       dgnuc(blksize) = dginin
@@ -4501,7 +4552,8 @@ LOGICAL :: diagn_opt
              orgpoa1rat,orgpoa2rat,orgpoa3rat, &
              organt0rat,organt1rat,organt2rat,organt3rat, &
              orgbio1rat,orgbio2rat,orgbio3rat, &
-             drog_in,epm25i,epm25j,eorgi,eorgj,eeci,eecj,xlm,amu,    &
+             drog_in,epm25i,epm25j,eorgi,eorgj,eeci,eecj, &
+             epmcoarse,esoil,eseas,xlm,amu,    &
              dgnuc,dgacc,dgcor,pmassn,pmassa,pmassc,pdensn,pdensa,pdensc,      &
              knnuc,knacc,kncor,fconcn,fconca,fconcn_org,fconca_org,dmdt,dndt,cgrn3,cgra3, &
              urn00,ura00,brna01,brna31,deltaso4a,igrid,jgrid,kgrid,brrto,diagn_opt)
@@ -4630,52 +4682,83 @@ SUBROUTINE soa2_vbs( blkta,blkprs,                     &
 
 ! SAM:  from Murphy et al. 2009; SOA yields at 298K
 ! Vol. bins: 1       10      100     1000
+!      DATA alphlowN /   &
+!             0.0000, 0.0750, 0.0000, 0.0000,   & ! 1) ALK4
+!             0.0000, 0.3000, 0.0000, 0.0000,   & ! 2) ALK5
+!             0.0890, 0.5500, 0.2000, 0.0000,   & ! 3) HC16 yield for IVOCs
+!             0.0045, 0.0090, 0.0600, 0.2250,   & ! 4) OLE1
+!             0.0225, 0.0435, 0.1290, 0.3750,   & ! 5) OLE2
+!             0.0750, 0.2250, 0.3750, 0.5250,   & ! 6) ARO1
+!             0.0750, 0.3000, 0.3750, 0.5250,   & ! 7) ARO2
+!             ! biogenic
+!             0.0090, 0.0300, 0.0150, 0.0000,   & ! 8) ISOP
+!             0.0750, 0.1500, 0.7500, 0.9000,   & ! 9) SESQ
+!             0.1073, 0.0918, 0.3587, 0.6075    / ! 10)TERP
+!
+!      DATA alphhiN /    &
+!             0.0000, 0.0375, 0.0000, 0.0000,   & ! 1) ALK4
+!             0.0000, 0.1500, 0.0000, 0.0000,   & ! 2) ALK5
+!             0.0890, 0.5500, 0.2000, 0.0000,   & ! 3) HC16 yield for IVOCs, no NOx dependence
+!             0.0008, 0.0045, 0.0375, 0.1500,   & ! 4) OLE1
+!             0.0030, 0.0255, 0.0825, 0.2700,   & ! 5) OLE2
+!             0.0030, 0.1650, 0.3000, 0.4350,   & ! 6) ARO1
+!             0.0015, 0.1950, 0.3000, 0.4350,   & ! 7) ARO2
+!             ! biogenic
+!             0.0003, 0.0225, 0.0150, 0.0000,   & ! 8) ISOP
+!             0.0750, 0.1500, 0.7500, 0.9000,   & ! 9) SESQ
+!             0.0120, 0.1215, 0.2010, 0.5070    / ! 10 TERP
+!
+!      DATA mw_voc / 73.23,   &    ! 1) ALK4        ! 10 VOC species
+!                    106.97,  &    ! 2) ALK5
+!                    137.00,  &    ! 3) IVOC, provided in the EPA NEI-2011 inventory for unidentified, for hexadecane is 226 g/mol
+!                    61.68,   &    ! 4) OLE1
+!                    79.05,   &    ! 5) OLE2
+!                    100.47,  &    ! 6) ARO1
+!                    113.93,  &    ! 7) ARO2
+!                    68.12,   &    ! 8) ISOP
+!                    204.0,   &    ! 9) SESQ
+!                    136.24   /    ! 10 TERP
+
       DATA alphlowN /   &
-             0.0000, 0.0750, 0.0000, 0.0000,   & ! 1) ALK4
-             0.0000, 0.3000, 0.0000, 0.0000,   & ! 2) ALK5
-             0.0890, 0.5500, 0.2000, 0.0000,   & ! 3) HC16 yield for IVOCs
-             0.0045, 0.0090, 0.0600, 0.2250,   & ! 4) OLE1
-             0.0225, 0.0435, 0.1290, 0.3750,   & ! 5) OLE2
-             0.0750, 0.2250, 0.3750, 0.5250,   & ! 6) ARO1
-             0.0750, 0.3000, 0.3750, 0.5250,   & ! 7) ARO2
+             0.0000, 0.1875, 0.0000, 0.0000,   & ! 1) SOAALK
+             0.0135, 0.02625, 0.0945, 0.300,   & ! 2) OLE
+             0.0750, 0.2625, 0.3750, 0.5250,   & ! 3) ARO
+             0.0890, 0.5500, 0.2000, 0.0000,   & ! 4) HC16 yield for IVOCs
              ! biogenic
-             0.0090, 0.0300, 0.0150, 0.0000,   & ! 8) ISOP
-             0.0750, 0.1500, 0.7500, 0.9000,   & ! 9) SESQ
-             0.1073, 0.0918, 0.3587, 0.6075    / ! 10)TERP
+             0.0090, 0.0300, 0.0150, 0.0000,   & ! 5) ISOP
+             0.0750, 0.1500, 0.7500, 0.9000,   & ! 6) SESQ
+             0.1073, 0.0918, 0.3587, 0.6075    / ! 7)TERP
 
       DATA alphhiN /    &
-             0.0000, 0.0375, 0.0000, 0.0000,   & ! 1) ALK4
-             0.0000, 0.1500, 0.0000, 0.0000,   & ! 2) ALK5
-             0.0890, 0.5500, 0.2000, 0.0000,   & ! 3) HC16 yield for IVOCs, no NOx dependence
-             0.0008, 0.0045, 0.0375, 0.1500,   & ! 4) OLE1
-             0.0030, 0.0255, 0.0825, 0.2700,   & ! 5) OLE2
-             0.0030, 0.1650, 0.3000, 0.4350,   & ! 6) ARO1
-             0.0015, 0.1950, 0.3000, 0.4350,   & ! 7) ARO2
-             ! biogenic
-             0.0003, 0.0225, 0.0150, 0.0000,   & ! 8) ISOP
-             0.0750, 0.1500, 0.7500, 0.9000,   & ! 9) SESQ
-             0.0120, 0.1215, 0.2010, 0.5070    / ! 10 TERP
+             0.0000, 0.09375, 0.0000, 0.0000,  & ! 1) SOAALK
+             0.0019, 0.0150, 0.0600, 0.2100,   & ! 3) OLE
+             0.00225, 0.180, 0.3000, 0.4350,   & ! 4) ARO
+             0.0890, 0.5500, 0.2000, 0.0000,   & ! 2) HC16 yield for IVOCs, no NOx dependence             
+! biogenic
+             0.0003, 0.0225, 0.0150, 0.0000,   & ! 5) ISOP
+             0.0750, 0.1500, 0.7500, 0.9000,   & ! 6) SESQ
+             0.0120, 0.1215, 0.2010, 0.5070    / ! 70 TERP
 
-      DATA mw_voc / 73.23,   &    ! 1) ALK4        ! 10 VOC species
-                    106.97,  &    ! 2) ALK5
-                    137.00,  &    ! 3) IVOC, provided in the EPA NEI-2011 inventory for unidentified, for hexadecane is 226 g/mol
-                    61.68,   &    ! 4) OLE1
-                    79.05,   &    ! 5) OLE2
-                    100.47,  &    ! 6) ARO1
-                    113.93,  &    ! 7) ARO2
-                    68.12,   &    ! 8) ISOP
-                    204.0,   &    ! 9) SESQ
-                    136.24   /    ! 10 TERP
+      DATA mw_voc / 90.1,   &     ! 1) SOAALK        ! 7 VOC species
+                    70.365,   &    ! 2) OLE
+                    107.2,  &    ! 3) ARO
+                    137.00,  &    ! 4) IVOC, provided in the EPA NEI-2011 inventory for unidentified, for hexadecane is 226 g/mol                    
+                    68.12,   &    ! 5) ISOP
+                    204.0,   &    ! 6) SESQ
+                    136.24   /    ! 7 TERP
 
     ! scaling factors, for testing purposes, check TOL and ISO only
     ! 05/23/2011: for testing all are zero!
-    f(palk4) = 1.
-    f(palk5) = 1.
+     f(psoaalk) = 1.
+     f(pole) = 1.
+     f(paro) = 1.
+!    f(palk4) = 1.
+!    f(palk5) = 1.
     f(pivoc) = 1.
-    f(pole1) = 1.
-    f(pole2) = 1.
-    f(paro1) = 1.
-    f(paro2) = 1.
+!    f(pole1) = 1.
+!    f(pole2) = 1.
+!    f(paro1) = 1.
+!    f(paro2) = 1.
     f(pisop) = 1.
     f(psesq) = 1.
     f(pterp) = 1.
@@ -4747,38 +4830,55 @@ END IF
       ! There are 6 classes of the precursors for anthropogenic SOA
       prod(ipoa1:ipoa4)= 0.0;
 
-      prod(iasoa1) = alphai(1,1)*drog_in(palk4) + alphai(1,2)*drog_in(palk5) + &
-                                                + alphai(1,3)*drog_in(pivoc) + &    ! RAR:
-                     alphai(1,4)*drog_in(pole1) + alphai(1,5)*drog_in(pole2) + &
-                     alphai(1,6)*drog_in(paro1) + alphai(1,7)*drog_in(paro2)
+!      prod(iasoa1) = alphai(1,1)*drog_in(palk4) + alphai(1,2)*drog_in(palk5) + &
+!                                                + alphai(1,3)*drog_in(pivoc) + &    ! RAR:
+!                     alphai(1,4)*drog_in(pole1) + alphai(1,5)*drog_in(pole2) + &
+!                     alphai(1,6)*drog_in(paro1) + alphai(1,7)*drog_in(paro2)
+!
+!      prod(iasoa2) = alphai(2,1)*drog_in(palk4) + alphai(2,2)*drog_in(palk5) + &
+!                                                + alphai(2,3)*drog_in(pivoc) + &
+!                     alphai(2,4)*drog_in(pole1) + alphai(2,5)*drog_in(pole2) + &
+!                     alphai(2,6)*drog_in(paro1) + alphai(2,7)*drog_in(paro2)
+!
+!      prod(iasoa3) = alphai(3,1)*drog_in(palk4) + alphai(3,2)*drog_in(palk5) + &
+!                                                + alphai(3,3)*drog_in(pivoc) + &
+!                     alphai(3,4)*drog_in(pole1) + alphai(3,5)*drog_in(pole2) + &
+!                     alphai(3,6)*drog_in(paro1) + alphai(3,7)*drog_in(paro2)
+!
+!      prod(iasoa4) = alphai(4,1)*drog_in(palk4) + alphai(4,2)*drog_in(palk5) + &
+!                                                + alphai(4,3)*drog_in(pivoc) + &
+!                     alphai(4,4)*drog_in(pole1) + alphai(4,5)*drog_in(pole2) + &
+!                     alphai(4,6)*drog_in(paro1) + alphai(4,7)*drog_in(paro2)
 
-      prod(iasoa2) = alphai(2,1)*drog_in(palk4) + alphai(2,2)*drog_in(palk5) + &
-                                                + alphai(2,3)*drog_in(pivoc) + &
-                     alphai(2,4)*drog_in(pole1) + alphai(2,5)*drog_in(pole2) + &
-                     alphai(2,6)*drog_in(paro1) + alphai(2,7)*drog_in(paro2)
-
-      prod(iasoa3) = alphai(3,1)*drog_in(palk4) + alphai(3,2)*drog_in(palk5) + &
-                                                + alphai(3,3)*drog_in(pivoc) + &
-                     alphai(3,4)*drog_in(pole1) + alphai(3,5)*drog_in(pole2) + &
-                     alphai(3,6)*drog_in(paro1) + alphai(3,7)*drog_in(paro2)
-
-      prod(iasoa4) = alphai(4,1)*drog_in(palk4) + alphai(4,2)*drog_in(palk5) + &
-                                                + alphai(4,3)*drog_in(pivoc) + &
-                     alphai(4,4)*drog_in(pole1) + alphai(4,5)*drog_in(pole2) + &
-                     alphai(4,6)*drog_in(paro1) + alphai(4,7)*drog_in(paro2)
+      prod(iasoa1) = alphai(1,1)*drog_in(psoaalk) + &
+                     alphai(1,2)*drog_in(pole)    + &
+                     alphai(1,3)*drog_in(paro)    + &
+                     alphai(1,4)*drog_in(pivoc)
+      prod(iasoa2) = alphai(2,1)*drog_in(psoaalk) + &
+                     alphai(2,2)*drog_in(pole)    + &
+                     alphai(2,3)*drog_in(paro)    + &
+                     alphai(2,4)*drog_in(pivoc)
+      prod(iasoa3) = alphai(3,1)*drog_in(psoaalk) + &
+                     alphai(3,2)*drog_in(pole)    + &
+                     alphai(3,3)*drog_in(paro)    + &
+                     alphai(3,4)*drog_in(pivoc)
+      prod(iasoa4) = alphai(4,1)*drog_in(psoaalk) + &
+                     alphai(4,2)*drog_in(pole)    + &
+                     alphai(4,3)*drog_in(paro)    + &
+                     alphai(4,4)*drog_in(pivoc)
 
 ! There are 3 classes of the precursors for biogenic SOA;
-      prod(ibsoa1) = alphai(1,8)*drog_in(pisop) + alphai(1,9)*drog_in(psesq) + &
-                     alphai(1,10)*drog_in(pterp)
+      prod(ibsoa1) = alphai(1,5)*drog_in(pisop) + alphai(1,6)*drog_in(psesq) + &
+                     alphai(1,7)*drog_in(pterp)
 
-      prod(ibsoa2) = alphai(2,8)*drog_in(pisop) + alphai(2,9)*drog_in(psesq) + &
-                     alphai(2,10)*drog_in(pterp)
+      prod(ibsoa2) = alphai(2,5)*drog_in(pisop) + alphai(2,6)*drog_in(psesq) + &
+                     alphai(2,7)*drog_in(pterp)
 
-      prod(ibsoa3) = alphai(3,8)*drog_in(pisop) + alphai(3,9)*drog_in(psesq) + &
-                     alphai(3,10)*drog_in(pterp)
+      prod(ibsoa3) = alphai(3,5)*drog_in(pisop) + alphai(3,6)*drog_in(psesq) + &
+                     alphai(3,7)*drog_in(pterp)
 
-      prod(ibsoa4) = alphai(4,8)*drog_in(pisop) + alphai(4,9)*drog_in(psesq) + &
-                     alphai(4,10)*drog_in(pterp)
+      prod(ibsoa4) = alphai(4,5)*drog_in(pisop) + alphai(4,6)*drog_in(psesq) + &
+                     alphai(4,7)*drog_in(pterp)
 
 ! RAR: Debugging:
 IF (diagn_opt .AND. icall<200 .AND. kgrid<3 ) then
@@ -5297,7 +5397,7 @@ LOGICAL :: diagn_opt
 
         factnumn = exp(4.5*log(sgem_i)**2)/dgvem_i**3
         factnuma = exp(4.5*log(sgem_j)**2)/dgvem_j**3
-!        factnumc = exp(4.5*log(sgem_c)**2)/dgvem_c**3
+        factnumc = exp(4.5*log(sgem_c)**2)/dgvem_c**3
 
         ccofm = alphsulf*sqrt(pirs*rgasuniv/(2.0*mwh2so4))
         ccofm_org = alphaorg*sqrt(pirs*rgasuniv/(2.0*mworg))
@@ -5419,13 +5519,13 @@ IF (diagn_opt .AND. icall<200) then
 ENDIF
 
 !...c-mode
-!      m3cor = soilfac*chem(i,k,j,p_soila) + seasfac*chem(i,k,j,p_seas) + &
-!        anthfac*chem(i,k,j,p_antha)
+      m3cor = soilfac*chem(i,k,j,p_soila) + seasfac*chem(i,k,j,p_seas) + &
+        anthfac*chem(i,k,j,p_antha)
 
 !...NOW CALCULATE INITIAL NUMBER CONCENTRATION
       chem(i,k,j,p_nu0) = m3nuc/((dginin**3)*esn36)
       chem(i,k,j,p_ac0) = m3acc/((dginia**3)*esa36)
-!      chem(i,k,j,p_corn) = m3cor/((dginic**3)*esc36)
+      chem(i,k,j,p_corn) = m3cor/((dginic**3)*esc36)
 
       enddo
       enddo
@@ -5443,8 +5543,8 @@ ENDIF
 !                             dust_opt,ktau,p8w,u_phy,v_phy,rho_phy,g,dx,erod,                   &
 
 SUBROUTINE soa2_addemiss( dtstep, alt, dz8w, chem,                              &
-                          emis_ant, kemit, emissopt,                            &
-                          poa_vol_params,                                       &
+                          ebu,emis_ant, kemit, emissopt,                            &
+                          biom,poa_vol_params,                                       &
                           ids,ide, jds,jde, kds,kde,                            &
                           ims,ime, jms,jme, kms,kme,                            &
                           its,ite, jts,jte, kts,kte, diagn_opt                  )
@@ -5458,7 +5558,7 @@ SUBROUTINE soa2_addemiss( dtstep, alt, dz8w, chem,                              
 
   LOGICAL :: diagn_opt
 
-  INTEGER, INTENT(IN   )   ::    kemit, emissopt,                       &
+  INTEGER, INTENT(IN   )   ::    kemit, emissopt, biom,                      &
                                  ids,ide, jds,jde, kds,kde,             &
                                  ims,ime, jms,jme, kms,kme,             &
                                  its,ite, jts,jte, kts,kte
@@ -5477,8 +5577,8 @@ SUBROUTINE soa2_addemiss( dtstep, alt, dz8w, chem,                              
         INTENT(IN ) ::    emis_ant
 
 ! biomass burning aerosol emissions arrays ((ug/m3)*m/s)
-!   REAL, DIMENSION( ims:ime, kms:kme, jms:jme,num_ebu ),              &
-!         INTENT(IN    ) ::    ebu
+   REAL, DIMENSION( ims:ime, kms:kme, jms:jme,num_ebu ),              &
+         INTENT(IN    ) ::    ebu
 
 ! 1/(dry air density) and layer thickness (m)
   REAL,  DIMENSION( ims:ime , kms:kme , jms:jme ),                      &
@@ -5552,16 +5652,16 @@ end if
 
 ! And now the coarse mode...
 
-!  chem(its:ite,kts:kemit,jts:jte,p_corn) =                       &
-!       chem(its:ite,kts:kemit,jts:jte,p_corn) +                  &
-!       factor(its:ite,kts:kemit,jts:jte)*factnumc*anthfac*                           &
-!       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)
+  chem(its:ite,kts:kemit,jts:jte,p_corn) =                       &
+       chem(its:ite,kts:kemit,jts:jte,p_corn) +                  &
+       factor(its:ite,kts:kemit,jts:jte)*factnumc*anthfac*                           &
+       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)
 !
 ! Increment the aerosol masses...
 !
-!  chem(its:ite,kts:kemit,jts:jte,p_antha) =                      &
-!       chem(its:ite,kts:kemit,jts:jte,p_antha) +                 &
-!       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)*factor(its:ite,kts:kemit,jts:jte)
+  chem(its:ite,kts:kemit,jts:jte,p_antha) =                      &
+       chem(its:ite,kts:kemit,jts:jte,p_antha) +                 &
+       emis_ant(its:ite,kts:kemit,jts:jte,p_e_pm_10)*factor(its:ite,kts:kemit,jts:jte)
 
   chem(its:ite,kts:kemit,jts:jte,p_p25j) =                       &
        chem(its:ite,kts:kemit,jts:jte,p_p25j) +                  &
@@ -5661,6 +5761,67 @@ end if
 ! Volatility bin 4:     (1000.0 ug/m3 at 298K), this is gas species only!
 ! Thia bin contains gas phase OCVs only, therefore the emissions are added in add_anthropogenics
 !-------------------------------------------------------------------------------------------
+
+  if(biom >= 1 )then
+!
+! Aitken mode first...
+
+  chem(its:ite,kts:kte,jts:jte,p_nu0) =                        &
+       chem(its:ite,kts:kte,jts:jte,p_nu0) +                   &
+       factor(its:ite,kts:kte,jts:jte)*factnumn*(              &
+       anthfac*( .25*ebu(its:ite,kts:kte,jts:jte,p_ebu_pm25) +       &
+              .25*ebu(its:ite,kts:kte,jts:jte,p_ebu_bc) ) +          &
+       orgfac*.25*ebu(its:ite,kts:kte,jts:jte,p_ebu_oc) )
+
+! Accumulation mode next...
+
+  chem(its:ite,kts:kte,jts:jte,p_ac0) =                        &
+       chem(its:ite,kts:kte,jts:jte,p_ac0) +                   &
+       factor(its:ite,kts:kte,jts:jte)*factnuma*(              &
+       anthfac*(.75*ebu(its:ite,kts:kte,jts:jte,p_ebu_pm25) +        &
+      .75*ebu(its:ite,kts:kte,jts:jte,p_ebu_bc) ) +                  &
+       orgfac*.75*ebu(its:ite,kts:kte,jts:jte,p_ebu_oc) )
+! coarse
+  chem(its:ite,kts:kte,jts:jte,p_corn) =                     &
+       chem(its:ite,kts:kte,jts:jte,p_corn) +                  &
+       factor(its:ite,kts:kte,jts:jte)*factnumc*anthfac*       &
+       ebu(its:ite,kts:kte,jts:jte,p_ebu_pm10)
+
+!
+! Increment the aerosol masses...
+!
+
+  chem(its:ite,kts:kte,jts:jte,p_ecj) =                        &
+       chem(its:ite,kts:kte,jts:jte,p_ecj) +                   &
+       .75*ebu(its:ite,kts:kte,jts:jte,p_ebu_bc)*factor(its:ite,kts:kte,jts:jte)
+
+  chem(its:ite,kts:kte,jts:jte,p_eci) =                        &
+       chem(its:ite,kts:kte,jts:jte,p_eci) +                   &
+       .25*ebu(its:ite,kts:kte,jts:jte,p_ebu_bc)*factor(its:ite,kts:kte,jts:jte)
+
+  chem(its:ite,kts:kte,jts:jte,p_orgpaj) =                     &
+       chem(its:ite,kts:kte,jts:jte,p_orgpaj) +                &
+       .75*ebu(its:ite,kts:kte,jts:jte,p_ebu_oc)*factor(its:ite,kts:kte,jts:jte)
+
+  chem(its:ite,kts:kte,jts:jte,p_orgpai) =                     &
+       chem(its:ite,kts:kte,jts:jte,p_orgpai) +                &
+       .25*ebu(its:ite,kts:kte,jts:jte,p_ebu_oc)*factor(its:ite,kts:kte,jts:jte)
+
+  chem(its:ite,kts:kte,jts:jte,p_antha) =                      &
+       chem(its:ite,kts:kte,jts:jte,p_antha) +                 &
+       ebu(its:ite,kts:kte,jts:jte,p_ebu_pm10)*factor(its:ite,kts:kte,jts:jte)
+
+  chem(its:ite,kts:kte,jts:jte,p_p25j) =                       &
+       chem(its:ite,kts:kte,jts:jte,p_p25j) +                  &
+       .75*ebu(its:ite,kts:kte,jts:jte,p_ebu_pm25)*factor(its:ite,kts:kte,jts:jte)
+
+  chem(its:ite,kts:kte,jts:jte,p_p25i) =                       &
+       chem(its:ite,kts:kte,jts:jte,p_p25i) +                  &
+       .25*ebu(its:ite,kts:kte,jts:jte,p_ebu_pm25)*factor(its:ite,kts:kte,jts:jte)
+
+   endif !end biomass burning
+
+
  else
     CALL wrf_error_fatal ( 'emiss_opt in namelist must be =3 or 23')
  end if

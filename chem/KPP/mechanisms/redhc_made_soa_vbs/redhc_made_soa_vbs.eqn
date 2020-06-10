@@ -1,8 +1,7 @@
 #EQUATIONS {redhc_made_soa_vbs}
 // photorates
- {001:J01} O3+hv=O1D_CB4{+O2}  		: j(Pj_o31d) ;
- {002:J02} O3+hv=O{+O2}  		: j(Pj_o33p) ;
- {003:J03} NO2+hv=O+NO  		: j(Pj_no2)  ;
+ {001:J01} O3+hv=2OH      		: j(Pj_o31d) ;
+ {003:J03} NO2+hv=O3+NO  		: j(Pj_no2)  ;
  {004:J04} N2O5+hv=NO2+NO3	        : j(Pj_n2o5) ;
  {005:J05} HNO3+hv=OH+NO2 		: j(Pj_hno3) ;
  {006:J06} NO3+hv=.89 NO2+ .11 NO + .89 O3: j(Pj_no3o) ; 
@@ -16,22 +15,15 @@
  {015:J15} ROOH+hv=OH                   : j(Pj_ch3o2h) ;
  {016:J16} ONIT+hv=HO2+NO2              : j(Pj_ch3o2h) ;
 // gas phase reactions
- { 17:001 } O+M{=O2}=O3                    : .20946_dp*(C_M *6.00e-34_dp*(TEMP/300._dp)**(-2.3_dp));
- { 18:002 } O+O3=M{=O2+O2}                 : ARR2(8.0e-12_dp, 2060.0_dp, TEMP);
- { 21:003 } O1D_CB4+M{=O2,N2}=O{+O2,N2}    : .79_dp*ARR2(2.1e-11_dp, -115.0_dp, TEMP) +  .21_dp*ARR2(3.2e-11_dp, -70.0_dp, TEMP);
- { 22:004 } O1D_CB4+H2O=2 OH               : 2.2e-10_dp ;
- { 23:005 } O+OH=HO2{+O2}                  : ARR2(2.2e-11_dp, -120.0_dp, TEMP);
- { 24:006 } O+HO2=OH{+O2}                  : ARR2(3.0e-11_dp, -200.0_dp, TEMP);
  { 25:007 } OH+O3=HO2{+O2}                 : ARR2(1.7e-12_dp, 940.0_dp, TEMP);
  { 26:008 } HO2+O3=OH{+O2+O2}              : ARR2(1.0e-14_dp, 490.0_dp, TEMP);
  { 27:009 } HO2+HO2+H2O=H2O2               : usr9( temp, c_m, c_h2o ) ;
  { 28:010 } H2O2+OH=HO2+H2O                : ARR2(2.9e-12_dp, 160.0_dp, TEMP);
  { 29:011 } OH+HO2=H2O{+O2}                : ARR2(4.8e-11_dp, -250.0_dp, TEMP);
- { 30:012 } OH+OH=H2O+O                    : ARR2(4.2e-12_dp, 240.0_dp, TEMP);
+ { 30:012 } OH+OH=H2O                      : ARR2(4.2e-12_dp, 240.0_dp, TEMP);
  { 31:013 } OH+OH{+M}=H2O2{+M}             : TROE( 6.90e-31_dp , 1.0_dp , 2.60e-11_dp , 0.0_dp , TEMP, C_M) ;
  { 32:014 } NO+HO2=NO2+OH                  : ARR2(3.5e-12_dp, -250.0_dp, TEMP) ;
  { 33:015 } O3+NO=NO2{+O2}                 : ARR2(3.0e-12_dp, 1500.0_dp, TEMP);
- { 34:999 } O+NO2=NO{+O2}                  : ARR2(5.6e-12_dp, -180.0_dp, TEMP);
  { 35:017 } O3+NO2=NO3{+O2}                : ARR2(1.2e-13_dp, 2450.0_dp, TEMP);
  { 36:018 } NO3+HO2=OH+NO2                 : ARR2(4.0e-12_dp, -170.0_dp, TEMP);
  { 37:019 } NO3+NO2{+M}=N2O5{+M}           : TROE( 2.e-30_dp , 4.4_dp , 1.4e-12_dp , .7_dp , TEMP, C_M) ;
@@ -46,9 +38,9 @@
  { 54:028 } CH2O+OH=CO+HO2+H2O             : 9.e-12_dp ;
  { 55:029 } CO+OH=HO2{+CO2}                : usr8(temp, c_m) ;
  { 53:030 } OH=CH2O+XO2+HO2                : ARR2(1.1D+2, 1710.0_dp,TEMP) ;
- { 56:031 } CH3CHO+OH=HO2                  : ARR2( 7.e-12_dp, -250._dp, TEMP) ;
+ { 56:031 } CH3CHO+OH=C2O3                 : ARR2( 7.e-12_dp, -250._dp, TEMP) ;
  { 58:032 } CH3CHO+NO3=HNO3+C2O3           : 2.5e-15_dp ;
- { 59:033 } C2O3+NO=CH2O+XO2+HO2+NO2       : ARR2( 3.5e-11_dp, 180._dp, TEMP) ;
+ { 59:033 } C2O3+NO=CH2O+XO2+HO2+NO2       : ARR2( 8.1e-12_dp, -270._dp, TEMP) ;
  { 60:034 } C2O3+NO2=PAN                   : usr_c2o3_no2( c_m ) ;
  { 61:035 } PAN=C2O3+NO2                   : ARR2( 2.e16_dp, 13500._dp, TEMP) ;
  { 62:036 } C2O3+C2O3=2 CH2O+2 XO2+2 HO2   : 2.e-12_dp ;
@@ -61,7 +53,7 @@
  { 69:043 } OLE+NO3=.91 XO2+CH2O+CH3CHO+.09 XO2N+NO2+RXPAR : 7.7e-15_dp ;
  { 70:044 } C2H4+O3=CH2O+.26 HO2+.43 CO+.12 OH : ARR2( 9.1e-15_dp, 2850._dp, TEMP) ;
  { 70:045 } C2H4+OH=XO2+ 1.56 CH2O + HO2 + .22 CH3CHO  : TROEMS(1.0D-28, -0.8_dp, 8.8D-12, 0.0_dp, TEMP, C_M) ;
- { 71:046 } CH3COCHO+OH=XO2+C2O3           : 1.7e-11_dp ;
+ { 71:046 } CH3COCHO+OH=XO2+C2O3           : 1.5e-11_dp ;
  { 72:047 } ISOP+OH=.85 XO2+.61 CH2O+.85 HO2+.03 CH3COCHO+.58 OLE+.15 XO2N+.63 PAR : ARR2(2.54e-11_dp, -410._dp, TEMP) ;
  { 73:048 } ISOP+O3=.9 CH2O+.55 OLE+.18 XO2+.36 CO+.15 C2O3+.03 CH3COCHO+.63 PAR+.3 HO2+.28 OH : ARR2(1.23e-14_dp, 2013._dp, TEMP) ;
  { 74:049 } ISOP+NO3=.9 HO2+.9 ONIT+.03 CH2O+.45 OLE+.12 CH3CHO+.1 NO2+.08 CH3COCHO : ARR2( 3.03e-12_dp , 446.0_dp, TEMP ) ;

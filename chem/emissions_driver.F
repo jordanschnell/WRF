@@ -1519,9 +1519,9 @@ CONTAINS
             its,ite, jts,jte, kts,kte                                   )
      CASE (REDHC_MADE_SOA_VBS_KPP)
         CALL wrf_debug(15,'emissions_driver calling soa2_addemiss')
-        CALL soa2_addemiss( dtstep, alt, dz8w, chem,                     &
-            emis_ant,config_flags%kemit,config_flags%emiss_opt,         &
-            poa_vol_params,                                             &
+        CALL soa2_addemiss( dtstep, alt, dz8w, chem,                    &
+            ebu,emis_ant,config_flags%kemit,config_flags%emiss_opt,     &
+            config_flags%biomass_burn_opt,poa_vol_params,               &
             ids,ide, jds,jde, kds,kde,                                  &
             ims,ime, jms,jme, kms,kme,                                  &
             its,ite, jts,jte, kts,kte, config_flags%debug_soa           )

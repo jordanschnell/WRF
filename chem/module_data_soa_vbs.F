@@ -58,7 +58,7 @@ MODULE module_data_soa_vbs
 !bs *  AEMISS      # of aerosol species with emissions link to gas phase
 !bs                currently ECI, ECJ, BCI, BCJ
  ! updated ldrog numbers for the new SOA mechanism
-      INTEGER, PARAMETER :: ldroga=6    ! anthropogenic: ALK4,ALK5,OLE1,OLE2,ARO1,ARO2
+      INTEGER, PARAMETER :: ldroga=4    ! anthropogenic: ALK4,ALK5,OLE1,OLE2,ARO1,ARO2
       INTEGER, PARAMETER :: ldrogb=3    ! biogenic: ISOP,SESQ,TERP
       INTEGER, PARAMETER :: ldrogr=1    ! for branching ratio
       INTEGER, PARAMETER :: ldrog_vbs=ldroga+ldrogb+ldrogr ! I've renamed this parameter to separate from "ldrog" for MADE/SORGAM

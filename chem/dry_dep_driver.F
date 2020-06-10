@@ -592,7 +592,7 @@ CONTAINS
        call soa2_depdriver (id,config_flags,ktau,dtstep,                &
                ust,t_phy,rmol,znt,pbl,                                  &
                alt,p_phy,chem,dz8w,rh,z,z_at_w,                         &
-               h2oaj,h2oai,nu3,ac3,asulf,ahno3,anh3,                    &
+               h2oaj,h2oai,nu3,ac3,cor3,asulf,ahno3,anh3,                    &
                aer_res,ddvel(:,:,numgas+1:num_chem),                    &
                num_chem-numgas,                                         &
                ids,ide, jds,jde, kds,kde,                               &
